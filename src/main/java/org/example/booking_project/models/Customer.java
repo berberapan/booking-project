@@ -1,5 +1,6 @@
 package org.example.booking_project.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,11 +17,15 @@ public class Customer {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    String customerNumber;
-    String name;
-    String phoneNumber;
-    String email;
+    @Column(unique = true)
+    private String customerNumber;
+
+    private String customerName;
+    private String phoneNumber;
+
+    @Column(unique = true)
+    private String email;
 
 }
