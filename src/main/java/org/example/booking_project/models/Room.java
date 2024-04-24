@@ -1,8 +1,6 @@
 package org.example.booking_project.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +9,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Room {
         @Id
         @GeneratedValue
         Long id;
 
+        @Column(unique=true)
         int roomNumber;
-        String roomType;
+
+        RoomType roomType;
+        int maxBeds;
+        int pricePerNight;
 
     }
