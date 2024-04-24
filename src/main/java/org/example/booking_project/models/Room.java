@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Room {
-        @Id
-        @GeneratedValue
-        Long id;
+    @Id
+    @GeneratedValue
+    Long id;
 
-        @Column(unique=true)
-        int roomNumber;
+    @Column(unique = true)
+    int roomNumber;
 
-        RoomType roomType;
-        int maxBeds;
-        int pricePerNight;
+    RoomType roomType;
+    int maxBeds;
+    int pricePerNight;
 
-    }
+}
