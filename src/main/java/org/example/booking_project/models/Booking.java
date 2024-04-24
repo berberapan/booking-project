@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -13,6 +15,21 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+
+    @Column(unique = true)
+    private String bookingNr;
+
+    @OneToOne
+    @JoinColumn
+    private Customer customer;
+
+    @OneToOne
+    @JoinColumn
+    private Room room;
+
+    private int bookedBeds;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
 }

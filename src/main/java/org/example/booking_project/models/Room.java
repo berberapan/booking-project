@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class Room {
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column(unique = true)
-    int roomNumber;
+    private int roomNumber;
 
-    RoomType roomType;
-    int maxBeds;
-    int pricePerNight;
+    private RoomType roomType;
+    private int maxBeds;
+    private int pricePerNight;
 
 }

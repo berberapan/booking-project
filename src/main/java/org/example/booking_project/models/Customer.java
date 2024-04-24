@@ -17,15 +17,15 @@ public class Customer {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column(unique = true)
-    String customerNumber;
+    private String customerNumber;
 
-    String customerName;
-    String phoneNumber;
+    private String customerName;
+    private String phoneNumber;
 
     @Column(unique = true)
-    String email;
+    private String email;
 
 }
