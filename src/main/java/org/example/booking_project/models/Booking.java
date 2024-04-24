@@ -20,11 +20,11 @@ public class Booking {
     @Column(unique = true)
     private String bookingNr;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Customer customer;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Room room;
 
