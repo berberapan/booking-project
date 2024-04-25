@@ -20,4 +20,9 @@ public class BookingServiceImpl implements BookingService {
     public Booking bookingDTOToBooking(BookingDTO b) {
         return null;
     }
+
+    @Override
+    public double calculatePrice(BookingDTO b) {
+        return 0;
+    }
 }

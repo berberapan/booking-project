@@ -8,4 +8,5 @@ public interface RoomService {
     public RoomDTO roomToRoomDTO(Room r);
 
     public Room roomDTOToRoom(RoomDTO r);
+
 }

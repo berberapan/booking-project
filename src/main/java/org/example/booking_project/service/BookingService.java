@@ -8,4 +8,8 @@ public interface BookingService {
     public BookingDTO bookingToBookingDTO(Booking b);
 
     public Booking bookingDTOToBooking(BookingDTO b);
+
+    public double calculatePrice(BookingDTO b);
+
+
 }
