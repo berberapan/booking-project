@@ -13,5 +13,4 @@ public interface BookingService {
 
     public double calculatePrice(BookingDTO b);
 
-
 }

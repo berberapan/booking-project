@@ -16,7 +16,7 @@ public class booking_project {
 
     }
 
-    /* @Bean
+    @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {
         return (args) -> {
             repo.save(new Room(null, 101, RoomType.SINGLE, 1, 600));
@@ -30,5 +30,5 @@ public class booking_project {
             repo.save(new Room(null, 302, RoomType.DOUBLE, 4, 1200));
             repo.save(new Room(null, 303, RoomType.DOUBLE, 4, 1200));
         };
-    }*/
+    }
 }
