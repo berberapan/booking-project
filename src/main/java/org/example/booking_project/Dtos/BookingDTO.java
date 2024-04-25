@@ -19,9 +19,9 @@ public class BookingDTO {
 
     private String bookingNr;
 
-    private Customer customer;
+    private CustomerDTO customer;
 
-    private Room room;
+    private RoomDTO room;
 
     private int bookedBeds;
 
