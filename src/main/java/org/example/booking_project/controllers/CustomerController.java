@@ -9,11 +9,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-
 public class CustomerController {
 
     private final CustomerService customerService;
-
 
     @GetMapping("customers")
     List<CustomerDTO> getAllCustomers() {
