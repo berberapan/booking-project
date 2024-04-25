@@ -1,20 +1,11 @@
 package org.example.booking_project.service;
 
-
+import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Room;
-import org.example.booking_project.repos.RoomRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+public interface RoomService {
 
-@Service
-public class RoomService {
+    public RoomDTO roomToRoomDTO(Room r);
 
-    @Autowired
-    RoomRepo roomRepo;
-
-    public List<Room> getAllRooms() {
-        return roomRepo.findAll();
-    }
+    public Room roomDTOToRoom(RoomDTO r);
 }

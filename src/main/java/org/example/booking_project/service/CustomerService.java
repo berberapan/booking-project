@@ -1,7 +1,11 @@
 package org.example.booking_project.service;
 
-import org.springframework.stereotype.Service;
+import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.models.Customer;
 
-@Service
-public class CustomerService {
+public interface CustomerService {
+
+    public CustomerDTO customerToCustomerDTO(Customer c);
+
+    public Customer customerDTOToCustomer(CustomerDTO c);
 }
