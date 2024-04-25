@@ -2,6 +2,7 @@ package org.example.booking_project.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Booking {
 
     @Id

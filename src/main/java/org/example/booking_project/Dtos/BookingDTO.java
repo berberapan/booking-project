@@ -1,9 +1,5 @@
 package org.example.booking_project.Dtos;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +19,9 @@ public class BookingDTO {
 
     private String bookingNr;
 
-    private Customer customer;
+    private CustomerDTO customer;
 
-    private Room room;
+    private RoomDTO room;
 
     private int bookedBeds;
 
