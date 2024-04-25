@@ -7,15 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    /*    private Long id;
-
-    private String customerNumber;
-
-    private String customerName;
-
-    private String phoneNumber;
-
-    private String email;*/
     @Override
     public CustomerDTO customerToCustomerDTO(Customer c) {
         return CustomerDTO.builder().id(c.getId()).customerNumber(c.getCustomerNumber())
