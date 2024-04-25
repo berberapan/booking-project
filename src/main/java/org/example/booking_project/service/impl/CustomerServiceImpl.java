@@ -2,7 +2,6 @@ package org.example.booking_project.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.CustomerRepo;
@@ -35,30 +34,29 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+    public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
-        return customerToCustomerDTO(savedCustomer);
+        customerToCustomerDTO(savedCustomer);
     }
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
-        Customer customer = customerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + email));
+        Customer customer = customerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Customer not found with email: " + email));
         return customerToCustomerDTO(customer);
     }
 
     @Override
-    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
+    public void updateCustomer(Long id, CustomerDTO customerDTO) {
         Customer existingCustomer = customerRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + id));
         Customer updatedCustomer = customerDTOToCustomer(customerDTO);
         updatedCustomer.setId(existingCustomer.getId());
-        Customer savedCustomer = customerRepo.save(updatedCustomer);
-        return customerToCustomerDTO(savedCustomer);
+        customerRepo.save(updatedCustomer);
     }
 
     @Override
     public void deleteCustomer(Long id) {
-        Customer existingCustomer = customerRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + id));
-        //Hämta om kunden har några bokningar
+        // Hämta kundens bokningar
+        // Är den tom så ta bort kunden
     }
 }

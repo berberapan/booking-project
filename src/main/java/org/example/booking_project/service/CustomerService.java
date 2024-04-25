@@ -13,11 +13,11 @@ public interface CustomerService {
 
    public List<CustomerDTO> getAllCustomers();
 
-    public CustomerDTO createCustomer(CustomerDTO customerDTO);
+    public void addCustomer(CustomerDTO customerDTO);
 
     public CustomerDTO getCustomerByEmail(String email);
 
-    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO);
+    public void updateCustomer(Long id, CustomerDTO customerDTO);
 
     public void deleteCustomer(Long id);
 
