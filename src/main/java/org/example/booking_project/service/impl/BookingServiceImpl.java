@@ -7,6 +7,8 @@ import org.example.booking_project.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
+
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -23,6 +25,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public double calculatePrice(BookingDTO b) {
-        return 0;
+        return ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
     }
 }
