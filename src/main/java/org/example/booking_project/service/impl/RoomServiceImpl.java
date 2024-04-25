@@ -1,7 +1,5 @@
 package org.example.booking_project.service.impl;
 
-
-import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.RoomRepo;
@@ -10,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 public class RoomServiceImpl implements RoomService {
-
 
     private final RoomRepo rr;
 
@@ -34,8 +32,14 @@ public class RoomServiceImpl implements RoomService {
                 .maxBeds(r.getMaxBeds()).pricePerNight(r.getPricePerNight()).build();
     }
 
+    @Override
     public List<RoomDTO> availableRooms(LocalDate checkIn, LocalDate checkOut) {
-        return rr.available(checkIn, checkOut).stream().map(this::roomToRoomDTO).toList();
+        List<RoomDTO> all = allRooms();
+        List<RoomDTO> booked = rr.available(checkIn, checkOut).stream().map(this::roomToRoomDTO).toList();
+        return all.stream().filter(r -> !booked.contains(r)).collect(Collectors.toList());
     }
 
+    public List<RoomDTO> allRooms() {
+        return rr.findAll().stream().map(this::roomToRoomDTO).toList();
+    }
 }
