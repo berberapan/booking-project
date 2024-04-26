@@ -4,10 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
+import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -15,6 +15,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepo customerRepo;
+    private final BookingRepo bookingRepo;
 
     @Override
     public CustomerDTO customerToCustomerDTO(Customer c) {
@@ -56,7 +57,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
-        // Hämta kundens bokningar
-        // Är den tom så ta bort kunden
+        Customer customer = customerRepo.findById(id).orElse(null);
+        if (customer != null) {
+            boolean hasBookings = bookingRepo.existsByCustomerId(id);
+            if (!hasBookings) {
+                customerRepo.deleteById(id);
+            } else {
+                System.out.println("Kunden har bokningar och kan inte tas bort!");
+            }
+        }
     }
 }
