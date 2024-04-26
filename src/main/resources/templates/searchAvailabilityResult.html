@@ -9,7 +9,9 @@
     <tbody>
     <tr th:each="entry : ${lista}">
         <td th:text="${entry.roomNumber}"></td>
-        <td><input type="radio"/>Knapp</td>
+        <td th:text="${entry.roomType}"></td>
+        <td th:text="${entry.roompricePerNight}"></td>
+        <td><input name="room" type="radio"/></td>
     </tr>
     </tbody>
 </table>

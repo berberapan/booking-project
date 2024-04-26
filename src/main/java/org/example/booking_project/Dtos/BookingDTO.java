@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.booking_project.models.Customer;
-import org.example.booking_project.models.Room;
 
 import java.time.LocalDate;
 
