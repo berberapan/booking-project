@@ -21,7 +21,7 @@ public class booking_project {
         SpringApplication.run(booking_project.class, args);
 
     }
-/*
+    /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo, BookingRepo repo2, CustomerRepo repo3) {
         return (args) -> {
@@ -52,7 +52,7 @@ public class booking_project {
 
 
         };
-    }
 
- */
+    } */
+
 }

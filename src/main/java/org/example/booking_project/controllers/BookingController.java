@@ -38,6 +38,7 @@ public class BookingController {
         List<RoomDTO> lista = rs.availableRooms(inCheck, outCheck);
         model.addAttribute("lista", lista);
 
+
         return "searchAvailabilityResult.html";
     }
 
