@@ -10,7 +10,7 @@
     <tr th:each="entry : ${lista}">
         <td th:text="${entry.roomNumber}"></td>
         <td th:text="${entry.roomType}"></td>
-        <td th:text="${entry.roompricePerNight}"></td>
+        <td th:text="${entry.pricePerNight}+':-'"></td>
         <td><input name="room" type="radio"/></td>
     </tr>
     </tbody>
