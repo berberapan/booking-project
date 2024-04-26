@@ -16,5 +16,5 @@ public interface RoomService {
 
     public Room roomDTOToRoom(RoomDTO r);
 
-    public List<RoomDTO> availableRooms(LocalDate checkIn, LocalDate checkOut);
+    public List<RoomDTO> availableRooms(LocalDate checkIn, LocalDate checkOut, int numGuest);
 }

@@ -32,10 +32,11 @@ public class BookingController {
         LocalDate inCheck = LocalDate.parse(in);
         LocalDate outCheck = LocalDate.parse(out);
 
+
         model.addAttribute("numGuests", numGuests);
         model.addAttribute("in", in);
         model.addAttribute("out", out);
-        List<RoomDTO> lista = rs.availableRooms(inCheck, outCheck);
+        List<RoomDTO> lista = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
         model.addAttribute("lista", lista);
 
 

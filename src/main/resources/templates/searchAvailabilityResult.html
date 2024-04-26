@@ -5,16 +5,11 @@
     <title>Title</title>
 </head>
 <body>
- <p th:text="${numGuests}"></p>
- <p th:text="${in}"></p>
- <p th:text="${out}"></p>
-<p th:text="${lista}"></p>
-
 <table>
     <tbody>
     <tr th:each="entry : ${lista}">
         <td th:text="${entry.roomNumber}"></td>
-        <td th:text="${entry.roomType}"></td>
+        <td><input type="radio"/>Knapp</td>
     </tr>
     </tbody>
 </table>
