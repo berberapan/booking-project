@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundhantering</title>
+    <!-- Lägg till Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="text-center">Kundhantering</h1>
+
+    <!-- Sökformulär -->
+    <form action="/customer/search" method="post">
+        <div class="form-group">
+            <label for="email">E-post:</label>
+            <input type="text" class="form-control" id="email" name="email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sök</button><br><br>
+    </form>
+
+    <!-- Meddelande om att kunden inte hittades -->
+    <div th:if="${customerNotFound}" class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Kunden kunde inte hittas!</h4>
+        <p>Vi kunde inte hitta en kund med den angivna e-postadressen. Vill du skapa en ny kund?</p>
+        <a href="/customer/create" class="btn btn-success">Skapa ny kund</a>
+        <a href="/customer/search" class="btn btn-danger">Avbryt</a>
+    </div>
+
+    <!-- Kundinformation eller formulär för att uppdatera kund -->
+    <div th:if="${customer}">
+        <h2 class="text-center">Ändra kund</h2>
+        <form action="/customer/update" method="post">
+            <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->
+            <input type="hidden" th:name="id" th:value="${customer.id}">
+            <div class="form-group">
+                <label for="customerName">Namn:</label>
+                <input type="text" class="form-control" id="customerName" name="customerName" th:value="${customer.customerName}" required>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Telefon:</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${customer.phoneNumber}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-post:</label>
+                <input type="text" class="form-control" id="mail" name="email" th:value="${customer.email}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Uppdatera</button>
+            <a th:href="@{/customer/delete(id=${customer.id})}" class="btn btn-danger">Ta bort</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

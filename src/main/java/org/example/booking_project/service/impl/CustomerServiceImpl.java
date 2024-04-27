@@ -1,6 +1,5 @@
 package org.example.booking_project.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
@@ -8,7 +7,6 @@ import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +28,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomers() {
-        return customerRepo.findAll().stream().map(this::customerToCustomerDTO).toList();
-    }
-
-    @Override
     public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
@@ -43,16 +36,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
-        Customer customer = customerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Customer not found with email: " + email));
+        Customer customer = customerRepo.findByEmail(email);
         return customerToCustomerDTO(customer);
     }
 
     @Override
+    public boolean existsCustomerByEmail(String email) {
+        return customerRepo.existsByEmail(email);
+    }
+
+    @Override
     public void updateCustomer(Long id, CustomerDTO customerDTO) {
-        Customer existingCustomer = customerRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + id));
-        Customer updatedCustomer = customerDTOToCustomer(customerDTO);
-        updatedCustomer.setId(existingCustomer.getId());
-        customerRepo.save(updatedCustomer);
+        Customer existingCustomer = customerRepo.findById(id).orElse(null);
+        if (existingCustomer != null) {
+            // Uppdatera kundens egenskaper
+            existingCustomer.setCustomerName(customerDTO.getCustomerName());
+            existingCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
+            existingCustomer.setEmail(customerDTO.getEmail()); // Uppdatera e-postadressen
+            customerRepo.save(existingCustomer); // Spara den uppdaterade kunden i databasen
+        }
     }
 
     @Override
