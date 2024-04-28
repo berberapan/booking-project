@@ -7,8 +7,10 @@ import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
+import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.service.BookingService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
@@ -17,7 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class BookingServiceImplTest {
-    private BookingServiceImpl bookingService = new BookingServiceImpl();
+
+    @Autowired
+    BookingRepo br;
+    private BookingServiceImpl bookingService = new BookingServiceImpl(br);
     private Customer testcustomer = new Customer((long) 123, "CN001", "Kalle",
             "012-345678", "abc@abcdef.se");
     private CustomerDTO testcustomerDTO = new CustomerDTO((long) 123, "CN001", "Kalle",
