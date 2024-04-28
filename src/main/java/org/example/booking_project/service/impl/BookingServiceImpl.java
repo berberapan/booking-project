@@ -1,18 +1,23 @@
 package org.example.booking_project.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
+import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 
 @Service
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+
+private final BookingRepo bookingRepo;
 
     @Override
     public BookingDTO bookingToBookingDTO(Booking b) {
@@ -33,5 +38,20 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public double calculatePrice(BookingDTO b) {
         return ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
+    }
+
+    @Override
+    public String generateBookingNr() {
+            int nr = 100;
+            String abbr = "BN";
+            String[] res;
+
+            for (Booking b : bookingRepo.findAll()) {
+                res = b.getBookingNr().split("(?=\\d*$)", 2);
+                int thisNr = Integer.parseInt(res[1]);
+                if (thisNr >= nr){nr = thisNr +1;}
+            }
+            return abbr + nr;
+
     }
 }

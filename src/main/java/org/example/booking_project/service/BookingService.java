@@ -13,5 +13,7 @@ public interface BookingService {
 
     public double calculatePrice(BookingDTO b);
 
+    public String generateBookingNr();
+
 
 }

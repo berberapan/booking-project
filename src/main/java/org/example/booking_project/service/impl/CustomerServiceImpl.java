@@ -62,16 +62,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String generateCustomerNr() {
-        int nr = 0;
+        int nr = 100;
         String abbr = "CN";
         String[] res;
 
         for (Customer c : customerRepo.findAll()) {
             res = c.getCustomerNumber().split("(?=\\d*$)", 2);
             int thisNr = Integer.parseInt(res[1]);
-            if (thisNr > nr){nr = thisNr;}
+            if (thisNr >= nr){nr = thisNr +1;}
         }
-        nr++;
         return abbr + nr;
     }
 }
