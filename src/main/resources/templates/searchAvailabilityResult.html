@@ -35,15 +35,16 @@
                                 <label th:for="${entry.roomNumber}"><span th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType}"></span></label>
                             </td>
                             </tr>
-                                <br><br>
-                                <input type="submit" value="Boka">
                             </th:block>
+
                             <th:block th:if="${#lists.isEmpty(listOfRooms)}">
                                 <p>Inga tillgängliga rum.</p>
                                 <br>
                                 <button><a href="/book">Gå tillbaka</a></button>
                             </th:block>
                     </table>
+
+                <br><input type="submit" value="Boka">
 
             </form>
         </td>

@@ -1,16 +1,11 @@
 package org.example.booking_project.controllers;
 
-import lombok.AllArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
-import org.example.booking_project.models.Booking;
-import org.example.booking_project.models.Customer;
-import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -29,7 +23,7 @@ public class BookingController {
     private RoomServiceImpl rs;
     private CustomerServiceImpl cs;
 
-    public BookingController(RoomServiceImpl rs, BookingRepo br, CustomerServiceImpl cs) {
+    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs) {
         this.rs = rs;
         this.cs = cs;
     }
