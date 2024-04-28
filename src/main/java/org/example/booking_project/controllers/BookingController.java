@@ -77,21 +77,19 @@ public class BookingController {
         List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
         model.addAttribute("listOfRooms", listOfRooms);
 
-        log.info(name);
         if (name != null && phone != null) {
             cs.addCustomer(name, phone, email);
         }
-
         CustomerDTO customerDTO = cs.getCustomerByEmail(email);
         if (customerDTO == null) {
             model.addAttribute("missingCustomer", true);
             return "searchAvailabilityResult.html";
         }
+        log.info(roomNumber);
 
         Room r = rs.getRoom(Integer.parseInt(roomNumber));
         Booking booking = bs.addBooking(cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
         BookingDTO bdto = bs.bookingToBookingDTO(booking);
-
         model.addAttribute("totalPrice",bs.calculatePrice(bdto));
         log.info(String.valueOf(bs.calculatePrice(bdto)));
 
