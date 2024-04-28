@@ -1,7 +1,6 @@
 package org.example.booking_project.service.impl;
 
 import org.example.booking_project.models.Customer;
-import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
