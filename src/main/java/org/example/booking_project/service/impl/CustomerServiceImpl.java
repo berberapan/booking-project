@@ -59,4 +59,19 @@ public class CustomerServiceImpl implements CustomerService {
         // Hämta kundens bokningar
         // Är den tom så ta bort kunden
     }
+
+    @Override
+    public String generateCustomerNr() {
+        int nr = 0;
+        String abbr = "CN";
+        String[] res;
+
+        for (Customer c : customerRepo.findAll()) {
+            res = c.getCustomerNumber().split("(?=\\d*$)", 2);
+            int thisNr = Integer.parseInt(res[1]);
+            if (thisNr > nr){nr = thisNr;}
+        }
+        nr++;
+        return abbr + nr;
+    }
 }
