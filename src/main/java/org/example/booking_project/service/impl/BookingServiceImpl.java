@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
-private final BookingRepo bookingRepo;
+    private final BookingRepo bookingRepo;
 
     @Override
     public BookingDTO bookingToBookingDTO(Booking b) {
@@ -42,16 +42,29 @@ private final BookingRepo bookingRepo;
 
     @Override
     public String generateBookingNr() {
-            int nr = 100;
-            String abbr = "BN";
-            String[] res;
+        int nr = 100;
+        String abbr = "BN";
+        String[] res;
 
-            for (Booking b : bookingRepo.findAll()) {
-                res = b.getBookingNr().split("(?=\\d*$)", 2);
+        for (Booking b : bookingRepo.findAll()) {
+            res = b.getBookingNr().split("(?=\\d*$)", 2);
+            if (isNumeric(res[1])) {
                 int thisNr = Integer.parseInt(res[1]);
-                if (thisNr >= nr){nr = thisNr +1;}
+                if (thisNr >= nr) {
+                    nr = thisNr + 1;
+                }
             }
-            return abbr + nr;
+        }
+        return abbr + nr;
 
+    }
+
+    public static boolean isNumeric(String string) {
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

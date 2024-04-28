@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
@@ -68,8 +70,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         for (Customer c : customerRepo.findAll()) {
             res = c.getCustomerNumber().split("(?=\\d*$)", 2);
-            int thisNr = Integer.parseInt(res[1]);
-            if (thisNr >= nr){nr = thisNr +1;}
+            if (isNumeric(res[1])) {
+                int thisNr = Integer.parseInt(res[1]);
+                if (thisNr >= nr) {
+                    nr = thisNr + 1;
+                }
+            }
         }
         return abbr + nr;
     }

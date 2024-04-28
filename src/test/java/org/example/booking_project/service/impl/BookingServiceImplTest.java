@@ -64,7 +64,7 @@ class BookingServiceImplTest {
 
     @Test
     void bookingDTOToBooking() {
-        assertEquals(testbooking1, bookingService.bookingDTOToBooking(actualBookingDTO,testcustomer,testroom));
+        assertEquals(testbooking1, bookingService.bookingDTOToBooking(actualBookingDTO, testcustomer, testroom));
     }
 
     @Test
