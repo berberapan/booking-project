@@ -21,6 +21,7 @@ public class booking_project {
         SpringApplication.run(booking_project.class, args);
 
     }
+
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo, BookingRepo repo2, CustomerRepo repo3) {
@@ -51,10 +52,11 @@ public class booking_project {
 
             repo2.save(new Booking(null, "a", c1, r1, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 4) ));
             repo2.save(new Booking(null, "adfsd", c2, r2, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
-           // repo2.save(new Booking(null, "asd", c2, r3, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
-           // repo2.save(new Booking(null, "asd", c2, r4, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
+            repo2.save(new Booking(null, "asd", c2, r3, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
+            repo2.save(new Booking(null, "asd", c2, r4, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
 
         };
     }
 */
+
 }

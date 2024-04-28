@@ -13,7 +13,7 @@
             </div>
             <form action="createbooking" method="post">
                 <label for="email">Email</label><br>
-                <input type="email" id="email" name="email" required/>
+                <input type="email" id="email" name="email" th:value="${email}" required/>
                 <div th:if="${missingCustomer}">
                 <label for="name">Namn</label><br>
                 <input type="text" id="name" name="name" required/><br>
@@ -31,7 +31,7 @@
                             <th:block th:each="entry : ${listOfRooms}">
                             <tr>
                             <td>
-                                <input type="radio" name="roomNumber" th:value="${entry.roomNumber}" required>
+                                <input type="radio" name="roomNumber" th:checked="${entry.roomNumber == roomNumber}" required>
                                 <label th:for="${entry.roomNumber}"><span th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType}"></span></label>
                             </td>
                             </tr>
@@ -42,12 +42,10 @@
                                 <br>
                                 <button><a href="/book">Gå tillbaka</a></button>
                             </th:block>
-
-                        <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
-                            <br><input type="submit" value="Boka">
-                        </th:block>
                     </table>
-
+                <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
+                    <br><input type="submit" value="Boka">
+                </th:block>
 
 
             </form>
