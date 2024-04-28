@@ -9,6 +9,7 @@ import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,8 +43,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
-        Customer customer = customerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Customer not found with email: " + email));
-        return customerToCustomerDTO(customer);
+        Optional<Customer> customer = customerRepo.findByEmail(email);
+        return customer.map(this::customerToCustomerDTO).orElse(null);
     }
 
     @Override
