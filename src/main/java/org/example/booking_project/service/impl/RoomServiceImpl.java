@@ -42,4 +42,8 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDTO> allRooms() {
         return rr.findAll().stream().map(this::roomToRoomDTO).toList();
     }
+
+    public Room getRoom(int roomNr) {
+        return rr.findAll().stream().filter(r -> r.getRoomNumber() == roomNr).findAny().get();
+    }
 }

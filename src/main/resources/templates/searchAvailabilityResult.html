@@ -43,12 +43,11 @@
                                 <button><a href="/book">Gå tillbaka</a></button>
                             </th:block>
 
-                        <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
-                            <br><input type="submit" value="Boka">
-                        </th:block>
                     </table>
 
-
+                <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
+                    <br><input type="submit" value="Boka">
+                </th:block>
 
             </form>
         </td>

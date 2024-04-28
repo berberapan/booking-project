@@ -1,7 +1,11 @@
 package org.example.booking_project.controllers;
 
+import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.models.Booking;
+import org.example.booking_project.models.Room;
+import org.example.booking_project.service.impl.BookingServiceImpl;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
 import org.slf4j.Logger;
@@ -20,12 +24,14 @@ public class BookingController {
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
+    private BookingServiceImpl bs;
     private RoomServiceImpl rs;
     private CustomerServiceImpl cs;
 
-    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs) {
+    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs) {
         this.rs = rs;
         this.cs = cs;
+        this.bs = bs;
     }
 
     private void commonModels(Model model, String numGuests, String in, String out) {
@@ -81,8 +87,14 @@ public class BookingController {
             model.addAttribute("missingCustomer", true);
             return "searchAvailabilityResult.html";
         }
-        //Skapa bokning
-        //hämtar totalpris -> modellen
+
+        Room r = rs.getRoom(Integer.parseInt(roomNumber));
+        Booking booking = bs.addBooking(cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
+        BookingDTO bdto = bs.bookingToBookingDTO(booking);
+
+        model.addAttribute("totalPrice",bs.calculatePrice(bdto));
+        log.info(String.valueOf(bs.calculatePrice(bdto)));
+
         return "bookingConfirmation.html";
     }
 }
