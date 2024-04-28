@@ -73,7 +73,7 @@ public class BookingController {
 
         log.info(name);
         if (name != null && phone != null) {
-            // TODO Create user
+            cs.addCustomer(name, phone, email);
         }
 
         CustomerDTO customerDTO = cs.getCustomerByEmail(email);
@@ -81,6 +81,8 @@ public class BookingController {
             model.addAttribute("missingCustomer", true);
             return "searchAvailabilityResult.html";
         }
+        //Skapa bokning
+        //hämtar totalpris -> modellen
         return "bookingConfirmation.html";
     }
 }

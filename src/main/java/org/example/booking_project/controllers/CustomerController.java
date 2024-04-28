@@ -18,11 +18,13 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
-    @PostMapping("customers/add")
+   /* Behövs inte?
+
+   @PostMapping("customers/add")
     public String addCustomer(@RequestBody CustomerDTO customerDTO) {
         customerService.addCustomer(customerDTO);
         return "Customer created successfully";
-    }
+    }*/
 
     @RequestMapping("customers/{email}")
     public CustomerDTO getCustomerByEmail(@PathVariable String email) {

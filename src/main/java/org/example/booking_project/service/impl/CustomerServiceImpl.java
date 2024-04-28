@@ -34,11 +34,17 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepo.findAll().stream().map(this::customerToCustomerDTO).toList();
     }
 
+    /*
+
     @Override
     public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
+    }*/
+    @Override
+    public void addCustomer( String customerName, String phoneNumber, String email) {
+        Customer savedCustomer = customerRepo.save(new Customer( customerName, phoneNumber, email));
     }
 
     @Override
