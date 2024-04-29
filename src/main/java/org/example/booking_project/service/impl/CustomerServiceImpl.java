@@ -49,11 +49,10 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomer(Long id, CustomerDTO customerDTO) {
         Customer existingCustomer = customerRepo.findById(id).orElse(null);
         if (existingCustomer != null) {
-            // Uppdatera kundens egenskaper
             existingCustomer.setCustomerName(customerDTO.getCustomerName());
             existingCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
-            existingCustomer.setEmail(customerDTO.getEmail()); // Uppdatera e-postadressen
-            customerRepo.save(existingCustomer); // Spara den uppdaterade kunden i databasen
+            existingCustomer.setEmail(customerDTO.getEmail());
+            customerRepo.save(existingCustomer);
         }
     }
 

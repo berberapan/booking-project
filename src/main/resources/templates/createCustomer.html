@@ -23,8 +23,22 @@
             <input type="text" class="form-control" id="email" name="email">
         </div>
         <button type="submit" class="btn btn-primary">Skapa</button>
-        <a href="/customer/search" class="btn btn-danger">Avbryt</a>
+        <a href="/customer/search" class="btn btn-danger">Avbryt</a><br><br>
     </form>
+    <!-- Bekräftelsemeddelande för att en ny kund har skapats -->
+    <div th:if="${created}" id="createdMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        En ny kund har skapats!
+    </div>
 </div>
+<script>
+    // Lyssna på klickhändelser på krysset för att stänga meddelandet och omdirigera till söksidan
+    document.getElementById("createdMessage").addEventListener("click", function() {
+        window.location.href = "/customer/search";
+    });
+</script>
 </body>
 </html>
+

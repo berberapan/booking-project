@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 public class CustomerController {
 
@@ -19,6 +18,10 @@ public class CustomerController {
     @GetMapping("/customer/search")
     public String showSearchCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDTO());
+        model.addAttribute("customerNotFound", false);
+        model.addAttribute("updated", false);
+        model.addAttribute("deleted", false);
+        model.addAttribute("created", false);
         return "customer";
     }
 
@@ -27,6 +30,7 @@ public class CustomerController {
         if (customerService.existsCustomerByEmail(email)) {
             CustomerDTO customerDTO = customerService.getCustomerByEmail(email);
             model.addAttribute("customer", customerDTO);
+            model.addAttribute("customerNotFound", false);
         } else {
             model.addAttribute("customerNotFound", true);
         }
@@ -44,18 +48,21 @@ public class CustomerController {
         customerService.addCustomer(customerDTO);
         CustomerDTO updatedCustomer = customerService.getCustomerByEmail(customerDTO.getEmail());
         model.addAttribute("customer", updatedCustomer);
-        return "redirect:/customer/search";
+        model.addAttribute("created", true);
+        return "createCustomer";
     }
+
     @PostMapping("/customer/update")
-    public String updateCustomer(@ModelAttribute CustomerDTO customerDTO) {
+    public String updateCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.updateCustomer(customerDTO.getId(), customerDTO);
-        return "redirect:/customer/search";
+        model.addAttribute("updated", true);
+        return "customer";
     }
+
     @GetMapping("/customer/delete")
-    public String deleteCustomer(@RequestParam Long id) {
+    public String deleteCustomer(@RequestParam Long id, Model model) {
         customerService.deleteCustomer(id);
-        return "redirect:/customer/search";
+        model.addAttribute("deleted", true);
+        return "customer";
     }
-
-
 }

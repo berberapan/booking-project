@@ -15,19 +15,10 @@
     <form action="/customer/search" method="post">
         <div class="form-group">
             <label for="email">E-post:</label>
-            <input type="text" class="form-control" id="email" name="email" required>
+            <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         </div>
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
     </form>
-
-    <!-- Meddelande om att kunden inte hittades -->
-    <div th:if="${customerNotFound}" class="alert alert-warning" role="alert">
-        <h4 class="alert-heading">Kunden kunde inte hittas!</h4>
-        <p>Vi kunde inte hitta en kund med den angivna e-postadressen. Vill du skapa en ny kund?</p>
-        <a href="/customer/create" class="btn btn-success">Skapa ny kund</a>
-        <a href="/customer/search" class="btn btn-danger">Avbryt</a>
-    </div>
-
     <!-- Kundinformation eller formulär för att uppdatera kund -->
     <div th:if="${customer}">
         <h2 class="text-center">Ändra kund</h2>
@@ -43,13 +34,49 @@
                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:value="${customer.phoneNumber}" required>
             </div>
             <div class="form-group">
-                <label for="email">E-post:</label>
-                <input type="text" class="form-control" id="mail" name="email" th:value="${customer.email}" required>
+                <label for="email1">E-post:</label>
+                <input type="text" class="form-control" id="email1" name="email" th:value="${customer.email}" required>
             </div>
             <button type="submit" class="btn btn-success">Uppdatera</button>
             <a th:href="@{/customer/delete(id=${customer.id})}" class="btn btn-danger">Ta bort</a>
         </form>
     </div>
+    <!-- Bekräftelsemeddelande för att kunduppgifterna har uppdaterats -->
+    <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunduppgifterna har uppdaterats!
+    </div>
+
+    <!-- Bekräftelsemeddelande för att kunden har tagits bort -->
+    <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunden har tagits bort!
+    </div>
+
+    <!-- Meddelande om att kunden inte hittades -->
+    <div th:if="${customerNotFound}" id="customerNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Vi kunde inte hitta en kund med den angivna e-postadressen. Vill du skapa en ny kund?
+    </div>
 </div>
+
+<div th:if="${customerNotFound}" class="container mt-4">
+    <a href="/customer/create" class="btn btn-success">Skapa ny kund</a>
+    <a href="/customer/search" class="btn btn-danger">Avbryt</a>
+</div>
+<script>
+    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till söksidan
+    document.querySelectorAll(".alert .close").forEach(function(closeButton) {
+        closeButton.addEventListener("click", function() {
+            window.location.href = "/customer/search";
+        });
+    });
+</script>
 </body>
 </html>
