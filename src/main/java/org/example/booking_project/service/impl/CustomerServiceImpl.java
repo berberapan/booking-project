@@ -55,9 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addCustomer(CustomerDTO customerDTO) {
-        log.info(customerDTO.getCustomerNumber());
         Customer customer = customerDTOToCustomer(customerDTO);
-        log.info(customer.getCustomerNumber());
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
 
