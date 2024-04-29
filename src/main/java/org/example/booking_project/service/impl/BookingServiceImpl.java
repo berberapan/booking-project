@@ -1,10 +1,4 @@
 package org.example.booking_project.service.impl;
-
-
-import lombok.NoArgsConstructor;
-
-import lombok.RequiredArgsConstructor;
-
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -12,27 +6,20 @@ import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.BookingRepo;
-
-import org.example.booking_project.repos.RoomRepo;
-
 import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-
 
     BookingRepo bookingRepo;
 
     public BookingServiceImpl(BookingRepo bookingRepo) {
         this.bookingRepo = bookingRepo;
     }
-
 
     @Override
     public BookingDTO bookingToBookingDTO(Booking b) {
@@ -105,18 +92,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String addBooking(BookingDTO b) {
-        bookingRepo.save(bookingToBookingDTO2(b));
-        return "Booking saved";
-    }
-
-    @Override
     public void updateBooking(Long id, BookingDTO bookingDTO) {
-
     }
 
     @Override
     public void deleteBooking(Long id) {
-      
     }
 }

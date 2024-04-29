@@ -29,16 +29,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
+@Controller
 public class BookingController {
 
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
-    private BookingServiceImpl bs;
-    private RoomServiceImpl rs;
-    private CustomerServiceImpl cs;
+    private final BookingServiceImpl bs;
+    private final RoomServiceImpl rs;
+    private final CustomerServiceImpl cs;
 
     public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs) {
         this.rs = rs;
@@ -89,23 +88,24 @@ public class BookingController {
         List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
         model.addAttribute("listOfRooms", listOfRooms);
 
-        if (name != null && phone != null) {
-            cs.addCustomer(name, phone, email);
+        if(name != null && phone !=null){
+            cs.addCustomer2(name, phone, email);
         }
-        CustomerDTO customerDTO = cs.getCustomerByEmail(email);
-        if (customerDTO == null) {
-            model.addAttribute("missingCustomer", true);
-            return "searchAvailabilityResult.html";
+
+        if (cs.existsCustomerByEmail(email)) {
+            CustomerDTO customerDTO = cs.getCustomerByEmail(email);
+            Room r = rs.getRoom(Integer.parseInt(roomNumber));
+            Booking booking = bs.addBooking(cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
+            BookingDTO bdto = bs.bookingToBookingDTO(booking);
+            model.addAttribute("totalPrice",bs.calculatePrice(bdto));
+            log.info(String.valueOf(bs.calculatePrice(bdto)));
+
+            return "bookingConfirmation.html";
         }
-        log.info(roomNumber);
 
-        Room r = rs.getRoom(Integer.parseInt(roomNumber));
-        Booking booking = bs.addBooking(cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
-        BookingDTO bdto = bs.bookingToBookingDTO(booking);
-        model.addAttribute("totalPrice",bs.calculatePrice(bdto));
-        log.info(String.valueOf(bs.calculatePrice(bdto)));
+        model.addAttribute("missingCustomer", true);
 
-        return "bookingConfirmation.html";
+        return "searchAvailabilityResult.html";
     }
   
       @DeleteMapping("/bookings/delete/{id}")

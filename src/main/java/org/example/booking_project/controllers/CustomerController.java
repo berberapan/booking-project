@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
+@Controller
 public class CustomerController {
 
     private final CustomerService customerService;
