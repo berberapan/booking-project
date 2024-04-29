@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skapa kund</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Skapa kund</h1>
+    <form action="/customer/create" method="post">
+        <div class="form-group">
+            <label for="customerName">Namn:</label>
+            <input type="text" class="form-control" id="customerName" name="customerName">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Telefon:</label>
+            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+        </div>
+        <div class="form-group">
+            <label for="email">E-post:</label>
+            <input type="text" class="form-control" id="email" name="email">
+        </div>
+        <button type="submit" class="btn btn-primary">Skapa</button>
+        <a href="/customer/search" class="btn btn-danger">Avbryt</a><br><br>
+    </form>
+    <!-- Bekräftelsemeddelande för att en ny kund har skapats -->
+    <div th:if="${created}" id="createdMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        En ny kund har skapats!
+    </div>
+</div>
+<script>
+    // Lyssna på klickhändelser på krysset för att stänga meddelandet och omdirigera till söksidan
+    document.getElementById("createdMessage").addEventListener("click", function() {
+        window.location.href = "/customer/search";
+    });
+</script>
+</body>
+</html>
+

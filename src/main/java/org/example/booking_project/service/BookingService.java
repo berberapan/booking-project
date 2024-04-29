@@ -18,11 +18,11 @@ public interface BookingService {
     public String generateBookingNr();
 
     public List<BookingDTO> getAllBookings();
-  
+
     public void updateBooking(Long id, BookingDTO bookingDTO);
-  
+
     public void deleteBooking(Long id);
-  
+
     public String addBooking(BookingDTO bookingDTO);
 
 }
