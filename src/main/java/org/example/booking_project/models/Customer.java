@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 
 @Data
 @Entity
@@ -20,6 +22,7 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
+    @Generated(event = EventType.INSERT)
     @Column(unique = true)
     private String customerNumber;
 
@@ -29,4 +32,9 @@ public class Customer {
     @Column(unique = true)
     private String email;
 
+    public Customer( String customerName, String phoneNumber, String email){
+        this.customerName = customerName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 }
