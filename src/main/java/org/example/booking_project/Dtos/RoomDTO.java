@@ -1,26 +1,20 @@
-package org.example.booking_project.models;
+package org.example.booking_project.Dtos;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.booking_project.models.RoomType;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Room {
-    @Id
-    @GeneratedValue
+public class RoomDTO {
+
     private Long id;
-
-    @Column(unique = true)
     private int roomNumber;
-
-    private RoomType roomType;
     private int maxBeds;
     private int pricePerNight;
-
+    private RoomType roomType;
 }

@@ -1,23 +1,28 @@
 package org.example.booking_project.service;
 
+import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.models.Booking;
-import org.example.booking_project.repos.BookingRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.example.booking_project.models.Customer;
+import org.example.booking_project.models.Room;
 
-@Service
-public class BookingService {
+import java.util.List;
 
-    @Autowired
-    BookingRepo bookingRepo;
+public interface BookingService {
 
+    public BookingDTO bookingToBookingDTO(Booking b);
 
-    public Booking createBooking(Booking booking) {
-        return bookingRepo.save(booking);
-    }
+    public Booking bookingDTOToBooking(BookingDTO b, Customer c, Room r);
 
-    public void cancelBooking(Long bookingId){
-        bookingRepo.deleteById(bookingId);
-    }
+    public double calculatePrice(BookingDTO b);
+
+    public String generateBookingNr();
+
+    public List<BookingDTO> getAllBookings();
+
+    public void updateBooking(Long id, BookingDTO bookingDTO);
+
+    public void deleteBooking(Long id);
+
+    public String addBooking(BookingDTO bookingDTO);
 
 }
