@@ -10,8 +10,12 @@ import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.service.BookingService;
 import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;

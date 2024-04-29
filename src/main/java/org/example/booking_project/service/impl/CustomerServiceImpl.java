@@ -1,22 +1,34 @@
 package org.example.booking_project.service.impl;
 
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.models.Customer;
+
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.BookingRepo;
+
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
+
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepo customerRepo;
+
     private final BookingRepo bookingRepo;
+
 
     @Override
     public CustomerDTO customerToCustomerDTO(Customer c) {
@@ -31,10 +43,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public List<CustomerDTO> getAllCustomers() {
+        return customerRepo.findAll().stream().map(this::customerToCustomerDTO).toList();
+    }
+
+    @Override
     public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
+    }
+    
+    @Override
+    public void addCustomer2( String customerName, String phoneNumber, String email) {
+        Customer savedCustomer = customerRepo.save(new Customer( customerName, phoneNumber, email));
     }
 
     @Override
@@ -50,6 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void updateCustomer(Long id, CustomerDTO customerDTO) {
+
         Customer existingCustomer = customerRepo.findById(id).orElse(null);
         if (existingCustomer != null) {
             existingCustomer.setCustomerName(customerDTO.getCustomerName());
@@ -61,6 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
+
         Customer customer = customerRepo.findById(id).orElse(null);
         if (customer != null) {
             boolean hasBookings = bookingRepo.existsByCustomerId(id);

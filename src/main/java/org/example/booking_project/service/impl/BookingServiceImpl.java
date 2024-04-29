@@ -1,6 +1,4 @@
 package org.example.booking_project.service.impl;
-
-import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -10,15 +8,18 @@ import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepo bookingRepo;
+    BookingRepo bookingRepo;
+
+    public BookingServiceImpl(BookingRepo bookingRepo) {
+        this.bookingRepo = bookingRepo;
+    }
 
     @Override
     public BookingDTO bookingToBookingDTO(Booking b) {
@@ -44,6 +45,14 @@ public class BookingServiceImpl implements BookingService {
                         b.getRoom().getPricePerNight(), b.getRoom().getPricePerNight()))
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
+
+    @Override
+    public Booking addBooking(Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
+        Booking booking = new Booking(customer, room, bookedBeds, checkInDate, checkOutDate);
+        bookingRepo.save(booking);
+        return booking;
+    }
+
 
     @Override
     public double calculatePrice(BookingDTO b) {
@@ -83,13 +92,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String addBooking(BookingDTO b) {
-        bookingRepo.save(bookingToBookingDTO2(b));
-        return "Booking saved";
-    }
-
-    @Override
     public void updateBooking(Long id, BookingDTO bookingDTO) {
+
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
         if (existingBooking != null) {
             existingBooking.setBookedBeds(bookingDTO.getBookedBeds());
@@ -115,5 +119,4 @@ public class BookingServiceImpl implements BookingService {
     public void deleteBooking(Long id) {
         bookingRepo.findById(id).ifPresent(booking -> bookingRepo.deleteById(id));
     }
-
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 
 import java.time.LocalDate;
 
@@ -19,6 +21,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Generated(event = EventType.INSERT)
     @Column(unique = true)
     private String bookingNr;
 
@@ -34,4 +37,11 @@ public class Booking {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
+    public Booking(Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate) {
+        this.customer = customer;
+        this.room = room;
+        this.bookedBeds = bookedBeds;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+    }
 }

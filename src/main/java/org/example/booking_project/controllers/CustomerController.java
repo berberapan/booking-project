@@ -1,18 +1,36 @@
 package org.example.booking_project.controllers;
 
+
+import lombok.RequiredArgsConstructor;
+import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.service.CustomerService;
+
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class CustomerController {
 
     private final CustomerService customerService;
-
+      
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @GetMapping("customers")
+    List<CustomerDTO> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
+
+    @RequestMapping("customers/{email}")
+    public CustomerDTO getCustomerByEmail(@PathVariable String email) {
+        return customerService.getCustomerByEmail(email);
     }
 
     @GetMapping("/customer/search")
@@ -66,3 +84,4 @@ public class CustomerController {
         return "customer";
     }
 }
+
