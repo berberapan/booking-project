@@ -13,12 +13,18 @@ public interface CustomerService {
 
     public List<CustomerDTO> getAllCustomers();
 
-    public void addCustomer(String customerName, String phoneNumber, String email);
+    public void addCustomer2(String customerName, String phoneNumber, String email);
 
     public CustomerDTO getCustomerByEmail(String email);
+
+    public void addCustomer(CustomerDTO customerDTO);
+
+    public boolean existsCustomerByEmail(String email);
 
     public void updateCustomer(Long id, CustomerDTO customerDTO);
 
     public void deleteCustomer(Long id);
+
+    public String generateCustomerNr();
 
 }

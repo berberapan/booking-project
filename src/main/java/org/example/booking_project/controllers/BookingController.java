@@ -1,5 +1,6 @@
 package org.example.booking_project.controllers;
 
+
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -19,8 +20,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-@Controller
+import lombok.RequiredArgsConstructor;
+import org.example.booking_project.Dtos.BookingDTO;
+import org.example.booking_project.service.BookingService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
 public class BookingController {
+
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
@@ -94,5 +106,16 @@ public class BookingController {
         log.info(String.valueOf(bs.calculatePrice(bdto)));
 
         return "bookingConfirmation.html";
+    }
+  
+      @DeleteMapping("/bookings/delete/{id}")
+    public String deleteBooking(@PathVariable Long id){
+        bs.deleteBooking(id);
+        return "Removed bookings";
+    }
+  
+      @RequestMapping ("bookings")
+    List<BookingDTO> getAllBookings(){
+        return bs.getAllBookings();
     }
 }

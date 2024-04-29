@@ -21,14 +21,18 @@ public class booking_project {
         SpringApplication.run(booking_project.class, args);
 
     }
-
-/*
+    /*
     @Bean
-    public CommandLineRunner saveRooms(RoomRepo repo, BookingRepo repo2, CustomerRepo repo3) {
+    public CommandLineRunner saveBooking(BookingRepo repo, CustomerRepo customerRepo, RoomRepo roomRepo){
         return (args) -> {
+            Customer customer1 = customerRepo.findById(1L).orElse(null);
+            Customer customer2 = customerRepo.findById(2L).orElse(null);
+            Customer customer3 = customerRepo.findById(3L).orElse(null);
+            Customer customer4 = customerRepo.findById(4L).orElse(null);
 
-            Room r1 = new Room(null, 102, RoomType.SINGLE, 1, 600);
-            Room r2 = new Room(null, 101, RoomType.SINGLE, 1, 600);
+
+            Room r1 = new Room(null, 101, RoomType.SINGLE, 1, 600);
+            Room r2 = new Room(null, 102, RoomType.SINGLE, 1, 600);
             Room r3 = new Room(null, 103, RoomType.SINGLE, 1, 400);
             Room r4 = new Room(null, 104, RoomType.SINGLE, 1, 400);
 
@@ -54,9 +58,17 @@ public class booking_project {
             repo2.save(new Booking(null, "adfsd", c2, r2, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
             repo2.save(new Booking(null, "asd", c2, r3, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
             repo2.save(new Booking(null, "asd", c2, r4, 1, LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 6) ));
+            
+            repo.save(new Customer(null,"1","Harald Karlsson","0735321728", "email@email.com"));
+            repo.save(new Customer(null,"2","Peter Lingon","0705264826", "email2@email.com"));
+            repo.save(new Customer(null,"3","Frans Gustavsson","0765020124", "email3@email.com"));
+            repo.save(new Customer(null,"4","Helena Ahlen","0731923729", "email4@email.com"));
 
         };
     }
-*/
+
+     */
+
+
 
 }
