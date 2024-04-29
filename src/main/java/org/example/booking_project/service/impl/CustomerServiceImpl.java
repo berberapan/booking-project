@@ -100,17 +100,21 @@ public class CustomerServiceImpl implements CustomerService {
     public String generateCustomerNr() {
         int nr = 100;
         String abbr = "CN";
-        String[] res;
 
         for (Customer c : customerRepo.findAll()) {
-            res = c.getCustomerNumber().split("(?=\\d*$)", 2);
-            if (isNumeric(res[1])) {
-                int thisNr = Integer.parseInt(res[1]);
-                if (thisNr >= nr) {
-                    nr = thisNr + 1;
+            String customerNumber = c.getCustomerNumber();
+            if (customerNumber != null) {
+                String[] res = customerNumber.split("(?=\\d*$)", 2);
+                if (res.length >= 2 && isNumeric(res[1])) {
+                    int thisNr = Integer.parseInt(res[1]);
+                    if (thisNr >= nr) {
+                        nr = thisNr + 1;
+                    }
                 }
             }
         }
         return abbr + nr;
     }
+
+
 }

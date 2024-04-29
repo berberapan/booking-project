@@ -57,7 +57,9 @@ public class CustomerController {
 
     @GetMapping("/customer/create")
     public String showCreateCustomerForm(Model model) {
+        String generatedCustomerNr = customerService.generateCustomerNr();
         model.addAttribute("customer", new CustomerDTO());
+        model.addAttribute("generatedCustomerNr", generatedCustomerNr);
         return "createCustomer";
     }
 

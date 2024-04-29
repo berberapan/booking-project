@@ -10,6 +10,7 @@
 <div class="container mt-4">
     <h1>Skapa kund</h1>
     <form action="/customer/create" method="post">
+        <input type="hidden" id="customerNr" name="customerNumber" th:value="${generatedCustomerNr}">
         <div class="form-group">
             <label for="customerName">Namn:</label>
             <input type="text" class="form-control" id="customerName" name="customerName">
