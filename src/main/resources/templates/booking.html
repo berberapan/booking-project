@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokningshantering</title>
+    <!-- Lägg till Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="text-center">Bokningshantering</h1>
+
+    <!-- Sökformulär -->
+    <form action="/bookings/search" method="post">
+        <div class="form-group">
+            <label for="bookingNr">E-post:</label>
+            <input type="text" class="form-control" id="bookingNr" name="bookingNr" placeholder="BN***" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sök</button><br><br>
+    </form>
+    <!-- Kundinformation eller formulär för att uppdatera kund -->
+    <div th:if="${booking}">
+        <h2 class="text-center">Ändra bokning</h2>
+        <form action="/bookings/update" method="post">
+            <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->
+            <input type="hidden" th:name="id" th:value="${booking.id}">
+            <div class="form-group">
+                <label for="bookedBeds">Antal sängar:</label>
+                <input type="text" class="form-control" id="bookedBeds" name="bookedBeds" th:value="${booking.bookedBeds}" required>
+            </div>
+            <div class="form-group">
+                <label for="checkInDate">Check-in datum:</label>
+                <input type="text" class="form-control" id="checkInDate" name="checkInDate" th:value="${booking.checkInDate}" required>
+            </div>
+            <div class="form-group">
+                <label for="checkOutDate">Check-out datum:</label>
+                <input type="text" class="form-control" id="checkOutDate" name="checkOutDate" th:value="${booking.checkOutDate}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Uppdatera</button>
+            <a th:href="@{/bookings/delete(id=${booking.id})}" class="btn btn-danger">Ta bort</a>
+        </form>
+    </div>
+    <!-- Bekräftelsemeddelande för att kunduppgifterna har uppdaterats -->
+    <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Bokningen har uppdaterats!
+    </div>
+
+    <!-- Bekräftelsemeddelande för att kunden har tagits bort -->
+    <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Bokningen har tagits bort!
+    </div>
+
+    <!-- Meddelande om att kunden inte hittades -->
+    <div th:if="${bookingNotFound}" id="bookingNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Vi kunde inte hitta en bokning med det angivna bokningsnumret. Vill du skapa en ny bokning?
+    </div>
+</div>
+
+<div th:if="${bookingNotFound}" class="container mt-4">
+    <a href="/bookings/add" class="btn btn-success">Skapa ny bokning</a>
+    <a href="/bookings/search" class="btn btn-danger">Avbryt</a>
+</div>
+<script>
+    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till söksidan
+    document.querySelectorAll(".alert .close").forEach(function(closeButton) {
+        closeButton.addEventListener("click", function() {
+            window.location.href = "/bookings/search";
+        });
+    });
+</script>
+</body>
+</html>
