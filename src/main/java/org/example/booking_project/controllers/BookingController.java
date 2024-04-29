@@ -114,16 +114,14 @@ public class BookingController {
         model.addAttribute("listOfRooms", listOfRooms);
 
         if(name != null && phone !=null){
-            String customerNr = cs.generateCustomerNr();
-            CustomerDTO customerDTO = new CustomerDTO(null, customerNr, name, phone, email);
-            log.info(customerDTO.getCustomerNumber());
+            CustomerDTO customerDTO = new CustomerDTO(null, cs.generateCustomerNr(), name, phone, email);
             cs.addCustomer(customerDTO);
         }
 
         if (cs.existsCustomerByEmail(email)) {
             CustomerDTO customerDTO = cs.getCustomerByEmail(email);
             Room r = rs.getRoom(Integer.parseInt(roomNumber));
-            Booking booking = bs.addBooking(cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
+            Booking booking = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
             BookingDTO bdto = bs.bookingToBookingDTO(booking);
             model.addAttribute("totalPrice",bs.calculatePrice(bdto));
             log.info(String.valueOf(bs.calculatePrice(bdto)));

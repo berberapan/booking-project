@@ -18,7 +18,7 @@ public interface BookingService {
 
     public double calculatePrice(BookingDTO b);
 
-    public Booking addBooking(Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate);
+    public Booking addBooking(String bookingNr, Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate);
 
     public String generateBookingNr();
 

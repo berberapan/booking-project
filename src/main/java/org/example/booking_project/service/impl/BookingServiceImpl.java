@@ -47,8 +47,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking addBooking(Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
-        Booking booking = new Booking(customer, room, bookedBeds, checkInDate, checkOutDate);
+    public Booking addBooking(String bookingNr, Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
+        Booking booking = new Booking(null, bookingNr, customer, room, bookedBeds, checkInDate, checkOutDate);
         bookingRepo.save(booking);
         return booking;
     }
@@ -67,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
 
         for (Booking b : bookingRepo.findAll()) {
             res = b.getBookingNr().split("(?=\\d*$)", 2);
-            if (isNumeric(res[1])) {
+            if ( isNumeric(res[1])) {
                 int thisNr = Integer.parseInt(res[1]);
                 if (thisNr >= nr) {
                     nr = thisNr + 1;
