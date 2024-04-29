@@ -1,6 +1,7 @@
 package org.example.booking_project.service.impl;
 
 import org.example.booking_project.models.Customer;
+import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,9 +18,10 @@ class CustomerServiceImplTest {
 
     @Mock
     private CustomerRepo customerRepo;
-
+    @Mock
+    private BookingRepo bookingRepo;
     @InjectMocks
-    private CustomerServiceImpl customerService = new CustomerServiceImpl(customerRepo);
+    private CustomerServiceImpl customerService = new CustomerServiceImpl(customerRepo, bookingRepo);
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
@@ -27,7 +29,7 @@ class CustomerServiceImplTest {
     @Test
     void generateCustomerNr() {
         when(customerRepo.findAll()).thenReturn(Arrays.asList(testcustomer));
-        CustomerServiceImpl service2 = new CustomerServiceImpl(customerRepo);
+        CustomerServiceImpl service2 = new CustomerServiceImpl(customerRepo, bookingRepo);
         String testCustomerNr = service2.generateCustomerNr();
         assertEquals("CN102", testCustomerNr);
     }
