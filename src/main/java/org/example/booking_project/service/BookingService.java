@@ -1,6 +1,7 @@
 package org.example.booking_project.service;
 
 import org.example.booking_project.Dtos.BookingDTO;
+import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
@@ -27,4 +28,7 @@ public interface BookingService {
 
     public void deleteBooking(Long id);
 
+    public boolean existsBookingByBookingNr(String bookingNr);
+  
+    public BookingDTO getBookingByBookingNr(String bookingNr);
 }

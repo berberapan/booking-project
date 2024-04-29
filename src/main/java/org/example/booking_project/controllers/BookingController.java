@@ -22,8 +22,10 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.BookingDTO;
+import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,16 +35,21 @@ import java.util.List;
 public class BookingController {
 
 
+
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     private final BookingServiceImpl bs;
     private final RoomServiceImpl rs;
     private final CustomerServiceImpl cs;
+    private final BookingService bookingService;
+      
 
-    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs) {
+    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService) {
         this.rs = rs;
         this.cs = cs;
         this.bs = bs;
+        this.bookingService = bookingService;
+
     }
 
     private void commonModels(Model model, String numGuests, String in, String out) {
@@ -50,6 +57,47 @@ public class BookingController {
         model.addAttribute("in", in);
         model.addAttribute("out", out);
     }
+  
+    @RequestMapping ("bookings")
+    List<BookingDTO> getAllBookings(){
+        return bookingService.getAllBookings();
+  
+    @GetMapping("/bookings/delete")
+    public String deleteBooking(@RequestParam Long id, Model model) {
+        bookingService.deleteBooking(id);
+        model.addAttribute("deleted", true);
+        return "booking";
+    }
+
+    @PostMapping("/bookings/update")
+    public String updateBooking(@ModelAttribute BookingDTO bookingDTO, Model model) {
+        bookingService.updateBooking(bookingDTO.getId(), bookingDTO);
+        model.addAttribute("updated", true);
+        return "booking";
+    }
+
+    @PostMapping("/bookings/search")
+    public String searchBooking(@RequestParam String bookingNr, Model model) {
+        if (bookingService.existsBookingByBookingNr(bookingNr)) {
+            BookingDTO bookingDTO = bookingService.getBookingByBookingNr(bookingNr);
+            model.addAttribute("booking", bookingDTO);
+            model.addAttribute("bookingNotFound", false);
+        } else {
+            model.addAttribute("bookingNotFound", true);
+        }
+        return "booking";
+    }
+
+    @GetMapping("/bookings/search")
+    public String showSearchBookingPage(Model model) {
+        model.addAttribute("booking", new BookingDTO());
+        model.addAttribute("bookingNotFound", false);
+        model.addAttribute("updated", false);
+        model.addAttribute("deleted", false);
+        model.addAttribute("created", false);
+        return "booking";
+    }
+
 
     @RequestMapping("/book")
     public String book(){

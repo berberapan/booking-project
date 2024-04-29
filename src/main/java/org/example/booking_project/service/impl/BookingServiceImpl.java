@@ -93,9 +93,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void updateBooking(Long id, BookingDTO bookingDTO) {
+
+        Booking existingBooking = bookingRepo.findById(id).orElse(null);
+        if (existingBooking != null) {
+            existingBooking.setBookedBeds(bookingDTO.getBookedBeds());
+            existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
+            existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+            calculatePrice(bookingToBookingDTO(existingBooking));
+            bookingRepo.save(existingBooking);
+        }
+    }
+
+    @Override
+    public boolean existsBookingByBookingNr(String bookingNr) {
+        return bookingRepo.existsByBookingNr(bookingNr);
+    }
+
+    @Override
+    public BookingDTO getBookingByBookingNr(String bookingNr) {
+        Booking booking = bookingRepo.findByBookingNr(bookingNr);
+        return bookingToBookingDTO(booking);
     }
 
     @Override
     public void deleteBooking(Long id) {
+        bookingRepo.findById(id).ifPresent(booking -> bookingRepo.deleteById(id));
     }
 }
