@@ -19,4 +19,5 @@ public interface CustomerService {
 
     public void deleteCustomer(Long id);
 
+    public String generateCustomerNr();
 }

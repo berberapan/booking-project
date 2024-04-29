@@ -8,6 +8,9 @@ import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Service;
 
+
+import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
@@ -67,5 +70,23 @@ public class CustomerServiceImpl implements CustomerService {
                 System.out.println("Kunden har bokningar och kan inte tas bort!");
             }
         }
+    }
+
+    @Override
+    public String generateCustomerNr() {
+        int nr = 100;
+        String abbr = "CN";
+        String[] res;
+
+        for (Customer c : customerRepo.findAll()) {
+            res = c.getCustomerNumber().split("(?=\\d*$)", 2);
+            if (isNumeric(res[1])) {
+                int thisNr = Integer.parseInt(res[1]);
+                if (thisNr >= nr) {
+                    nr = thisNr + 1;
+                }
+            }
+        }
+        return abbr + nr;
     }
 }
