@@ -22,7 +22,6 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
-    @Generated(event = EventType.INSERT)
     @Column(unique = true)
     private String customerNumber;
 

@@ -96,11 +96,11 @@ public class BookingController {
     }
 
     @RequestMapping("createbooking")
-    public String createBooking(@RequestParam String email,
-                                @RequestParam String in,
+    public String createBooking(@RequestParam String in,
                                 @RequestParam String out,
                                 @RequestParam String numGuests,
                                 @RequestParam String roomNumber,
+                                @RequestParam String email,
                                 @RequestParam(required = false) String name,
                                 @RequestParam(required = false) String phone, Model model) {
 
@@ -114,7 +114,10 @@ public class BookingController {
         model.addAttribute("listOfRooms", listOfRooms);
 
         if(name != null && phone !=null){
-            cs.addCustomer2(name, phone, email);
+            String customerNr = cs.generateCustomerNr();
+            CustomerDTO customerDTO = new CustomerDTO(null, customerNr, name, phone, email);
+            log.info(customerDTO.getCustomerNumber());
+            cs.addCustomer(customerDTO);
         }
 
         if (cs.existsCustomerByEmail(email)) {

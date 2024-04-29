@@ -4,6 +4,7 @@ package org.example.booking_project.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Customer;
 
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,14 @@ import org.example.booking_project.repos.BookingRepo;
 
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
 
@@ -25,6 +30,7 @@ import static org.example.booking_project.service.impl.BookingServiceImpl.isNume
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
+    private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepo customerRepo;
 
     private final BookingRepo bookingRepo;
@@ -49,15 +55,18 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addCustomer(CustomerDTO customerDTO) {
+        log.info(customerDTO.getCustomerNumber());
         Customer customer = customerDTOToCustomer(customerDTO);
+        log.info(customer.getCustomerNumber());
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
+
     }
-    
+    /*
     @Override
-    public void addCustomer2( String customerName, String phoneNumber, String email) {
-        Customer savedCustomer = customerRepo.save(new Customer( customerName, phoneNumber, email));
-    }
+    public void addCustomer2( String customerNumber, String customerName, String phoneNumber, String email) {
+        Customer savedCustomer = customerRepo.save(new Customer( customerNumber, customerName, phoneNumber, email));
+    }*/
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
