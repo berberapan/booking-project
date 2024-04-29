@@ -12,6 +12,7 @@ import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,15 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking bookingDTOToBooking(BookingDTO b, Customer customer, Room room) {
         return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr()).customer(customer).room(room)
+                .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
+    }
+
+    public Booking bookingToBookingDTO2(BookingDTO b){
+        return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr())
+                .customer(new Customer(b.getCustomer().getId(), b.getCustomer().getCustomerNumber(), b.getCustomer()
+                        .getCustomerName(), b.getCustomer().getPhoneNumber(), b.getCustomer().getEmail()))
+                .room(new Room(b.getRoom().getId(), b.getRoom().getRoomNumber(), b.getRoom().getRoomType(),
+                        b.getRoom().getPricePerNight(), b.getRoom().getPricePerNight()))
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
 
@@ -66,5 +76,25 @@ public class BookingServiceImpl implements BookingService {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public List<BookingDTO> getAllBookings() {
+        return bookingRepo.findAll().stream().map(this::bookingToBookingDTO).toList();
+    }
+
+    @Override
+    public String addBooking(BookingDTO b) {
+        bookingRepo.save(bookingToBookingDTO2(b));
+        return "Booking saved";
+    }
+
+    @Override
+    public void updateBooking(Long id, BookingDTO bookingDTO) {
+
+    }
+
+    @Override
+    public void deleteBooking(Long id) {
+      
     }
 }
