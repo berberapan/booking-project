@@ -1,6 +1,4 @@
 package org.example.booking_project.controllers;
-
-
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -15,41 +13,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.LocalDate;
 import java.util.List;
-
-
-import lombok.RequiredArgsConstructor;
-import org.example.booking_project.Dtos.BookingDTO;
-import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.BookingService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
 
 @Controller
 public class BookingController {
-
-
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     private final BookingServiceImpl bs;
     private final RoomServiceImpl rs;
     private final CustomerServiceImpl cs;
-    private final BookingService bookingService;
-      
 
     public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService) {
         this.rs = rs;
         this.cs = cs;
         this.bs = bs;
-        this.bookingService = bookingService;
-
     }
 
     private void commonModels(Model model, String numGuests, String in, String out) {
@@ -58,28 +39,24 @@ public class BookingController {
         model.addAttribute("out", out);
     }
   
-    @RequestMapping ("bookings")
-    List<BookingDTO> getAllBookings(){
-        return bookingService.getAllBookings();
-  
     @GetMapping("/bookings/delete")
     public String deleteBooking(@RequestParam Long id, Model model) {
-        bookingService.deleteBooking(id);
+        bs.deleteBooking(id);
         model.addAttribute("deleted", true);
         return "booking";
     }
 
     @PostMapping("/bookings/update")
     public String updateBooking(@ModelAttribute BookingDTO bookingDTO, Model model) {
-        bookingService.updateBooking(bookingDTO.getId(), bookingDTO);
+        bs.updateBooking(bookingDTO.getId(), bookingDTO);
         model.addAttribute("updated", true);
         return "booking";
     }
 
     @PostMapping("/bookings/search")
     public String searchBooking(@RequestParam String bookingNr, Model model) {
-        if (bookingService.existsBookingByBookingNr(bookingNr)) {
-            BookingDTO bookingDTO = bookingService.getBookingByBookingNr(bookingNr);
+        if (bs.existsBookingByBookingNr(bookingNr)) {
+            BookingDTO bookingDTO = bs.getBookingByBookingNr(bookingNr);
             model.addAttribute("booking", bookingDTO);
             model.addAttribute("bookingNotFound", false);
         } else {
@@ -156,13 +133,13 @@ public class BookingController {
         return "searchAvailabilityResult.html";
     }
   
-      @DeleteMapping("/bookings/delete/{id}")
+    @DeleteMapping("/bookings/delete/{id}")
     public String deleteBooking(@PathVariable Long id){
         bs.deleteBooking(id);
         return "Removed bookings";
     }
   
-      @RequestMapping ("bookings")
+    @RequestMapping ("bookings")
     List<BookingDTO> getAllBookings(){
         return bs.getAllBookings();
     }
