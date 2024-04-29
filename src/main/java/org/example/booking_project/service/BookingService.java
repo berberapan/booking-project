@@ -14,9 +14,15 @@ public interface BookingService {
     public Booking bookingDTOToBooking(BookingDTO b, Customer c, Room r);
 
     public double calculatePrice(BookingDTO b);
+
+    public String generateBookingNr();
+
     public List<BookingDTO> getAllBookings();
+  
     public void updateBooking(Long id, BookingDTO bookingDTO);
+  
     public void deleteBooking(Long id);
+  
     public String addBooking(BookingDTO bookingDTO);
 
 }

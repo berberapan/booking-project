@@ -51,6 +51,33 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public String generateBookingNr() {
+        int nr = 100;
+        String abbr = "BN";
+        String[] res;
+
+        for (Booking b : bookingRepo.findAll()) {
+            res = b.getBookingNr().split("(?=\\d*$)", 2);
+            if (isNumeric(res[1])) {
+                int thisNr = Integer.parseInt(res[1]);
+                if (thisNr >= nr) {
+                    nr = thisNr + 1;
+                }
+            }
+        }
+        return abbr + nr;
+
+    }
+
+    public static boolean isNumeric(String string) {
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public List<BookingDTO> getAllBookings() {
         return bookingRepo.findAll().stream().map(this::bookingToBookingDTO).toList();
     }
@@ -68,5 +95,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void deleteBooking(Long id) {
+      
     }
 }
