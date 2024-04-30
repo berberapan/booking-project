@@ -12,16 +12,49 @@
 <div>
 <form action="bookReceival" method="post">
     <label for="checkInDate">Inchecknings datum</label>
-    <input type="date" id="checkInDate" name="checkInDate" value="2024-05-01" min="2024-01-01" max="2024-12-31" />
+    <input type="date" id="checkInDate" name="checkInDate"/>
     <label for="checkOutDate">Utchecknings datum</label>
-    <input type="date" id="checkOutDate" name="checkOutDate" value="2024-05-01" min="2024-01-01" max="2024-12-31" />
+    <input type="date" id="checkOutDate" name="checkOutDate"/>
     <label for="bookedBeds">Antal gäster</label>
     <input type="number" id="bookedBeds" name="bookedBeds" value="1" min="1" max="4">
     <input type="submit" value="Sök">
 </form>
 </div>
 
- 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkInDateInput = document.getElementById("checkInDate");
+        const checkOutDateInput = document.getElementById("checkOutDate");
+
+        checkInDateInput.addEventListener("change", function() {
+            const checkInDate = new Date(checkInDateInput.value);
+
+            const checkOutDate = new Date(checkOutDateInput.value);
+
+            if (checkInDate >= checkOutDate) {
+                checkOutDate.setDate(checkInDate.getDate() + 1);
+                checkOutDateInput.valueAsDate = checkOutDate;
+            }
+
+            checkOutDateInput.min = checkInDateInput.value;
+
+            checkInDateInput.min = null;
+        });
+
+        checkOutDateInput.addEventListener("change", function() {
+            const checkInDate = new Date(checkInDateInput.value);
+            const checkOutDate = new Date(checkOutDateInput.value);
+
+            if (checkOutDate <= checkInDate) {
+                checkOutDate.setDate(checkInDate.getDate() + 1);
+                checkOutDateInput.valueAsDate = checkOutDate;
+            }
+
+            checkOutDateInput.min = checkInDateInput.value;
+            checkInDateInput.min = null;
+        });
+    });
+</script>
 
 
 </body>
