@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,8 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
+    @NotEmpty(message = "Kundnummer är obligatoriskt")
+    @Size(min = 5, message = "Minst 5 tecken för kundnummer, CN följt av siffror: CN1***")
     @Column(unique = true)
     private String customerNumber;
 
