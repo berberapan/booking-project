@@ -22,13 +22,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTO roomToRoomDTO(@Valid Room r) {
+    public RoomDTO roomToRoomDTO(Room r) {
         return RoomDTO.builder().id(r.getId()).roomNumber(r.getRoomNumber()).maxBeds(r.getMaxBeds())
                 .pricePerNight(r.getPricePerNight()).roomType(r.getRoomType()).build();
     }
 
     @Override
-    public Room roomDTOToRoom(@Valid RoomDTO r) {
+    public Room roomDTOToRoom(RoomDTO r) {
         return Room.builder().id(r.getId()).roomNumber(r.getRoomNumber()).roomType(r.getRoomType())
                 .maxBeds(r.getMaxBeds()).pricePerNight(r.getPricePerNight()).build();
     }

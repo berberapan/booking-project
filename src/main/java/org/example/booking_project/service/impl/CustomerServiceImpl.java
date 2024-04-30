@@ -38,13 +38,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public CustomerDTO customerToCustomerDTO(@Valid Customer c) {
+    public CustomerDTO customerToCustomerDTO(Customer c) {
         return CustomerDTO.builder().id(c.getId()).customerNumber(c.getCustomerNumber())
                 .customerName(c.getCustomerName()).phoneNumber(c.getPhoneNumber()).email(c.getEmail()).build();
     }
 
     @Override
-    public Customer customerDTOToCustomer(@Valid CustomerDTO c) {
+    public Customer customerDTOToCustomer(CustomerDTO c) {
         return Customer.builder().id(c.getId()).customerNumber(c.getCustomerNumber())
                 .customerName(c.getCustomerName()).phoneNumber(c.getPhoneNumber()).email(c.getEmail()).build();
     }

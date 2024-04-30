@@ -23,7 +23,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDTO bookingToBookingDTO(@Valid Booking b) {
+    public BookingDTO bookingToBookingDTO(Booking b) {
         return BookingDTO.builder().id(b.getId()).bookingNr(b.getBookingNr())
                 .customer(new CustomerDTO(b.getCustomer().getId(), b.getCustomer().getCustomerNumber(), b.getCustomer()
                         .getCustomerName(), b.getCustomer().getPhoneNumber(), b.getCustomer().getEmail()))
@@ -33,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking bookingDTOToBooking(@Valid BookingDTO b, @Valid Customer customer, @Valid Room room) {
+    public Booking bookingDTOToBooking(BookingDTO b, Customer customer, Room room) {
         return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr()).customer(customer).room(room)
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
