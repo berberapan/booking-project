@@ -3,14 +3,16 @@ import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class BookingServiceImpl implements BookingService {
     BookingRepo bookingRepo;
     CustomerRepo customerRepo;
     RoomServiceImpl roomServiceImpl;
+
+    private static final Logger log = LoggerFactory.getLogger(BookingController.class);
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
@@ -55,7 +59,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingDTO addBooking(CustomerDTO customerDTO, MiniBookingDTO miniBookingDTO, String roomNumber){
         Customer customer = customerRepo.findByEmail(customerDTO.getEmail());
         Room room = roomServiceImpl.getRoom(Integer.parseInt(roomNumber));
-        Booking booking = new Booking(generateBookingNr(), customer, room, miniBookingDTO.getBookedBeds(), miniBookingDTO.getCheckInDate(), miniBookingDTO.getCheckOutDate());
+        Booking booking = new Booking(null, generateBookingNr(), customer, room, miniBookingDTO.getBookedBeds(), miniBookingDTO.getCheckInDate(), miniBookingDTO.getCheckOutDate());
+        bookingRepo.save(booking);
         return bookingToBookingDTO(booking);
     }
 
