@@ -14,7 +14,7 @@
     <!-- Sökformulär -->
     <form action="/bookings/search" method="post">
         <div class="form-group">
-            <label for="bookingNr">E-post:</label>
+            <label for="bookingNr">Bokningsnummer:</label>
             <input type="text" class="form-control" id="bookingNr" name="bookingNr" placeholder="BN***" required>
         </div>
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
@@ -36,6 +36,18 @@
             <div class="form-group">
                 <label for="checkOutDate">Check-out datum:</label>
                 <input type="text" class="form-control" id="checkOutDate" name="checkOutDate" th:value="${booking.checkOutDate}" required>
+            </div>
+            <div class="form-group">
+                <label for="bookingCustomerNr">Kundnummer:</label>
+                <input type="text" class="form-control" id="bookingCustomerNr" name="bookingCustomerNr" th:value="${booking.customer != null ? booking.customer.customerNumber : ''}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="bookingCustomer">Kund:</label>
+                <input type="text" class="form-control" id="bookingCustomer" name="bookingCustomer" th:value="${booking.customer != null ? booking.customer.customerName : ''}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="bookingCustomerEmail">Email:</label>
+                <input type="text" class="form-control" id="bookingCustomerEmail" name="bookingCustomerEmail" th:value="${booking.customer != null ? booking.customer.email : ''}" readonly>
             </div>
             <button type="submit" class="btn btn-success">Uppdatera</button>
             <a th:href="@{/bookings/delete(id=${booking.id})}" class="btn btn-danger">Ta bort</a>
