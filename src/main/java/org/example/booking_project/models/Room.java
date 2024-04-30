@@ -1,9 +1,7 @@
 package org.example.booking_project.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +30,7 @@ public class Room {
     private int maxBeds;
 
     @NotEmpty(message = "Pris/natt är obligatoriskt")
-    @Min(value = 0, message = "Rummet får inte ha ett negativt pris/natt")
+    @PositiveOrZero(message = "Rummet får inte ha ett negativt pris/natt")
     private int pricePerNight;
 
 }
