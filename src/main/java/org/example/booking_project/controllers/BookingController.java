@@ -1,4 +1,5 @@
 package org.example.booking_project.controllers;
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -47,7 +48,7 @@ public class BookingController {
     }
 
     @PostMapping("/bookings/update")
-    public String updateBooking(@ModelAttribute BookingDTO bookingDTO, Model model) {
+    public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
         bs.updateBooking(bookingDTO.getId(), bookingDTO);
         model.addAttribute("updated", true);
         return "booking";
