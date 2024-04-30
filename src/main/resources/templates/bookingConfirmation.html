@@ -8,12 +8,14 @@
 
 <h1>Bokningsbekräftelse</h1>
 
-<p th:text="'Incheckningsdatum: ' + ${book.checkInDate}"></p>
-<p th:text="'Utcheckningsdatum: ' + ${book.checkOutDate}"></p>
+<p th:text="'Incheckningsdatum: ' + ${booking.checkInDate}"></p>
+<p th:text="'Utcheckningsdatum: ' + ${booking.checkOutDate}"></p>
 <br>
-<p th:text="'Antal gäster: ' + ${book.bookedBeds}"></p>
-<p th:text="'Rum: ' + ${roomNumber}"></p>
+<p th:text="'Antal gäster: ' + ${booking.bookedBeds}"></p>
+<p th:text="'Rum: ' + ${booking.Room.roomNumber}"></p>
 
+
+<p th:text="'Pris: ' + ${totalPrice}"></p>
 <br><br>
 <button><a href="/book">Gå tillbaka till start</a> </button>
 

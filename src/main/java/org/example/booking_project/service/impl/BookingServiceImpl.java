@@ -1,11 +1,13 @@
 package org.example.booking_project.service.impl;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.BookingRepo;
+import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -16,9 +18,12 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     BookingRepo bookingRepo;
-
-    public BookingServiceImpl(BookingRepo bookingRepo) {
+    CustomerRepo customerRepo;
+    RoomServiceImpl roomServiceImpl;
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl) {
         this.bookingRepo = bookingRepo;
+        this.customerRepo = customerRepo;
+        this.roomServiceImpl = roomServiceImpl;
     }
 
     @Override
@@ -47,12 +52,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking addBooking(String bookingNr, Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
-        Booking booking = new Booking(null, bookingNr, customer, room, bookedBeds, checkInDate, checkOutDate);
-        bookingRepo.save(booking);
-        return booking;
+    public BookingDTO addBooking(CustomerDTO customerDTO, MiniBookingDTO miniBookingDTO, String roomNumber){
+        Customer customer = customerRepo.findByEmail(customerDTO.getEmail());
+        Room room = roomServiceImpl.getRoom(Integer.parseInt(roomNumber));
+        Booking booking = new Booking(generateBookingNr(), customer, room, miniBookingDTO.getBookedBeds(), miniBookingDTO.getCheckInDate(), miniBookingDTO.getCheckOutDate());
+        return bookingToBookingDTO(booking);
     }
-
 
     @Override
     public double calculatePrice(BookingDTO b) {

@@ -36,4 +36,14 @@ public class Booking {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
+    public Booking (String bookingNr, Customer customer, Room room,
+                    int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate) {
+        this.bookingNr = bookingNr;
+        this.customer = customer;
+        this.room = room;
+        this.bookedBeds = bookedBeds;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+
+    }
 }

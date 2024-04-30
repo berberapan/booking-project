@@ -111,12 +111,9 @@ public class BookingController {
         }
 
         if (cs.existsCustomerByEmail(customer.getEmail())) {
-            CustomerDTO customerDTO = cs.getCustomerByEmail(customer.getEmail());
-            Room r = rs.getRoom(Integer.parseInt(roomNumber));
-            Booking book = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, booking.getBookedBeds(), booking.getCheckInDate(), booking.getCheckOutDate());
-            BookingDTO bdto = bs.bookingToBookingDTO(book);
+            BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
+            model.addAttribute("booking",bdto);
             model.addAttribute("totalPrice",bs.calculatePrice(bdto));
-            log.info(String.valueOf(bs.calculatePrice(bdto)));
 
             return "bookingConfirmation.html";
         }
