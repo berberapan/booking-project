@@ -1,6 +1,7 @@
 package org.example.booking_project.controllers;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Room;
@@ -77,40 +78,41 @@ public class BookingController {
 
 
     @RequestMapping("/book")
-    public String book(){
+
+    public String book(Model model){
+        model.addAttribute("book", new MiniBookingDTO());
         return "searchAvailability.html";
     }
 
     @RequestMapping("bookReceival")
-    public String bookReceival (@RequestParam String numGuests,
-                                @RequestParam String in,
-                                @RequestParam String out, Model model) {
+    public String bookReceival (@ModelAttribute MiniBookingDTO book, Model model) {
 
-        LocalDate inCheck = LocalDate.parse(in);
+       /* LocalDate inCheck = LocalDate.parse(in);
         LocalDate outCheck = LocalDate.parse(out);
-        commonModels(model, numGuests, in, out);
-        List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
+        commonModels(model, numGuests, in, out);*/
+        model.addAttribute("book", book);
+        List<RoomDTO> listOfRooms = rs.availableRooms(book.getCheckInDate(),book.getCheckOutDate(), book.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
         return "searchAvailabilityResult.html";
     }
 
     @RequestMapping("createbooking")
-    public String createBooking(@RequestParam String in,
-                                @RequestParam String out,
-                                @RequestParam String numGuests,
+    public String createBooking(@ModelAttribute MiniBookingDTO booking,
                                 @RequestParam String roomNumber,
                                 @RequestParam String email,
                                 @RequestParam(required = false) String name,
                                 @RequestParam(required = false) String phone, Model model) {
 
-        LocalDate inCheck = LocalDate.parse(in);
+       /* LocalDate inCheck = LocalDate.parse(in);
         LocalDate outCheck = LocalDate.parse(out);
         commonModels(model, numGuests, in, out);
         model.addAttribute("email", email);
         model.addAttribute("roomNumber", roomNumber);
-        model.addAttribute("name", name);
-        List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
+        model.addAttribute("name", name);*/
+        model.addAttribute("book",booking);
+        model.addAttribute("roomNumber", roomNumber);
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
         if(name != null && phone !=null){
@@ -121,8 +123,8 @@ public class BookingController {
         if (cs.existsCustomerByEmail(email)) {
             CustomerDTO customerDTO = cs.getCustomerByEmail(email);
             Room r = rs.getRoom(Integer.parseInt(roomNumber));
-            Booking booking = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
-            BookingDTO bdto = bs.bookingToBookingDTO(booking);
+            Booking book = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, booking.getBookedBeds(), booking.getCheckInDate(), booking.getCheckOutDate());
+            BookingDTO bdto = bs.bookingToBookingDTO(book);
             model.addAttribute("totalPrice",bs.calculatePrice(bdto));
             log.info(String.valueOf(bs.calculatePrice(bdto)));
 

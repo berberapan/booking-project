@@ -8,10 +8,10 @@
 
 <h1>Bokningsbekräftelse</h1>
 
-<p th:text="'Incheckningsdatum: ' + ${in}"></p>
-<p th:text="'Utcheckningsdatum: ' + ${out}"></p>
+<p th:text="'Incheckningsdatum: ' + ${book.checkInDate}"></p>
+<p th:text="'Utcheckningsdatum: ' + ${book.checkOutDate}"></p>
 <br>
-<p th:text="'Antal gäster: ' + ${numGuests}"></p>
+<p th:text="'Antal gäster: ' + ${book.bookedBeds}"></p>
 <p th:text="'Rum: ' + ${roomNumber}"></p>
 
 <br><br>
