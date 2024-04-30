@@ -1,4 +1,5 @@
 package org.example.booking_project.service.impl;
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -22,7 +23,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDTO bookingToBookingDTO(Booking b) {
+    public BookingDTO bookingToBookingDTO(@Valid Booking b) {
         return BookingDTO.builder().id(b.getId()).bookingNr(b.getBookingNr())
                 .customer(new CustomerDTO(b.getCustomer().getId(), b.getCustomer().getCustomerNumber(), b.getCustomer()
                         .getCustomerName(), b.getCustomer().getPhoneNumber(), b.getCustomer().getEmail()))
@@ -32,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking bookingDTOToBooking(BookingDTO b, Customer customer, Room room) {
+    public Booking bookingDTOToBooking(@Valid BookingDTO b, @Valid Customer customer, @Valid Room room) {
         return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr()).customer(customer).room(room)
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
@@ -47,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking addBooking(String bookingNr, Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
+    public Booking addBooking(String bookingNr, @Valid Customer customer, @Valid Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
         Booking booking = new Booking(null, bookingNr, customer, room, bookedBeds, checkInDate, checkOutDate);
         bookingRepo.save(booking);
         return booking;
@@ -92,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void updateBooking(Long id, BookingDTO bookingDTO) {
+    public void updateBooking(Long id, @Valid BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
         if (existingBooking != null) {
