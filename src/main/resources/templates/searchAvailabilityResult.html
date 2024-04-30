@@ -14,12 +14,12 @@
             </div>
             <form action="createbooking" method="post">
                 <label for="email">Email</label><br>
-                <input type="email" id="email" name="email" th:value="${email}" required/>
+                <input type="email" id="email" name="email" required/> <!--th:value="${customer.email}"-->
                 <div th:if="${missingCustomer}">
-                <label for="name">Namn</label><br>
-                <input type="text" id="name" name="name" required/><br>
-                <label for="phone">Telefon</label><br>
-                <input type="tel" id="phone" name="phone" required/>
+                <label for="customerName">Namn</label><br>
+                <input type="text" id="customerName" name="customerName" required/><br>
+                <label for="phoneNumber">Telefon</label><br>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required/>
                 </div><br><br>
                 <label for="checkInDate">Inchecknings datum</label>
                 <input type="date" id="checkInDate" name="checkInDate" th:value="${book.checkInDate}" min="2024-01-01" max="2024-12-31" readonly/><br>

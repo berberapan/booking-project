@@ -90,30 +90,28 @@ public class BookingController {
         model.addAttribute("book", booking);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
+        model.addAttribute("customer", new CustomerDTO());
 
         return "searchAvailabilityResult.html";
     }
 
     @RequestMapping("createbooking")
     public String createBooking(@ModelAttribute MiniBookingDTO booking,
-                                @RequestParam String roomNumber,
-                                @RequestParam String email,
-                                @RequestParam(required = false) String name,
-                                @RequestParam(required = false) String phone, Model model) {
-
+                                @ModelAttribute CustomerDTO customer,
+                                @RequestParam String roomNumber, Model model) {
 
         model.addAttribute("book",booking);
         model.addAttribute("roomNumber", roomNumber);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
-        if(name != null && phone !=null){
-            CustomerDTO customerDTO = new CustomerDTO(null, cs.generateCustomerNr(), name, phone, email);
-            cs.addCustomer(customerDTO);
+        if(customer.getCustomerName() != null && customer.getPhoneNumber() != null){
+            customer.setCustomerNumber(cs.generateCustomerNr());
+            cs.addCustomer(customer);
         }
 
-        if (cs.existsCustomerByEmail(email)) {
-            CustomerDTO customerDTO = cs.getCustomerByEmail(email);
+        if (cs.existsCustomerByEmail(customer.getEmail())) {
+            CustomerDTO customerDTO = cs.getCustomerByEmail(customer.getEmail());
             Room r = rs.getRoom(Integer.parseInt(roomNumber));
             Booking book = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, booking.getBookedBeds(), booking.getCheckInDate(), booking.getCheckOutDate());
             BookingDTO bdto = bs.bookingToBookingDTO(book);
@@ -122,8 +120,6 @@ public class BookingController {
 
             return "bookingConfirmation.html";
         }
-
-
 
         model.addAttribute("missingCustomer", true);
 
