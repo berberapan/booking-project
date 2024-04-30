@@ -1,15 +1,9 @@
 package org.example.booking_project.service.impl;
 
-
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.example.booking_project.Dtos.CustomerDTO;
-import org.example.booking_project.controllers.BookingController;
-import org.example.booking_project.models.Customer;
-
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
+
 import org.example.booking_project.repos.BookingRepo;
 
 import org.example.booking_project.repos.CustomerRepo;
@@ -19,9 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
 
@@ -123,5 +114,8 @@ public class CustomerServiceImpl implements CustomerService {
         return abbr + nr;
     }
 
-
+    @Override
+    public boolean checkIfCustomerHasBookings(Long id) {
+        return bookingRepo.existsByCustomerId(id);
+    }
 }
