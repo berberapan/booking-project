@@ -80,18 +80,15 @@ public class BookingController {
     @RequestMapping("/book")
 
     public String book(Model model){
-        model.addAttribute("book", new MiniBookingDTO());
+        model.addAttribute("booking", new MiniBookingDTO());
         return "searchAvailability.html";
     }
 
     @RequestMapping("bookReceival")
-    public String bookReceival (@ModelAttribute MiniBookingDTO book, Model model) {
+    public String bookReceival (@ModelAttribute MiniBookingDTO booking, Model model) {
 
-       /* LocalDate inCheck = LocalDate.parse(in);
-        LocalDate outCheck = LocalDate.parse(out);
-        commonModels(model, numGuests, in, out);*/
-        model.addAttribute("book", book);
-        List<RoomDTO> listOfRooms = rs.availableRooms(book.getCheckInDate(),book.getCheckOutDate(), book.getBookedBeds());
+        model.addAttribute("book", booking);
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
         return "searchAvailabilityResult.html";
@@ -104,12 +101,7 @@ public class BookingController {
                                 @RequestParam(required = false) String name,
                                 @RequestParam(required = false) String phone, Model model) {
 
-       /* LocalDate inCheck = LocalDate.parse(in);
-        LocalDate outCheck = LocalDate.parse(out);
-        commonModels(model, numGuests, in, out);
-        model.addAttribute("email", email);
-        model.addAttribute("roomNumber", roomNumber);
-        model.addAttribute("name", name);*/
+
         model.addAttribute("book",booking);
         model.addAttribute("roomNumber", roomNumber);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
@@ -130,6 +122,8 @@ public class BookingController {
 
             return "bookingConfirmation.html";
         }
+
+
 
         model.addAttribute("missingCustomer", true);
 
