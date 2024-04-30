@@ -23,7 +23,7 @@ public class Booking {
     private Long id;
 
     @NotEmpty(message = "Bokningsnummer är obligatoriskt")
-    @Size(min = 5, message = "Minst 5 tecken för Bokningsnummer, BN följt av siffror: BN1***")
+    @Size(min = 5, message = "Minst 5 tecken för bokningsnummer, BN följt av siffror: BN1***")
     @Column(unique = true)
     private String bookingNr;
 
