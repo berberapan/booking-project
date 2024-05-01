@@ -52,9 +52,14 @@
 <div class="container">
     <h1 class="text-center" style="margin-bottom: 3rem; margin-top: 5rem;">Välj rum</h1>
     <div class="form-container">
-        <div th:if="${missingCustomer}">
-            <p><em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
-                kund och genomföra bokningen.</em></p>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+        <div th:if="${missingCustomer}" class="alert alert-danger text-center" role="alert">
+            <em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
+                kund.</em>
+        </div>
+            </div>
         </div>
         <form action="createbooking" method="post">
             <div class="row mb-4 mt-8">
@@ -85,7 +90,7 @@
                 <div class="col-md-4"></div>
                 <div>
                     <p th:text="'Incheckningsdatum: '+${book.checkInDate}"></p>
-                    <p th:text="'Utcheckningsdatum: ' + ${book.checkInDate}"></p>
+                    <p th:text="'Utcheckningsdatum: ' + ${book.checkOutDate}"></p>
                     <p th:text="'Antal gäster: ' + ${book.bookedBeds}"></p>
                     <input type="date" class="form-control-plaintext d-none" id="checkInDate" name="checkInDate" th:value="${book.checkInDate}"/>
                     <input type="date" class="form-control-plaintext d-none" id="checkOutDate" name="checkOutDate" th:value="${book.checkOutDate}"/>
@@ -94,10 +99,9 @@
             </div>
 
 
-            <div class="row mb-4">
-                <div class="col-md-4"></div>
-                <h5>Tillgängliga rum för valda datum</h5>
-            </div>
+
+                <h5 class="text-center">Tillgängliga rum för valda datum</h5>
+
             <div class="row mb-4">
                 <div class="col-md-4"></div>
             <table>
@@ -112,20 +116,28 @@
                     </tr>
                 </th:block>
 
-                <th:block th:if="${#lists.isEmpty(listOfRooms)}">
-                    <p>Inga tillgängliga rum.</p>
-                    <br>
-                    <button><a href="/book">Gå tillbaka</a></button>
-                </th:block>
-
             </table>
                 </div>
 
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+            <th:block th:if="${#lists.isEmpty(listOfRooms)}">
+                <div class="alert alert-danger text-center" role="alert">Inga tillgängliga rum.</div>
 
-            <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
-                <br><input type="submit" value="Boka">
+                <div><a class="btn btn-success form-control" href="/book" role="button">Gå tillbaka</a></div>
             </th:block>
+                    </div>
+                </div>
 
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4>">
+                    <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
+                        <input type="submit" value="Boka" class="btn btn-success form-control">
+                    </th:block>
+                </div>
+            </div>
 
         </form>
     </div>
