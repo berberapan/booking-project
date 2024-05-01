@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Generated;
-import org.hibernate.generator.EventType;
 
 import java.time.LocalDate;
 
@@ -43,16 +41,16 @@ public class Booking {
     private int bookedBeds;
 
     @NotNull(message = "Incheckningsdatum är obligatoriskt")
-    @FutureOrPresent (message = "Incheckningsdatum måste vara dagens datum eller ett kommande datum")
+    @FutureOrPresent(message = "Incheckningsdatum måste vara dagens datum eller ett kommande datum")
     private LocalDate checkInDate;
 
 
     @NotNull(message = "Utcheckningsdatum är obligatoriskt")
-    @Future (message = "Utcheckningsdatum måste vara ett kommande datum")
+    @Future(message = "Utcheckningsdatum måste vara ett kommande datum")
     private LocalDate checkOutDate;
 
-    public Booking (String bookingNr, Customer customer, Room room,
-                    int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate) {
+    public Booking(String bookingNr, Customer customer, Room room,
+                   int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate) {
         this.bookingNr = bookingNr;
         this.customer = customer;
         this.room = room;
