@@ -22,6 +22,7 @@ import static org.example.booking_project.service.impl.BookingServiceImpl.isNume
 public class CustomerServiceImpl implements CustomerService {
 
     private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
     private final CustomerRepo customerRepo;
 
     private final BookingRepo bookingRepo;
@@ -89,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (!hasBookings) {
                 customerRepo.deleteById(id);
             } else {
-                System.out.println("Kunden har bokningar och kan inte tas bort!");
+                log.error("Kunden har bokningar och kan inte tas bort!");
             }
         }
     }
