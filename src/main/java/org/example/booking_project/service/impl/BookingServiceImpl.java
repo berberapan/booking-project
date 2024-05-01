@@ -45,16 +45,6 @@ public class BookingServiceImpl implements BookingService {
         return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr()).customer(customer).room(room)
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
-
-    public Booking bookingToBookingDTO2(BookingDTO b){
-        return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr())
-                .customer(new Customer(b.getCustomer().getId(), b.getCustomer().getCustomerNumber(), b.getCustomer()
-                        .getCustomerName(), b.getCustomer().getPhoneNumber(), b.getCustomer().getEmail()))
-                .room(new Room(b.getRoom().getId(), b.getRoom().getRoomNumber(), b.getRoom().getRoomType(),
-                        b.getRoom().getPricePerNight(), b.getRoom().getPricePerNight()))
-                .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
-    }
-
     @Override
     public BookingDTO addBooking(CustomerDTO customerDTO, MiniBookingDTO miniBookingDTO, String roomNumber){
         Customer customer = customerRepo.findByEmail(customerDTO.getEmail());
@@ -85,7 +75,6 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return abbr + nr;
-
     }
 
     public static boolean isNumeric(String string) {

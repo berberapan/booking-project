@@ -34,12 +34,6 @@ public class BookingController {
         this.bs = bs;
     }
 
-    private void commonModels(Model model, String numGuests, String in, String out) {
-        model.addAttribute("numGuests", numGuests);
-        model.addAttribute("in", in);
-        model.addAttribute("out", out);
-    }
-  
     @GetMapping("/bookings/delete")
     public String deleteBooking(@RequestParam Long id, Model model) {
         bs.deleteBooking(id);
@@ -76,9 +70,7 @@ public class BookingController {
         return "booking";
     }
 
-
     @RequestMapping("/book")
-
     public String book(Model model){
         model.addAttribute("booking", new MiniBookingDTO());
         return "searchAvailability.html";

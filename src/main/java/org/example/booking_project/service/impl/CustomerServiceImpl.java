@@ -60,11 +60,6 @@ public class CustomerServiceImpl implements CustomerService {
         customerToCustomerDTO(savedCustomer);
 
     }
-    /*
-    @Override
-    public void addCustomer2( String customerNumber, String customerName, String phoneNumber, String email) {
-        Customer savedCustomer = customerRepo.save(new Customer( customerNumber, customerName, phoneNumber, email));
-    }*/
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
