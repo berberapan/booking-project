@@ -5,12 +5,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
-import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Customer;
 
-import lombok.RequiredArgsConstructor;
-import org.example.booking_project.Dtos.CustomerDTO;
-import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.BookingRepo;
 
 import org.example.booking_project.repos.CustomerRepo;
@@ -20,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
 
@@ -32,6 +25,7 @@ import static org.example.booking_project.service.impl.BookingServiceImpl.isNume
 public class CustomerServiceImpl implements CustomerService {
 
     private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
     private final CustomerRepo customerRepo;
 
     private final BookingRepo bookingRepo;
@@ -99,7 +93,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (!hasBookings) {
                 customerRepo.deleteById(id);
             } else {
-                System.out.println("Kunden har bokningar och kan inte tas bort!");
+                log.error("Kunden har bokningar och kan inte tas bort!");
             }
         }
     }
@@ -124,5 +118,8 @@ public class CustomerServiceImpl implements CustomerService {
         return abbr + nr;
     }
 
-
+    @Override
+    public boolean checkIfCustomerHasBookings(Long id) {
+        return bookingRepo.existsByCustomerId(id);
+    }
 }

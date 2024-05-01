@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 
-import org.example.booking_project.Dtos.CustomerDTO;
-import org.example.booking_project.service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -40,6 +38,7 @@ public class CustomerController {
         model.addAttribute("customerNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
+        model.addAttribute("bookingExists", false);
         model.addAttribute("created", false);
         return "customer";
     }
@@ -82,8 +81,15 @@ public class CustomerController {
 
     @GetMapping("/customer/delete")
     public String deleteCustomer(@RequestParam Long id, Model model) {
-        customerService.deleteCustomer(id);
-        model.addAttribute("deleted", true);
+        boolean bookingExists = customerService.checkIfCustomerHasBookings(id);
+
+        if (bookingExists) {
+            model.addAttribute("bookingExists", true);
+        } else {
+            customerService.deleteCustomer(id);
+            model.addAttribute("deleted", true);
+        }
+
         return "customer";
     }
 }

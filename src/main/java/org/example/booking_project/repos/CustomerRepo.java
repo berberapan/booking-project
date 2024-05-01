@@ -4,12 +4,10 @@ import org.example.booking_project.models.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
-    Customer findByEmail(String email);
+    public Customer findByEmail(String email);
 
-    boolean existsByEmail(String email);
+    public boolean existsByEmail(String email);
 }
