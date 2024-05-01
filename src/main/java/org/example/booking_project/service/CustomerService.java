@@ -13,8 +13,6 @@ public interface CustomerService {
 
     public List<CustomerDTO> getAllCustomers();
 
-   // public void addCustomer2(String customerNumber, String customerName, String phoneNumber, String email);
-
     public CustomerDTO getCustomerByEmail(String email);
 
     public void addCustomer(CustomerDTO customerDTO);

@@ -2,14 +2,18 @@ package org.example.booking_project.service.impl;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.BookingRepo;
+import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -17,9 +21,14 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     BookingRepo bookingRepo;
+    CustomerRepo customerRepo;
+    RoomServiceImpl roomServiceImpl;
 
-    public BookingServiceImpl(BookingRepo bookingRepo) {
+    private static final Logger log = LoggerFactory.getLogger(BookingController.class);
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl) {
         this.bookingRepo = bookingRepo;
+        this.customerRepo = customerRepo;
+        this.roomServiceImpl = roomServiceImpl;
     }
 
     @Override
@@ -37,23 +46,14 @@ public class BookingServiceImpl implements BookingService {
         return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr()).customer(customer).room(room)
                 .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
     }
-
-    public Booking bookingToBookingDTO2(BookingDTO b){
-        return Booking.builder().id(b.getId()).bookingNr(b.getBookingNr())
-                .customer(new Customer(b.getCustomer().getId(), b.getCustomer().getCustomerNumber(), b.getCustomer()
-                        .getCustomerName(), b.getCustomer().getPhoneNumber(), b.getCustomer().getEmail()))
-                .room(new Room(b.getRoom().getId(), b.getRoom().getRoomNumber(), b.getRoom().getRoomType(),
-                        b.getRoom().getPricePerNight(), b.getRoom().getPricePerNight()))
-                .bookedBeds(b.getBookedBeds()).checkInDate(b.getCheckInDate()).checkOutDate(b.getCheckOutDate()).build();
-    }
-
     @Override
-    public Booking addBooking(String bookingNr, @Valid Customer customer, @Valid Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
-        Booking booking = new Booking(null, bookingNr, customer, room, bookedBeds, checkInDate, checkOutDate);
+    public BookingDTO addBooking(CustomerDTO customerDTO, MiniBookingDTO miniBookingDTO, String roomNumber){
+        Customer customer = customerRepo.findByEmail(customerDTO.getEmail());
+        Room room = roomServiceImpl.getRoom(Integer.parseInt(roomNumber));
+        Booking booking = new Booking(null, generateBookingNr(), customer, room, miniBookingDTO.getBookedBeds(), miniBookingDTO.getCheckInDate(), miniBookingDTO.getCheckOutDate());
         bookingRepo.save(booking);
-        return booking;
+        return bookingToBookingDTO(booking);
     }
-
 
     @Override
     public double calculatePrice(BookingDTO b) {
@@ -76,7 +76,6 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return abbr + nr;
-
     }
 
     public static boolean isNumeric(String string) {

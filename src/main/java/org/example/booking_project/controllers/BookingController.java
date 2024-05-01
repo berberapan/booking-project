@@ -2,6 +2,7 @@ package org.example.booking_project.controllers;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Room;
@@ -34,12 +35,6 @@ public class BookingController {
         this.bs = bs;
     }
 
-    private void commonModels(Model model, String numGuests, String in, String out) {
-        model.addAttribute("numGuests", numGuests);
-        model.addAttribute("in", in);
-        model.addAttribute("out", out);
-    }
-  
     @GetMapping("/bookings/delete")
     public String deleteBooking(@RequestParam Long id, Model model) {
         bs.deleteBooking(id);
@@ -76,56 +71,42 @@ public class BookingController {
         return "booking";
     }
 
-
     @RequestMapping("/book")
-    public String book(){
+    public String book(Model model){
+        model.addAttribute("booking", new MiniBookingDTO());
         return "searchAvailability.html";
     }
 
     @RequestMapping("bookReceival")
-    public String bookReceival (@RequestParam String numGuests,
-                                @RequestParam String in,
-                                @RequestParam String out, Model model) {
+    public String bookReceival (@ModelAttribute MiniBookingDTO booking, Model model) {
 
-        LocalDate inCheck = LocalDate.parse(in);
-        LocalDate outCheck = LocalDate.parse(out);
-        commonModels(model, numGuests, in, out);
-        List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
+        model.addAttribute("book", booking);
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
+        model.addAttribute("customer", new CustomerDTO());
 
         return "searchAvailabilityResult.html";
     }
 
     @RequestMapping("createbooking")
-    public String createBooking(@RequestParam String in,
-                                @RequestParam String out,
-                                @RequestParam String numGuests,
-                                @RequestParam String roomNumber,
-                                @RequestParam String email,
-                                @RequestParam(required = false) String name,
-                                @RequestParam(required = false) String phone, Model model) {
+    public String createBooking(@ModelAttribute MiniBookingDTO booking,
+                                @ModelAttribute CustomerDTO customer,
+                                @RequestParam String roomNumber, Model model) {
 
-        LocalDate inCheck = LocalDate.parse(in);
-        LocalDate outCheck = LocalDate.parse(out);
-        commonModels(model, numGuests, in, out);
-        model.addAttribute("email", email);
+        model.addAttribute("book",booking);
         model.addAttribute("roomNumber", roomNumber);
-        model.addAttribute("name", name);
-        List<RoomDTO> listOfRooms = rs.availableRooms(inCheck, outCheck, Integer.parseInt(numGuests));
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
-        if(name != null && phone !=null){
-            CustomerDTO customerDTO = new CustomerDTO(null, cs.generateCustomerNr(), name, phone, email);
-            cs.addCustomer(customerDTO);
+        if(customer.getCustomerName() != null && customer.getPhoneNumber() != null){
+            customer.setCustomerNumber(cs.generateCustomerNr());
+            cs.addCustomer(customer);
         }
 
-        if (cs.existsCustomerByEmail(email)) {
-            CustomerDTO customerDTO = cs.getCustomerByEmail(email);
-            Room r = rs.getRoom(Integer.parseInt(roomNumber));
-            Booking booking = bs.addBooking(bs.generateBookingNr(),cs.customerDTOToCustomer(customerDTO),r, Integer.parseInt(numGuests), inCheck, outCheck);
-            BookingDTO bdto = bs.bookingToBookingDTO(booking);
+        if (cs.existsCustomerByEmail(customer.getEmail())) {
+            BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
+            model.addAttribute("booking",bdto);
             model.addAttribute("totalPrice",bs.calculatePrice(bdto));
-            log.info(String.valueOf(bs.calculatePrice(bdto)));
 
             return "bookingConfirmation.html";
         }
