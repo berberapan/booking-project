@@ -1,7 +1,5 @@
 package org.example.booking_project.service.impl;
 
-
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
