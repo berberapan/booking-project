@@ -7,7 +7,6 @@ import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -30,6 +29,6 @@ public interface BookingService {
     public void deleteBooking(Long id);
 
     public boolean existsBookingByBookingNr(String bookingNr);
-  
+
     public BookingDTO getBookingByBookingNr(String bookingNr);
 }
