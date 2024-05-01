@@ -1,5 +1,6 @@
 package org.example.booking_project.service.impl;
 
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.repos.RoomRepo;
