@@ -97,6 +97,14 @@
         Kunden har tagits bort!
     </div>
 
+    <!-- Meddelande om att kunden inte kunde tas bort på grund av bokningar -->
+    <div th:if="${bookingExists}" id="bookingExistsMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunden kan inte tas bort eftersom det finns bokningar för den.
+    </div>
+
     <!-- Meddelande om att kunden inte hittades -->
     <div th:if="${customerNotFound}" id="customerNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
