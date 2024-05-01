@@ -44,9 +44,13 @@ public class BookingController {
 
     @PostMapping("/bookings/update")
     public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
-        bs.updateBooking(bookingDTO.getId(), bookingDTO);
-        model.addAttribute("updated", true);
-        return "booking";
+        if (bs.updateBooking(bookingDTO.getId(), bookingDTO)){
+            model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
+            return "booking";
+        } else{
+            model.addAttribute("updated", true);
+            return "booking";
+        }
     }
 
     @PostMapping("/bookings/search")

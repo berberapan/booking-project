@@ -8,6 +8,7 @@ import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
+import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
@@ -92,16 +93,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void updateBooking(Long id, @Valid BookingDTO bookingDTO) {
+    public boolean updateBooking(Long id, @Valid BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
+
         if (existingBooking != null) {
-            existingBooking.setBookedBeds(bookingDTO.getBookedBeds());
-            existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
-            existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
-            calculatePrice(bookingToBookingDTO(existingBooking));
-            bookingRepo.save(existingBooking);
+            int bookedBeds = existingBooking.getBookedBeds();
+            if (bookedBeds > 0 && bookedBeds <= existingBooking.getRoom().getMaxBeds())
+            {
+                existingBooking.setBookedBeds(bookedBeds);
+                existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
+                existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+                bookingRepo.save(existingBooking);
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
     }
 
     @Override

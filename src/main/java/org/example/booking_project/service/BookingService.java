@@ -24,7 +24,7 @@ public interface BookingService {
 
     public List<BookingDTO> getAllBookings();
 
-    public void updateBooking(Long id, BookingDTO bookingDTO);
+    public boolean updateBooking(Long id, BookingDTO bookingDTO);
 
     public void deleteBooking(Long id);
 
