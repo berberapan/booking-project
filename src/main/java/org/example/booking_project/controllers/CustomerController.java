@@ -1,18 +1,35 @@
 package org.example.booking_project.controllers;
 
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class CustomerController {
 
     private final CustomerService customerService;
-
+      
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @GetMapping("customers")
+    List<CustomerDTO> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
+
+    @RequestMapping("customers/{email}")
+    public CustomerDTO getCustomerByEmail(@PathVariable String email) {
+        return customerService.getCustomerByEmail(email);
     }
 
     @GetMapping("/customer/search")
@@ -21,6 +38,7 @@ public class CustomerController {
         model.addAttribute("customerNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
+        model.addAttribute("bookingExists", false);
         model.addAttribute("created", false);
         return "customer";
     }
@@ -39,12 +57,14 @@ public class CustomerController {
 
     @GetMapping("/customer/create")
     public String showCreateCustomerForm(Model model) {
+        String generatedCustomerNr = customerService.generateCustomerNr();
         model.addAttribute("customer", new CustomerDTO());
+        model.addAttribute("generatedCustomerNr", generatedCustomerNr);
         return "createCustomer";
     }
 
     @PostMapping("/customer/create")
-    public String createOrUpdateCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String createOrUpdateCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.addCustomer(customerDTO);
         CustomerDTO updatedCustomer = customerService.getCustomerByEmail(customerDTO.getEmail());
         model.addAttribute("customer", updatedCustomer);
@@ -53,7 +73,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/update")
-    public String updateCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String updateCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.updateCustomer(customerDTO.getId(), customerDTO);
         model.addAttribute("updated", true);
         return "customer";
@@ -61,8 +81,16 @@ public class CustomerController {
 
     @GetMapping("/customer/delete")
     public String deleteCustomer(@RequestParam Long id, Model model) {
-        customerService.deleteCustomer(id);
-        model.addAttribute("deleted", true);
+        boolean bookingExists = customerService.checkIfCustomerHasBookings(id);
+
+        if (bookingExists) {
+            model.addAttribute("bookingExists", true);
+        } else {
+            customerService.deleteCustomer(id);
+            model.addAttribute("deleted", true);
+        }
+
         return "customer";
     }
 }
+

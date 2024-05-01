@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007bff;
+            backdrop-filter: blur(10px);
+            height: 80px;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 40px;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container"> <!-- Centrerad behållare för navigeringsmenyn -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <h1 class="text-center" style="margin-bottom: 3rem; margin-top: 5rem;">Välj rum</h1>
+    <div class="form-container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div th:if="${missingCustomer}" class="alert alert-danger text-center" role="alert">
+                    <em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
+                        kund.</em>
+                </div>
+            </div>
+        </div>
+        <form action="createbooking" method="post">
+            <div class="row mb-4 mt-8">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <label class="mb-1" for="email">Email</label>
+                    <input class="form-control" type="email" id="email" name="email" required/>
+                </div>
+            </div>
+            <div th:if="${missingCustomer}">
+                <div class="row mb-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <label class="mb-1" for="customerName">Namn</label>
+                        <input class="form-control" type="text" id="customerName" name="customerName" required/>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <label class="mb-1" for="phoneNumber">Telefon</label>
+                        <input class="form-control" type="tel" id="phoneNumber" name="phoneNumber" required/>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <p th:text="'Incheckningsdatum: '+${book.checkInDate}"></p>
+                    <p th:text="'Utcheckningsdatum: ' + ${book.checkOutDate}"></p>
+                    <p th:text="'Antal gäster: ' + ${book.bookedBeds}"></p>
+                    <input type="date" class="form-control-plaintext d-none" id="checkInDate" name="checkInDate"
+                           th:value="${book.checkInDate}"/>
+                    <input type="date" class="form-control-plaintext d-none" id="checkOutDate" name="checkOutDate"
+                           th:value="${book.checkOutDate}"/>
+                    <input type="number" class="form-control-plaintext d-none" id="bookedBeds" name="bookedBeds"
+                           th:value="${book.bookedBeds}">
+                </div>
+            </div>
+
+
+
+
+            <div class="row mb-4">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h5 style="margin-bottom: 1.5rem;">Tillgängliga rum för valda datum</h5>
+                    <table>
+                        <th:block th:each="entry : ${listOfRooms}">
+                            <tr>
+                                <td>
+                                    <input type="radio" id="roomNumber" name="roomNumber" th:value="${entry.roomNumber}"
+                                           required>
+                                    <label th:for="${entry.roomNumber}"><span
+                                            th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType} + ' - ' + ${entry.pricePerNight} + 'kr per natt'"></span></label>
+                                </td>
+                            </tr>
+                        </th:block>
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <th:block th:if="${#lists.isEmpty(listOfRooms)}">
+                        <div class="alert alert-danger text-center" role="alert">Inga tillgängliga rum.</div>
+
+                        <div><a class="btn btn-success form-control" href="/book" role="button">Gå tillbaka</a></div>
+                    </th:block>
+                    <th:block th:unless="${#lists.isEmpty(listOfRooms)}">
+                        <input type="submit" value="Boka" class="btn btn-success form-control">
+                    </th:block>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

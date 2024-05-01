@@ -9,4 +9,6 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
 
     public boolean existsByCustomerId(Long id);
 
+    boolean existsByBookingNr(String bookingNr);
+    Booking findByBookingNr(String bookingNr);
 }

@@ -1,22 +1,35 @@
 package org.example.booking_project.service.impl;
 
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
+
 import org.example.booking_project.repos.BookingRepo;
+
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
+
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
+    private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
     private final CustomerRepo customerRepo;
+
     private final BookingRepo bookingRepo;
+
 
     @Override
     public CustomerDTO customerToCustomerDTO(Customer c) {
@@ -31,10 +44,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addCustomer(CustomerDTO customerDTO) {
+    public List<CustomerDTO> getAllCustomers() {
+        return customerRepo.findAll().stream().map(this::customerToCustomerDTO).toList();
+    }
+
+    @Override
+    public void addCustomer(@Valid CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
+
     }
 
     @Override
@@ -49,7 +68,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(Long id, CustomerDTO customerDTO) {
+    public void updateCustomer(Long id, @Valid CustomerDTO customerDTO) {
+
         Customer existingCustomer = customerRepo.findById(id).orElse(null);
         if (existingCustomer != null) {
             existingCustomer.setCustomerName(customerDTO.getCustomerName());
@@ -61,13 +81,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
+
         Customer customer = customerRepo.findById(id).orElse(null);
         if (customer != null) {
             boolean hasBookings = bookingRepo.existsByCustomerId(id);
             if (!hasBookings) {
                 customerRepo.deleteById(id);
             } else {
-                System.out.println("Kunden har bokningar och kan inte tas bort!");
+                log.error("Kunden har bokningar och kan inte tas bort!");
             }
         }
     }
@@ -76,17 +97,24 @@ public class CustomerServiceImpl implements CustomerService {
     public String generateCustomerNr() {
         int nr = 100;
         String abbr = "CN";
-        String[] res;
 
         for (Customer c : customerRepo.findAll()) {
-            res = c.getCustomerNumber().split("(?=\\d*$)", 2);
-            if (isNumeric(res[1])) {
-                int thisNr = Integer.parseInt(res[1]);
-                if (thisNr >= nr) {
-                    nr = thisNr + 1;
+            String customerNumber = c.getCustomerNumber();
+            if (customerNumber != null) {
+                String[] res = customerNumber.split("(?=\\d*$)", 2);
+                if (res.length >= 2 && isNumeric(res[1])) {
+                    int thisNr = Integer.parseInt(res[1]);
+                    if (thisNr >= nr) {
+                        nr = thisNr + 1;
+                    }
                 }
             }
         }
         return abbr + nr;
+    }
+
+    @Override
+    public boolean checkIfCustomerHasBookings(Long id) {
+        return bookingRepo.existsByCustomerId(id);
     }
 }

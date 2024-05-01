@@ -5,11 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skapa kund</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007bff;
+            height: 80px;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 40px;
+        }
+        .nav-link {
+            color: #fff;
+            font-size: 20px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 <div class="container mt-4">
     <h1>Skapa kund</h1>
     <form action="/customer/create" method="post">
+        <input type="hidden" id="customerNr" name="customerNumber" th:value="${generatedCustomerNr}">
         <div class="form-group">
             <label for="customerName">Namn:</label>
             <input type="text" class="form-control" id="customerName" name="customerName">
@@ -20,7 +60,7 @@
         </div>
         <div class="form-group">
             <label for="email">E-post:</label>
-            <input type="text" class="form-control" id="email" name="email">
+            <input type="text" class="form-control" id="email" name="email" required>
         </div>
         <button type="submit" class="btn btn-primary">Skapa</button>
         <a href="/customer/search" class="btn btn-danger">Avbryt</a><br><br>
