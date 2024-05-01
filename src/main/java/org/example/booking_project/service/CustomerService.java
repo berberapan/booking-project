@@ -25,4 +25,6 @@ public interface CustomerService {
 
     public String generateCustomerNr();
 
+    public boolean checkIfCustomerHasBookings(Long id);
+
 }

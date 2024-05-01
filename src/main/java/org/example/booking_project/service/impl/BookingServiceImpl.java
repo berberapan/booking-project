@@ -1,4 +1,5 @@
 package org.example.booking_project.service.impl;
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
@@ -91,7 +92,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void updateBooking(Long id, BookingDTO bookingDTO) {
+    public void updateBooking(Long id, @Valid BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
         if (existingBooking != null) {
