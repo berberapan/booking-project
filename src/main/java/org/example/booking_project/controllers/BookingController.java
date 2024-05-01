@@ -1,11 +1,10 @@
 package org.example.booking_project.controllers;
+
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
-import org.example.booking_project.models.Booking;
-import org.example.booking_project.models.Room;
 import org.example.booking_project.service.impl.BookingServiceImpl;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
@@ -15,8 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.time.LocalDate;
+
 import java.util.List;
+
 import org.example.booking_project.service.BookingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,16 +72,16 @@ public class BookingController {
     }
 
     @RequestMapping("/book")
-    public String book(Model model){
+    public String book(Model model) {
         model.addAttribute("booking", new MiniBookingDTO());
         return "searchAvailability.html";
     }
 
     @RequestMapping("bookReceival")
-    public String bookReceival (@ModelAttribute MiniBookingDTO booking, Model model) {
+    public String bookReceival(@ModelAttribute MiniBookingDTO booking, Model model) {
 
         model.addAttribute("book", booking);
-        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
         model.addAttribute("customer", new CustomerDTO());
 
@@ -93,20 +93,20 @@ public class BookingController {
                                 @ModelAttribute CustomerDTO customer,
                                 @RequestParam String roomNumber, Model model) {
 
-        model.addAttribute("book",booking);
+        model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
-        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(),booking.getCheckOutDate(), booking.getBookedBeds());
+        List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
-        if(customer.getCustomerName() != null && customer.getPhoneNumber() != null){
+        if (customer.getCustomerName() != null && customer.getPhoneNumber() != null) {
             customer.setCustomerNumber(cs.generateCustomerNr());
             cs.addCustomer(customer);
         }
 
         if (cs.existsCustomerByEmail(customer.getEmail())) {
             BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
-            model.addAttribute("booking",bdto);
-            model.addAttribute("totalPrice",bs.calculatePrice(bdto));
+            model.addAttribute("booking", bdto);
+            model.addAttribute("totalPrice", bs.calculatePrice(bdto));
 
             return "bookingConfirmation.html";
         }
@@ -115,15 +115,15 @@ public class BookingController {
 
         return "searchAvailabilityResult.html";
     }
-  
+
     @DeleteMapping("/bookings/delete/{id}")
-    public String deleteBooking(@PathVariable Long id){
+    public String deleteBooking(@PathVariable Long id) {
         bs.deleteBooking(id);
         return "Removed bookings";
     }
-  
-    @RequestMapping ("bookings")
-    List<BookingDTO> getAllBookings(){
+
+    @RequestMapping("bookings")
+    List<BookingDTO> getAllBookings() {
         return bs.getAllBookings();
     }
 }

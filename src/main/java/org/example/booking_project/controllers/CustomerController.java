@@ -2,7 +2,6 @@ package org.example.booking_project.controllers;
 
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
-      
+
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
