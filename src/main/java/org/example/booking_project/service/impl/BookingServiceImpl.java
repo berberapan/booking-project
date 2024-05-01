@@ -1,4 +1,5 @@
 package org.example.booking_project.service.impl;
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
@@ -47,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking addBooking(String bookingNr, Customer customer, Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
+    public Booking addBooking(String bookingNr, @Valid Customer customer, @Valid Room room, int bookedBeds, LocalDate checkInDate, LocalDate checkOutDate){
         Booking booking = new Booking(null, bookingNr, customer, room, bookedBeds, checkInDate, checkOutDate);
         bookingRepo.save(booking);
         return booking;
@@ -92,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void updateBooking(Long id, BookingDTO bookingDTO) {
+    public void updateBooking(Long id, @Valid BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
         if (existingBooking != null) {

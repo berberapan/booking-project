@@ -1,5 +1,8 @@
 package org.example.booking_project.service.impl;
 
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.models.Customer;
@@ -46,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addCustomer(CustomerDTO customerDTO) {
+    public void addCustomer(@Valid CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
@@ -70,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(Long id, CustomerDTO customerDTO) {
+    public void updateCustomer(Long id, @Valid CustomerDTO customerDTO) {
 
         Customer existingCustomer = customerRepo.findById(id).orElse(null);
         if (existingCustomer != null) {
