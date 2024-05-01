@@ -8,6 +8,7 @@ import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
+import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
 import org.junit.jupiter.api.Test;
 
@@ -29,9 +30,11 @@ class BookingServiceImplTest {
 
     @Mock
     private BookingRepo bookingRepo;
+    private CustomerRepo customerRepo;
+    private RoomServiceImpl roomServiceImpl;
 
     @InjectMocks
-    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo);
+    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl);
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
@@ -74,7 +77,7 @@ class BookingServiceImplTest {
     @Test
     void generateBookingNr() {
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(testbooking1));
-        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl);
         String testBookingNr = service2.generateBookingNr();
         assertEquals("BN102", testBookingNr);
     }
