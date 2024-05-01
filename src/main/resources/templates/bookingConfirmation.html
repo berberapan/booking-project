@@ -1,28 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="sv" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmation</title>
+    <title>Bokningsbekräftelse</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #007bff;
+            backdrop-filter: blur(10px);
+            height: 80px;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 40px;
+        }
+        .nav-link {
+            color: #fff;
+            font-size: 20px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            border-color: #007bff;
+        }
+    </style>
 </head>
 <body>
-
-<h1>Bokningsbekräftelse</h1>
-
-<p th:text="'Bokningsreferens: ' + ${booking.bookingNr}"></p>
-<p th:text="'Incheckningsdatum: ' + ${booking.checkInDate}"></p>
-<p th:text="'Utcheckningsdatum: ' + ${booking.checkOutDate}"></p>
-<p th:text="'Antal gäster: ' + ${booking.bookedBeds}"></p>
-<p th:text="'Rum: ' + ${booking.Room.roomNumber}"></p>
-<p th:text="'Rum: ' + ${booking.Room.roomType}"></p>
-<p th:text="'Pris/natt: ' + ${booking.Room.pricePerNight}"></p>
-<p th:text="'Kundreferens:' + ${booking.Customer.customerNumber}"></p>
-<p th:text="'Namn:' + ${booking.Customer.customerName}"></p>
-<p th:text="'Email: ' + ${booking.Customer.email}"></p>
-<p th:text="'Telefon: ' + ${booking.Customer.phoneNumber}"></p>
-
-<p th:text="'Pris: ' + ${totalPrice}"></p>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">Bokningsbekräftelse</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mt-4 mb-3">Bokningsinformation</h2>
+            <div class="card h-100">
+                <div class="card-body">
+                    <p><strong>Bokningsnummer:</strong> <span th:text="${booking.bookingNr}"></span></p>
+                    <p><strong>Incheckningsdatum:</strong> <span th:text="${booking.checkInDate}"></span></p>
+                    <p><strong>Utcheckningsdatum:</strong> <span th:text="${booking.checkOutDate}"></span></p>
+                    <p><strong>Antal gäster:</strong> <span th:text="${booking.bookedBeds}"></span></p>
+                    <p><strong>Rumsnummer:</strong> <span th:text="${booking.room.roomNumber}"></span></p>
+                    <p><strong>Rumstyp:</strong> <span th:text="${booking.room.roomType}"></span></p>
+                    <p><strong>Pris per natt:</strong> <span th:text="${booking.room.pricePerNight}"></span>kr</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2 class="mt-4 mb-3">Kundinformation</h2>
+            <div class="card h-100">
+                <div class="card-body">
+                    <p><strong>Kundnummer:</strong> <span th:text="${booking.customer.customerNumber}"></span></p>
+                    <p><strong>Namn:</strong> <span th:text="${booking.customer.customerName}"></span></p>
+                    <p><strong>Email:</strong> <span th:text="${booking.customer.email}"></span></p>
+                    <p><strong>Telefon:</strong> <span th:text="${booking.customer.phoneNumber}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <br><br>
-<button><a href="/book">Gå tillbaka till start</a> </button>
-
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 ml-4 mt-5">
+            <h3>Totalt pris: <span th:text="${totalPrice}"></span>kr</h3><br><br>
+        </div>
+    </div>
+</div>
 </body>
 </html>
