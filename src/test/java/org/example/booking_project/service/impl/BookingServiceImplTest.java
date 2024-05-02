@@ -9,6 +9,7 @@ import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
+import org.example.booking_project.service.BookingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,6 +26,8 @@ class BookingServiceImplTest {
 
     @Mock
     private BookingRepo bookingRepo;
+    private CustomerRepo customerRepo;
+    private RoomServiceImpl roomServiceImpl;
 
     @Mock
     private CustomerRepo customerRepo;
@@ -32,7 +35,9 @@ class BookingServiceImplTest {
     @Mock
     private RoomServiceImpl roomServiceImpl;
     @InjectMocks
-    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl);
+
+    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl);
+
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
