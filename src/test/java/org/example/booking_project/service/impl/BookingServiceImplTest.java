@@ -2,6 +2,7 @@ package org.example.booking_project.service.impl;
 
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -53,6 +55,8 @@ class BookingServiceImplTest {
     private BookingDTO testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
     private BookingDTO testbdto2 = bookingService.bookingToBookingDTO(testbooking2);
 
+    private MiniBookingDTO testMini = new MiniBookingDTO(2, checkIn, checkOut1);
+
     @Test
     void calculatePrice() {
 
@@ -86,5 +90,19 @@ class BookingServiceImplTest {
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(testbooking1, testbooking2));
         List<BookingDTO> test = bookingService.getAllBookings();
         assertEquals(2, test.size());
+        assertEquals(213L, testbooking1.getId());
+    }
+
+    @Test
+    void addBookingTest() {
+        when(customerRepo.findByEmail(testcustomerDTO.getEmail())).thenReturn(testcustomer);
+        when(roomServiceImpl.getRoom(Integer.parseInt("101"))).thenReturn(testroom);
+        when(bookingRepo.save(any(Booking.class))).thenReturn(null);
+
+        BookingDTO booking = bookingService.addBooking(testcustomerDTO,testMini, "101");
+
+        assertEquals(2, booking.getBookedBeds());
+        assertEquals("abc@abcdef.se", booking.getCustomer().getEmail());
+        assertEquals(LocalDate.of(2024,10,1), booking.getCheckInDate());
     }
 }
