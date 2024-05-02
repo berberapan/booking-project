@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -78,5 +79,12 @@ class BookingServiceImplTest {
         BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl);
         String testBookingNr = service2.generateBookingNr();
         assertEquals("BN102", testBookingNr);
+    }
+
+    @Test
+    void getAllBookingTest() {
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(testbooking1, testbooking2));
+        List<BookingDTO> test = bookingService.getAllBookings();
+        assertEquals(2, test.size());
     }
 }
