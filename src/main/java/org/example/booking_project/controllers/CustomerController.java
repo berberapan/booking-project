@@ -1,8 +1,8 @@
 package org.example.booking_project.controllers;
 
 
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 
@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
+
 @Controller
 public class CustomerController {
 
     private final CustomerService customerService;
-      
+
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -35,6 +37,7 @@ public class CustomerController {
     @GetMapping("/customer/search")
     public String showSearchCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDTO());
+        model.addAttribute("customerFormToggle", false);
         model.addAttribute("customerNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
@@ -49,8 +52,10 @@ public class CustomerController {
             CustomerDTO customerDTO = customerService.getCustomerByEmail(email);
             model.addAttribute("customer", customerDTO);
             model.addAttribute("customerNotFound", false);
+            model.addAttribute("customerFormToggle", true);
         } else {
             model.addAttribute("customerNotFound", true);
+            model.addAttribute("customerFormToggle", false);
         }
         return "customer";
     }
@@ -64,10 +69,8 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create")
-    public String createOrUpdateCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String createCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.addCustomer(customerDTO);
-        CustomerDTO updatedCustomer = customerService.getCustomerByEmail(customerDTO.getEmail());
-        model.addAttribute("customer", updatedCustomer);
         model.addAttribute("created", true);
         return "createCustomer";
     }
@@ -91,6 +94,11 @@ public class CustomerController {
         }
 
         return "customer";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String localExceptionHandler(ConstraintViolationException ex, Model model){
+        return handleConstraintViolationException(ex,model);
     }
 }
 

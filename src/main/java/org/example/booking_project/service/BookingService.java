@@ -3,6 +3,7 @@ package org.example.booking_project.service;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
+import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
@@ -23,13 +24,13 @@ public interface BookingService {
 
     public String generateBookingNr();
 
-    public List<BookingDTO> getAllBookings();
-
-    public void updateBooking(Long id, BookingDTO bookingDTO);
+    public String updateBooking(Long id, BookingDTO bookingDTO);
 
     public void deleteBooking(Long id);
 
     public boolean existsBookingByBookingNr(String bookingNr);
-  
+
     public BookingDTO getBookingByBookingNr(String bookingNr);
+    public boolean checkAvailabilityInRoom(Long bookingID, Long roomID, LocalDate checkIn, LocalDate checkOut);
+    public List<BookingDTO> getAllBookings();
 }

@@ -6,8 +6,48 @@
     <title>Bokningshantering</title>
     <!-- Lägg till Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007bff;
+            backdrop-filter: blur(10px);
+            height: 80px;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 40px;
+        }
+        .nav-link {
+            color: #fff;
+            font-size: 20px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 <div class="container mt-4">
     <h1 class="text-center">Bokningshantering</h1>
 
@@ -19,11 +59,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
     </form>
-    <!-- Kundinformation eller formulär för att uppdatera kund -->
-    <div th:if="${booking}">
+    <!-- Bokningsinformation eller formulär för att uppdatera bokning -->
+    <div th:if="${bookingFormToggle}" id="updateBookingForm">
         <h2 class="text-center">Ändra bokning</h2>
         <form action="/bookings/update" method="post">
-            <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->
+            <!-- Lägg till ett dolt input-fält för att skicka boknings-ID -->
             <input type="hidden" th:name="id" th:value="${booking.id}">
             <div class="form-group">
                 <label for="bookedBeds">Antal sängar:</label>
@@ -36,6 +76,10 @@
             <div class="form-group">
                 <label for="checkOutDate">Check-out datum:</label>
                 <input type="text" class="form-control" id="checkOutDate" name="checkOutDate" th:value="${booking.checkOutDate}" required>
+            </div>
+            <div class="form-group">
+                <label for="roomType">Rumstyp:</label>
+                <input type="text" class="form-control" id="roomType" name="roomType" th:value="${booking.room != null ? booking.room.roomType : ''}" readonly>
             </div>
             <div class="form-group">
                 <label for="bookingCustomerNr">Kundnummer:</label>
@@ -53,7 +97,7 @@
             <a th:href="@{/bookings/delete(id=${booking.id})}" class="btn btn-danger">Ta bort</a>
         </form>
     </div>
-    <!-- Bekräftelsemeddelande för att kunduppgifterna har uppdaterats -->
+    <!-- Bekräftelsemeddelande för att bokningsuppgifterna har uppdaterats -->
     <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -61,7 +105,7 @@
         Bokningen har uppdaterats!
     </div>
 
-    <!-- Bekräftelsemeddelande för att kunden har tagits bort -->
+    <!-- Bekräftelsemeddelande för att bokningen har tagits bort -->
     <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -69,17 +113,23 @@
         Bokningen har tagits bort!
     </div>
 
-    <!-- Meddelande om att kunden inte hittades -->
+    <!-- Meddelande om att bokningen inte hittades -->
     <div th:if="${bookingNotFound}" id="bookingNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         Vi kunde inte hitta en bokning med det angivna bokningsnumret. Vill du skapa en ny bokning?
     </div>
+    <div th:if="${errorMessage}" id="roomExceedError" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span th:text="${errorMessage}"></span>
+    </div>
 </div>
 
 <div th:if="${bookingNotFound}" class="container mt-4">
-    <a href="/bookings/add" class="btn btn-success">Skapa ny bokning</a>
+    <a href="/book" class="btn btn-success">Skapa ny bokning</a>
     <a href="/bookings/search" class="btn btn-danger">Avbryt</a>
 </div>
 <script>

@@ -1,4 +1,5 @@
 package org.example.booking_project.service.impl;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
@@ -8,14 +9,20 @@ import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
+import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
+import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -87,22 +94,57 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    @Override
+    public String updateBooking(Long id, @Valid BookingDTO bookingDTO) {
+
+        Booking existingBooking = bookingRepo.findById(id).orElse(null);
+
+        if (existingBooking != null) {
+            int amountOfBeds = bookingDTO.getBookedBeds();
+            if (amountOfBeds > 0 && amountOfBeds <= existingBooking.getRoom().getMaxBeds())
+            {
+                if(checkAvailabilityInRoom(existingBooking.getId(), existingBooking.getRoom().getId(),
+                        bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate())){
+                    existingBooking.setBookedBeds(amountOfBeds);
+                    existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
+                    existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+                    bookingRepo.save(existingBooking);
+                    return "Saved";
+                }
+                else{
+                    return "DateError";
+                }
+            } else {
+                return "BedsError";
+            }
+        }
+        return "Error";
+    }
+
+    @Override
+    public boolean checkAvailabilityInRoom(Long bookingID, Long roomID, LocalDate checkIn, LocalDate checkOut){
+
+        List<BookingDTO> listBDTO = getAllBookings();
+        List<BookingDTO> filteredBookingList = listBDTO.stream().
+                filter(r -> r.getRoom().getId() == roomID).
+                filter(bookingDTO -> bookingDTO.getId() != bookingID).toList();
+
+        for (BookingDTO booking : filteredBookingList){
+            if ((booking.getCheckInDate().isBefore(checkOut) || booking.getCheckInDate().isEqual(checkOut)) &&
+                    (booking.getCheckOutDate().isAfter(checkIn) || booking.getCheckOutDate().isEqual(checkIn))
+                    && !(checkIn.isEqual(booking.getCheckOutDate()))
+            ){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public List<BookingDTO> getAllBookings() {
         return bookingRepo.findAll().stream().map(this::bookingToBookingDTO).toList();
     }
 
-    @Override
-    public void updateBooking(Long id, @Valid BookingDTO bookingDTO) {
-
-        Booking existingBooking = bookingRepo.findById(id).orElse(null);
-        if (existingBooking != null) {
-            existingBooking.setBookedBeds(bookingDTO.getBookedBeds());
-            existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
-            existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
-            calculatePrice(bookingToBookingDTO(existingBooking));
-            bookingRepo.save(existingBooking);
-        }
-    }
 
     @Override
     public boolean existsBookingByBookingNr(String bookingNr) {
@@ -118,5 +160,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void deleteBooking(Long id) {
         bookingRepo.findById(id).ifPresent(booking -> bookingRepo.deleteById(id));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String localExceptionHandler(ConstraintViolationException ex, Model model){
+        return handleConstraintViolationException(ex,model);
     }
 }

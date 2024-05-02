@@ -1,7 +1,6 @@
 package org.example.booking_project.service.impl;
 
-
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.CustomerDTO;
@@ -14,9 +13,12 @@ import org.example.booking_project.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
+import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 import static org.example.booking_project.service.impl.BookingServiceImpl.isNumeric;
 
 
@@ -116,5 +118,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean checkIfCustomerHasBookings(Long id) {
         return bookingRepo.existsByCustomerId(id);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String localExceptionHandler(ConstraintViolationException ex, Model model){
+        return handleConstraintViolationException(ex,model);
     }
 }
