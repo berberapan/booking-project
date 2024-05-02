@@ -1,5 +1,7 @@
 package org.example.booking_project.controllers;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 import org.example.booking_project.service.BookingService;
 import org.springframework.web.bind.annotation.*;
@@ -125,5 +128,16 @@ public class BookingController {
     @RequestMapping("bookings")
     List<BookingDTO> getAllBookings() {
         return bs.getAllBookings();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public static String handleConstraintViolationException(ConstraintViolationException ex, Model model) {
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+        StringBuilder errorMessage = new StringBuilder();
+        for (ConstraintViolation<?> violation : violations) {
+            errorMessage.append(violation.getMessage()).append(". \n");
+        }
+        model.addAttribute("errorMessage", errorMessage.toString());
+        return "errorCVE";
     }
 }

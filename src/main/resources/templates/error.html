@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div>
-    <h1> Något gick snett! </h1>
-    <h2 th:text="${message}"></h2>
+<div class="container">
+    <h1> Något gick lite snett! </h1>
+    <h2 th:text="'Felkod: ' +${code}"></h2>
+    <h2 th:text="${mess}"></h2>
     <br>
     <p><a href="/">Gå till startsidan</a></p>
 </div>

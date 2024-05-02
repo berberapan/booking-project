@@ -8,7 +8,8 @@
 <body>
 <div class="container">
     <h1> Hoppsan! Vi kunde tyvärr inte hitta sidan du letar efter. </h1>
-    <h2 th:text="${message}"></h2>
+    <h2 th:text="'Felkod: ' +${code}"></h2>
+    <h2 th:text="${mess}"></h2>
     <br>
     <p><a href="/">Gå till startsidan</a></p>
 </div>

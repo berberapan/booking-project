@@ -18,19 +18,14 @@ public class CustomErrorController implements ErrorController {
     public String controlError(HttpServletRequest request, Model model) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         Object message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
-        /*
-        if (ex instanceof ConstraintViolationException) {
-            ConstraintViolationException constraintViolationException = (ConstraintViolationException) ex;
-            String error = constraintViolationException.getMessage();
-            model.addAttribute("error", error);
-            return "errorCVE";
-        }*/
+
         if (message != null) {
             String mess = message.toString();
             model.addAttribute("message", mess);
         }
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
+            model.addAttribute("code", statusCode);
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error-404";
