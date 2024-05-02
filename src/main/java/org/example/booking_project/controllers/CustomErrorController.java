@@ -2,8 +2,6 @@ package org.example.booking_project.controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

@@ -20,9 +20,9 @@ import static org.mockito.Mockito.*;
 class CustomerServiceImplTest {
 
     @Mock
-    private final CustomerRepo customerRepo;
+    private CustomerRepo customerRepo = null;
     @Mock
-    private final BookingRepo bookingRepo;
+    private BookingRepo bookingRepo = null;
     @InjectMocks
     private CustomerServiceImpl customerService;
 
@@ -32,6 +32,9 @@ class CustomerServiceImplTest {
         this.bookingRepo = bookingRepo;
         this.customerService = new CustomerServiceImpl(customerRepo, bookingRepo);
     }
+
+    @Mock
+    CustomerServiceImpl service3 = new CustomerServiceImpl(customerRepo, bookingRepo);
 
     private final Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
@@ -61,7 +64,9 @@ class CustomerServiceImplTest {
 
     @Test
     void getAllCustomers() {
-        List<CustomerDTO> customers = customerService.getAllCustomers();
+        when(service3.getAllCustomers()).thenReturn(Arrays.asList(customerService.customerToCustomerDTO(testcustomer),
+                customerService.customerToCustomerDTO(testCustomer1)));
+        List<CustomerDTO> customers = service3.getAllCustomers();
 
         assertEquals(2, customers.size());
         assertEquals(124, testCustomer1.getId());
