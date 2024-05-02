@@ -47,18 +47,23 @@ public class BookingController {
 
         String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
 
-        if (response.equals("BedsError")){
-            model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
-            return "booking";
-        } else if (response.equals("DateError")) {
-            model.addAttribute("errorMessage", "Det går inte att boka valda datum");
-            return "booking";
-        } else if (response.equals("Error")) {
-            model.addAttribute("errorMessage", "Bokningsnumret existerar ej");
-            return "booking";
-        } else{
-            model.addAttribute("updated", true);
-            return "booking";
+        switch (response) {
+            case "BedsError" -> {
+                model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
+                return "booking";
+            }
+            case "DateError" -> {
+                model.addAttribute("errorMessage", "Det går inte att boka valda datum");
+                return "booking";
+            }
+            case "Error" -> {
+                model.addAttribute("errorMessage", "Bokningsnumret existerar ej");
+                return "booking";
+            }
+            default -> {
+                model.addAttribute("updated", true);
+                return "booking";
+            }
         }
     }
 
