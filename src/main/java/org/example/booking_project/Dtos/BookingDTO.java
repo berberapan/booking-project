@@ -16,14 +16,14 @@ public class BookingDTO {
 
     private Long id;
 
-    @NotEmpty(message = "Bokningsnummer är obligatoriskt")
+    //@NotEmpty(message = "Bokningsnummer är obligatoriskt")
     @Size(min = 5, message = "Minst 5 tecken för bokningsnummer, BN följt av siffror: BN1***")
     private String bookingNr;
 
-    @NotNull(message = "Kund är obligatorisk")
+    //@NotNull(message = "Kund är obligatorisk")
     private CustomerDTO customer;
 
-    @NotNull(message = "Rum är obligatoriskt")
+    //@NotNull(message = "Rum är obligatoriskt")
     private RoomDTO room;
 
     @NotNull(message = "Bokade sängar är obligatoriskt")
