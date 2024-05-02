@@ -10,14 +10,17 @@
             background-color: #007bff;
             height: 80px;
         }
+
         .navbar-brand {
             color: #fff;
             font-size: 40px;
         }
+
         .nav-link {
             color: #fff;
             font-size: 20px;
         }
+
         .container {
             margin-top: 30px;
         }
@@ -72,10 +75,14 @@
         </button>
         En ny kund har skapats!
     </div>
+    <div class="d-flex justify-content-center">
+        <img th:src="@{images/glada-uttern-trnsp.png}" alt="logo">
+        <br>
+    </div>
 </div>
 <script>
     // Lyssna på klickhändelser på krysset för att stänga meddelandet och omdirigera till söksidan
-    document.getElementById("createdMessage").addEventListener("click", function() {
+    document.getElementById("createdMessage").addEventListener("click", function () {
         window.location.href = "/customer/search";
     });
 </script>

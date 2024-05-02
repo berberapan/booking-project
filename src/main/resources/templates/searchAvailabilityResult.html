@@ -55,10 +55,10 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-        <div th:if="${missingCustomer}" class="alert alert-danger text-center" role="alert">
-            <em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
-                kund.</em>
-        </div>
+                <div th:if="${missingCustomer}" class="alert alert-danger text-center" role="alert">
+                    <em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
+                        kund.</em>
+                </div>
             </div>
         </div>
         <form action="createbooking" method="post">
@@ -92,43 +92,45 @@
                     <p th:text="'Incheckningsdatum: '+${book.checkInDate}"></p>
                     <p th:text="'Utcheckningsdatum: ' + ${book.checkOutDate}"></p>
                     <p th:text="'Antal gäster: ' + ${book.bookedBeds}"></p>
-                    <input type="date" class="form-control-plaintext d-none" id="checkInDate" name="checkInDate" th:value="${book.checkInDate}"/>
-                    <input type="date" class="form-control-plaintext d-none" id="checkOutDate" name="checkOutDate" th:value="${book.checkOutDate}"/>
-                    <input type="number" class="form-control-plaintext d-none" id="bookedBeds" name="bookedBeds" th:value="${book.bookedBeds}">
+                    <input type="date" class="form-control-plaintext d-none" id="checkInDate" name="checkInDate"
+                           th:value="${book.checkInDate}"/>
+                    <input type="date" class="form-control-plaintext d-none" id="checkOutDate" name="checkOutDate"
+                           th:value="${book.checkOutDate}"/>
+                    <input type="number" class="form-control-plaintext d-none" id="bookedBeds" name="bookedBeds"
+                           th:value="${book.bookedBeds}">
                 </div>
             </div>
 
 
-
-                <h5 class="text-center">Tillgängliga rum för valda datum</h5>
+            <h5 class="text-center">Tillgängliga rum för valda datum</h5>
 
             <div class="row mb-4">
                 <div class="col-md-4"></div>
-            <table>
-                <th:block th:each="entry : ${listOfRooms}">
-                    <tr>
-                        <td>
-                            <input type="radio" id="roomNumber" name="roomNumber" th:value="${entry.roomNumber}"
-                                   required>
-                            <label th:for="${entry.roomNumber}"><span
-                                    th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType} + ' - ' + ${entry.pricePerNight} + 'kr per natt'"></span></label>
-                        </td>
-                    </tr>
-                </th:block>
+                <table>
+                    <th:block th:each="entry : ${listOfRooms}">
+                        <tr>
+                            <td>
+                                <input type="radio" id="roomNumber" name="roomNumber" th:value="${entry.roomNumber}"
+                                       required>
+                                <label th:for="${entry.roomNumber}"><span
+                                        th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType} + ' - ' + ${entry.pricePerNight} + 'kr per natt'"></span></label>
+                            </td>
+                        </tr>
+                    </th:block>
 
-            </table>
-                </div>
+                </table>
+            </div>
 
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-            <th:block th:if="${#lists.isEmpty(listOfRooms)}">
-                <div class="alert alert-danger text-center" role="alert">Inga tillgängliga rum.</div>
+                    <th:block th:if="${#lists.isEmpty(listOfRooms)}">
+                        <div class="alert alert-danger text-center" role="alert">Inga tillgängliga rum.</div>
 
-                <div><a class="btn btn-success form-control" href="/book" role="button">Gå tillbaka</a></div>
-            </th:block>
-                    </div>
+                        <div><a class="btn btn-success form-control" href="/book" role="button">Gå tillbaka</a></div>
+                    </th:block>
                 </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-4"></div>
@@ -140,6 +142,10 @@
             </div>
 
         </form>
+    </div>
+    <div class="d-flex justify-content-center">
+        <img th:src="@{images/glada-uttern-trnsp.png}" alt="logo">
+        <br>
     </div>
 </div>
 </body>
