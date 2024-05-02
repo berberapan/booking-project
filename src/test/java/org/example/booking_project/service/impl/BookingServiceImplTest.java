@@ -10,7 +10,6 @@ import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
-import org.example.booking_project.service.BookingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
