@@ -68,8 +68,10 @@ public class BookingController {
             BookingDTO bookingDTO = bs.getBookingByBookingNr(bookingNr);
             model.addAttribute("booking", bookingDTO);
             model.addAttribute("bookingNotFound", false);
+            model.addAttribute("bookingFormToggle", true);
         } else {
             model.addAttribute("bookingNotFound", true);
+            model.addAttribute("bookingFormToggle", false);
         }
         return "booking";
     }
@@ -77,6 +79,7 @@ public class BookingController {
     @GetMapping("/bookings/search")
     public String showSearchBookingPage(Model model) {
         model.addAttribute("booking", new BookingDTO());
+        model.addAttribute("bookingFormToggle", false);
         model.addAttribute("bookingNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);

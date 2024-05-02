@@ -20,7 +20,7 @@
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
     </form>
     <!-- Bokningsinformation eller formulär för att uppdatera bokning -->
-    <div th:if="${booking}">
+    <div th:if="${bookingFormToggle}" id="updateBookingForm">
         <h2 class="text-center">Ändra bokning</h2>
         <form action="/bookings/update" method="post">
             <!-- Lägg till ett dolt input-fält för att skicka boknings-ID -->
