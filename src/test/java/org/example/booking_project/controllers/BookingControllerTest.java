@@ -1,5 +1,6 @@
 package org.example.booking_project.controllers;
 
+import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -36,21 +39,23 @@ class BookingControllerTest {
                 "012-345678", "abc@abcdef.se");
         when(mockRepo.findById(123L)).thenReturn(Optional.of(testcustomer));
     }
+
     @Test
     void book() throws Exception {
         this.mvc.perform(get("/book")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Inchecknings datum")));
+                .andExpect(content().string(containsString("Incheckningsdatum")));
     }
 
     @Test
     void bookReceival() throws Exception {
-        this.mvc.perform(get("/bookReceival?numGuests=1&in=2024-05-01&out=2024-05-04")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Tillgängliga rum för valda datum.")));
+        this.mvc.perform(get("/bookReceival"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Tillgängliga rum för valda datum")));
     }
-    // Misslyckad sökning
+
     @Test
     void createBooking() throws Exception {
-        this.mvc.perform(get("/createbooking?numGuests=1&in=2024-05-01&out=2024-05-04&email=adfas@adfas.se&roomNumber=201")).andDo(print()).andExpect(status().isOk())
+        this.mvc.perform(get("/createbooking?roomNumber=201")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Ingen användare hittades med den emailen.")));
     }
 }

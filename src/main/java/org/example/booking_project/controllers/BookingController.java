@@ -7,6 +7,7 @@ import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.service.BookingService;
 import org.example.booking_project.service.impl.BookingServiceImpl;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
@@ -14,14 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
-
-import org.example.booking_project.service.BookingService;
-import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class BookingController {
@@ -47,9 +44,22 @@ public class BookingController {
 
     @PostMapping("/bookings/update")
     public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
-        bs.updateBooking(bookingDTO.getId(), bookingDTO);
-        model.addAttribute("updated", true);
-        return "booking";
+
+        String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
+
+        if (response.equals("BedsError")){
+            model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
+            return "booking";
+        } else if (response.equals("DateError")) {
+            model.addAttribute("errorMessage", "Det går inte att boka valda datum");
+            return "booking";
+        } else if (response.equals("Error")) {
+            model.addAttribute("errorMessage", "Bokningsnumret existerar ej");
+            return "booking";
+        } else{
+            model.addAttribute("updated", true);
+            return "booking";
+        }
     }
 
     @PostMapping("/bookings/search")
@@ -58,8 +68,10 @@ public class BookingController {
             BookingDTO bookingDTO = bs.getBookingByBookingNr(bookingNr);
             model.addAttribute("booking", bookingDTO);
             model.addAttribute("bookingNotFound", false);
+            model.addAttribute("bookingFormToggle", true);
         } else {
             model.addAttribute("bookingNotFound", true);
+            model.addAttribute("bookingFormToggle", false);
         }
         return "booking";
     }
@@ -67,6 +79,7 @@ public class BookingController {
     @GetMapping("/bookings/search")
     public String showSearchBookingPage(Model model) {
         model.addAttribute("booking", new BookingDTO());
+        model.addAttribute("bookingFormToggle", false);
         model.addAttribute("bookingNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
@@ -98,6 +111,7 @@ public class BookingController {
 
         model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
+        model.addAttribute("customer", customer);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
