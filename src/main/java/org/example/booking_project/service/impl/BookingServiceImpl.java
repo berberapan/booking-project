@@ -15,8 +15,11 @@ import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -88,30 +91,57 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public List<BookingDTO> getAllBookings() {
-        return bookingRepo.findAll().stream().map(this::bookingToBookingDTO).toList();
-    }
-
     @Override
-    public boolean updateBooking(Long id, @Valid BookingDTO bookingDTO) {
+    public String updateBooking(Long id, @Valid BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
 
         if (existingBooking != null) {
-            int bookedBeds = existingBooking.getBookedBeds();
-            if (bookedBeds > 0 && bookedBeds <= existingBooking.getRoom().getMaxBeds())
+            int amountOfBeds = bookingDTO.getBookedBeds();
+            if (amountOfBeds > 0 && amountOfBeds <= existingBooking.getRoom().getMaxBeds())
             {
-                existingBooking.setBookedBeds(bookedBeds);
-                existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
-                existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
-                bookingRepo.save(existingBooking);
-                return true;
+                if(checkAvailabilityInRoom(existingBooking.getId(), existingBooking.getRoom().getId(),
+                        bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate())){
+                    existingBooking.setBookedBeds(amountOfBeds);
+                    existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
+                    existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+                    bookingRepo.save(existingBooking);
+                    return "Saved";
+                }
+                else{
+                    return "DateError";
+                }
             } else {
+                return "BedsError";
+            }
+        }
+        return "Error";
+    }
+
+    @Override
+    public boolean checkAvailabilityInRoom(Long bookingID, Long roomID, LocalDate checkIn, LocalDate checkOut){
+
+        List<BookingDTO> listBDTO = getAllBookings();
+        List<BookingDTO> filteredBookingList = listBDTO.stream().
+                filter(r -> r.getRoom().getId() == roomID).
+                filter(bookingDTO -> bookingDTO.getId() != bookingID).toList();
+
+        for (BookingDTO booking : filteredBookingList){
+            if ((booking.getCheckInDate().isBefore(checkOut) || booking.getCheckInDate().isEqual(checkOut)) &&
+                    (booking.getCheckOutDate().isAfter(checkIn) || booking.getCheckOutDate().isEqual(checkIn))
+                    && !(checkIn.isEqual(booking.getCheckOutDate()))
+            ){
                 return false;
             }
         }
-        return false;
+        return true;
     }
+
+    @Override
+    public List<BookingDTO> getAllBookings() {
+        return bookingRepo.findAll().stream().map(this::bookingToBookingDTO).toList();
+    }
+
 
     @Override
     public boolean existsBookingByBookingNr(String bookingNr) {

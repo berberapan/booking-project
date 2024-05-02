@@ -44,8 +44,17 @@ public class BookingController {
 
     @PostMapping("/bookings/update")
     public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
-        if (bs.updateBooking(bookingDTO.getId(), bookingDTO)){
+
+        String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
+
+        if (response.equals("BedsError")){
             model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
+            return "booking";
+        } else if (response.equals("DateError")) {
+            model.addAttribute("errorMessage", "Det går inte att boka valda datum");
+            return "booking";
+        } else if (response.equals("Error")) {
+            model.addAttribute("errorMessage", "Bokningsnumret existerar ej");
             return "booking";
         } else{
             model.addAttribute("updated", true);
@@ -126,8 +135,4 @@ public class BookingController {
         return "Removed bookings";
     }
 
-    @RequestMapping("bookings")
-    List<BookingDTO> getAllBookings() {
-        return bs.getAllBookings();
-    }
 }
