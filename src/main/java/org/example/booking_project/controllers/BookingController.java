@@ -1,10 +1,13 @@
 package org.example.booking_project.controllers;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.service.BookingService;
 import org.example.booking_project.service.impl.BookingServiceImpl;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
@@ -12,13 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import org.example.booking_project.service.BookingService;
-import org.springframework.web.bind.annotation.*;
+import java.util.Set;
 
 @Controller
 public class BookingController {
@@ -111,6 +111,7 @@ public class BookingController {
 
         model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
+        model.addAttribute("customer", customer);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
 
@@ -138,4 +139,19 @@ public class BookingController {
         return "Removed bookings";
     }
 
+    @RequestMapping("bookings")
+    List<BookingDTO> getAllBookings() {
+        return bs.getAllBookings();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public static String handleConstraintViolationException(ConstraintViolationException ex, Model model) {
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+        StringBuilder errorMessage = new StringBuilder();
+        for (ConstraintViolation<?> violation : violations) {
+            errorMessage.append(violation.getMessage()).append(". \n");
+        }
+        model.addAttribute("errorMessage", errorMessage.toString());
+        return "errorCVE";
+    }
 }

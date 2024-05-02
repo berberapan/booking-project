@@ -1,6 +1,7 @@
 package org.example.booking_project.controllers;
 
 
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 
 @Controller
 public class CustomerController {
@@ -93,6 +96,11 @@ public class CustomerController {
         }
 
         return "customer";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String localExceptionHandler(ConstraintViolationException ex, Model model){
+        return handleConstraintViolationException(ex,model);
     }
 }
 

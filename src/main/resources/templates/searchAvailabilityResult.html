@@ -66,7 +66,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <label class="mb-1" for="email">Email</label>
-                    <input class="form-control" type="email" id="email" name="email" required/>
+                    <input class="form-control" type="email" id="email" name="email" th:value="${customer != null ? customer.email : ''}" required/>
                 </div>
             </div>
             <div th:if="${missingCustomer}">
@@ -100,10 +100,6 @@
                            th:value="${book.bookedBeds}">
                 </div>
             </div>
-
-
-
-
             <div class="row mb-4">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
@@ -113,6 +109,7 @@
                             <tr>
                                 <td>
                                     <input type="radio" id="roomNumber" name="roomNumber" th:value="${entry.roomNumber}"
+                                           th:checked="${roomNumber != null and #strings.equals(roomNumber, #strings.toString(entry.roomNumber))}"
                                            required>
                                     <label th:for="${entry.roomNumber}"><span
                                             th:text="'Rum ' + ${entry.roomNumber} + ' - ' + ${entry.roomType} + ' - ' + ${entry.pricePerNight} + 'kr per natt'"></span></label>
