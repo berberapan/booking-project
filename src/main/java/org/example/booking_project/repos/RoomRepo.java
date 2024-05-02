@@ -16,6 +16,6 @@ public interface RoomRepo extends JpaRepository<Room, Long> {
 
 
     @Query("select b.room from Booking b where (b.checkInDate <= :checkOut and b.checkOutDate > :checkIn)")
-    public List<Room> available(LocalDate checkIn, LocalDate checkOut);
+    public List<Room> notAvailable(LocalDate checkIn, LocalDate checkOut);
 
 }

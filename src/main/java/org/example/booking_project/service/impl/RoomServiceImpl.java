@@ -35,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDTO> availableRooms(LocalDate checkIn, LocalDate checkOut, int numGuest) {
         List<RoomDTO> all = allRooms();
-        List<RoomDTO> booked = rr.available(checkIn, checkOut).stream().map(this::roomToRoomDTO).toList();
+        List<RoomDTO> booked = rr.notAvailable(checkIn, checkOut).stream().map(this::roomToRoomDTO).toList();
         return all.stream().filter(r -> !booked.contains(r) && numGuest <= r.getMaxBeds()).collect(Collectors.toList());
     }
 
