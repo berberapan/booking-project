@@ -69,10 +69,8 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create")
-    public String createOrUpdateCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String createCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.addCustomer(customerDTO);
-        CustomerDTO updatedCustomer = customerService.getCustomerByEmail(customerDTO.getEmail());
-        model.addAttribute("customer", updatedCustomer);
         model.addAttribute("created", true);
         return "createCustomer";
     }
