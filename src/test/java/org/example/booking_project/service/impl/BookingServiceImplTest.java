@@ -29,8 +29,8 @@ class BookingServiceImplTest {
 
     @Mock
     private BookingRepo bookingRepo;
-    private CustomerRepo customerRepo;
-    private RoomServiceImpl roomServiceImpl;
+    //private CustomerRepo customerRepo;
+    //private RoomServiceImpl roomServiceImpl;
 
     @Mock
     private CustomerRepo customerRepo;
