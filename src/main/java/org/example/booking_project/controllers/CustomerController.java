@@ -37,6 +37,7 @@ public class CustomerController {
     @GetMapping("/customer/search")
     public String showSearchCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDTO());
+        model.addAttribute("customerFormToggle", false);
         model.addAttribute("customerNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
@@ -51,8 +52,10 @@ public class CustomerController {
             CustomerDTO customerDTO = customerService.getCustomerByEmail(email);
             model.addAttribute("customer", customerDTO);
             model.addAttribute("customerNotFound", false);
+            model.addAttribute("customerFormToggle", true);
         } else {
             model.addAttribute("customerNotFound", true);
+            model.addAttribute("customerFormToggle", false);
         }
         return "customer";
     }

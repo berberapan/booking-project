@@ -60,7 +60,7 @@
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
     </form>
     <!-- Kundinformation eller formulär för att uppdatera kund -->
-    <div th:if="${customer}">
+    <div th:if="${customerFormToggle}">
         <h2 class="text-center">Ändra kund</h2>
         <form th:if="${not customerNotFound}" action="/customer/update" method="post">
             <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->

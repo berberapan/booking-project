@@ -44,9 +44,22 @@ public class BookingController {
 
     @PostMapping("/bookings/update")
     public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
-        bs.updateBooking(bookingDTO.getId(), bookingDTO);
-        model.addAttribute("updated", true);
-        return "booking";
+
+        String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
+
+        if (response.equals("BedsError")){
+            model.addAttribute("errorMessage", "Antalet bokade sängar överskrider det tillgängliga antalet sängar för detta rum.");
+            return "booking";
+        } else if (response.equals("DateError")) {
+            model.addAttribute("errorMessage", "Det går inte att boka valda datum");
+            return "booking";
+        } else if (response.equals("Error")) {
+            model.addAttribute("errorMessage", "Bokningsnumret existerar ej");
+            return "booking";
+        } else{
+            model.addAttribute("updated", true);
+            return "booking";
+        }
     }
 
     @PostMapping("/bookings/search")
@@ -55,8 +68,10 @@ public class BookingController {
             BookingDTO bookingDTO = bs.getBookingByBookingNr(bookingNr);
             model.addAttribute("booking", bookingDTO);
             model.addAttribute("bookingNotFound", false);
+            model.addAttribute("bookingFormToggle", true);
         } else {
             model.addAttribute("bookingNotFound", true);
+            model.addAttribute("bookingFormToggle", false);
         }
         return "booking";
     }
@@ -64,6 +79,7 @@ public class BookingController {
     @GetMapping("/bookings/search")
     public String showSearchBookingPage(Model model) {
         model.addAttribute("booking", new BookingDTO());
+        model.addAttribute("bookingFormToggle", false);
         model.addAttribute("bookingNotFound", false);
         model.addAttribute("updated", false);
         model.addAttribute("deleted", false);
