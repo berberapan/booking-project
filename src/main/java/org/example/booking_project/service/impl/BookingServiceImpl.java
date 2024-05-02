@@ -1,4 +1,5 @@
 package org.example.booking_project.service.impl;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
@@ -14,8 +15,13 @@ import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+
+import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -118,5 +124,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void deleteBooking(Long id) {
         bookingRepo.findById(id).ifPresent(booking -> bookingRepo.deleteById(id));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String localExceptionHandler(ConstraintViolationException ex, Model model){
+        return handleConstraintViolationException(ex,model);
     }
 }
