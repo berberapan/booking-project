@@ -2,7 +2,6 @@ package org.example.booking_project.controllers;
 
 
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 
@@ -69,14 +68,14 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create")
-    public String createCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String createCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.addCustomer(customerDTO);
         model.addAttribute("created", true);
         return "createCustomer";
     }
 
     @PostMapping("/customer/update")
-    public String updateCustomer(@Valid @ModelAttribute CustomerDTO customerDTO, Model model) {
+    public String updateCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.updateCustomer(customerDTO.getId(), customerDTO);
         model.addAttribute("updated", true);
         return "customer";

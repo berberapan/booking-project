@@ -2,7 +2,6 @@ package org.example.booking_project.controllers;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
@@ -43,7 +42,7 @@ public class BookingController {
     }
 
     @PostMapping("/bookings/update")
-    public String updateBooking(@Valid @ModelAttribute BookingDTO bookingDTO, Model model) {
+    public String updateBooking(@ModelAttribute BookingDTO bookingDTO, Model model) {
 
         String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
 
