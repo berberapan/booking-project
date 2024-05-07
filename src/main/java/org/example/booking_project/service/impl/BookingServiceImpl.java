@@ -95,23 +95,31 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String updateBooking(Long id, @Valid BookingDTO bookingDTO) {
+    public String updateBooking(Long id, BookingDTO bookingDTO) {
 
         Booking existingBooking = bookingRepo.findById(id).orElse(null);
 
         if (existingBooking != null) {
             int amountOfBeds = bookingDTO.getBookedBeds();
-            if (amountOfBeds > 0 && amountOfBeds <= existingBooking.getRoom().getMaxBeds())
-            {
-                if(checkAvailabilityInRoom(existingBooking.getId(), existingBooking.getRoom().getId(),
-                        bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate())){
+            if (amountOfBeds > 0 && amountOfBeds <= existingBooking.getRoom().getMaxBeds()) {
+                LocalDate newCheckInDate = bookingDTO.getCheckInDate();
+                LocalDate newCheckOutDate = bookingDTO.getCheckOutDate();
+
+                if (newCheckInDate.isAfter(newCheckOutDate)) {
+                    return "DateError";
+                }
+
+                if (newCheckOutDate.isBefore(newCheckInDate)) {
+                    return "DateError";
+                }
+
+                if (checkAvailabilityInRoom(existingBooking.getId(), existingBooking.getRoom().getId(), newCheckInDate, newCheckOutDate)) {
                     existingBooking.setBookedBeds(amountOfBeds);
-                    existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
-                    existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+                    existingBooking.setCheckInDate(newCheckInDate);
+                    existingBooking.setCheckOutDate(newCheckOutDate);
                     bookingRepo.save(existingBooking);
                     return "Saved";
-                }
-                else{
+                } else {
                     return "DateError";
                 }
             } else {

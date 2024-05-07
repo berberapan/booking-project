@@ -2,6 +2,7 @@ package org.example.booking_project.controllers;
 
 
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 

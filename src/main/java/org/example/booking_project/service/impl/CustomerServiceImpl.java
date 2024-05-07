@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addCustomer(@Valid CustomerDTO customerDTO) {
+    public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerDTOToCustomer(customerDTO);
         Customer savedCustomer = customerRepo.save(customer);
         customerToCustomerDTO(savedCustomer);
@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(Long id, @Valid CustomerDTO customerDTO) {
+    public void updateCustomer(Long id, CustomerDTO customerDTO) {
 
         Customer existingCustomer = customerRepo.findById(id).orElse(null);
         if (existingCustomer != null) {
