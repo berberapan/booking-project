@@ -1,23 +1,36 @@
 package org.example.booking_project;
 
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.example.booking_project.models.Shipper;
+import org.example.booking_project.service.impl.ShipperServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
+
+import java.net.URL;
+
 
 @ComponentScan
 public class FetchShippers implements CommandLineRunner {
+
+private final ShipperServiceImpl ssimpl;
+
+    public FetchShippers(ShipperServiceImpl ssimpl) {
+        this.ssimpl = ssimpl;
+    }
+
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Jahapp! Nu kör vi FetchShippers!");
-        JacksonXmlModule module = new JacksonXmlModule();
-////        module.setDefaultUseWrapper(false);
-////        XmlMapper xmlMapper = new XmlMapper(module);
-////        catalog theBooks = xmlMapper.readValue(new URL("https://axmjqhyyjpat.objectstorage.eu-amsterdam-1.oci.customer-oci.com/n/axmjqhyyjpat/b/aspcodeprod/o/books.xml"),
-////                catalog.class
-////        );
+
+        JsonMapper jm = new JsonMapper();
+
+        Shipper[] allShippers = jm.readValue(new URL("https://javaintegration.systementor.se/shippers"),
+                Shipper[].class);
+
+        for (Shipper s : allShippers){
+            ssimpl.updateOrAddShipper(s.getId(), ssimpl.shipperToShipperDTO(s));
+        }
     }
-/* ObjectMapper om = new ObjectMapper();
-Root[] root = om.readValue(myJsonString, Root[].class); */
-    //https://javaintegration.systementor.se/shippers
+
+
 }

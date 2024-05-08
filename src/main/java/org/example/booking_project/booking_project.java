@@ -22,6 +22,7 @@ public class booking_project {
     public static void main(String[] args) {
         if(args.length == 0) {
             SpringApplication.run(booking_project.class, args);
+
         } else if (Objects.equals(args[0], "fetchshippers")) {
             SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
             fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);

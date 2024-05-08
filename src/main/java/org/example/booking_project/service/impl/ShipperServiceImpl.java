@@ -8,10 +8,14 @@ import org.example.booking_project.service.ShipperService;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class ShipperServiceImpl implements ShipperService {
 
     private final ShipperRepo shipperRepo;
+
+    public ShipperServiceImpl(ShipperRepo shipperRepo){
+        this.shipperRepo = shipperRepo;
+    }
+
     @Override
     public ShipperDTO shipperToShipperDTO(Shipper s) {
         return ShipperDTO.builder().id(s.getId()).email(s.getEmail()).companyName(s.getCompanyName())
@@ -43,9 +47,11 @@ public class ShipperServiceImpl implements ShipperService {
             existingShipper.setPhone(shipperDTO.getPhone());
             existingShipper.setFax(shipperDTO.getFax());
             shipperRepo.save(existingShipper);
+            System.out.println(existingShipper.getCompanyName() +" updated");
         } else {
             Shipper newShipper = shipperDTOToShipper(shipperDTO);
             shipperRepo.save(newShipper);
+            System.out.println(newShipper.getCompanyName() +" added");
         }
     }
 }
