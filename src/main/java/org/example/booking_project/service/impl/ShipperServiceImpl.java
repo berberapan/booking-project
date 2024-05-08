@@ -1,6 +1,5 @@
 package org.example.booking_project.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.example.booking_project.Dtos.ShipperDTO;
 import org.example.booking_project.models.Shipper;
 import org.example.booking_project.repos.ShipperRepo;

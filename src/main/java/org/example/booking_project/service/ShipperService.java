@@ -1,6 +1,5 @@
 package org.example.booking_project.service;
 
-import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.ShipperDTO;
 import org.example.booking_project.models.Shipper;
 
