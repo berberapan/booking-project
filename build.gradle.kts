@@ -35,6 +35,8 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0")
 }
 
 tasks.withType<Test> {
