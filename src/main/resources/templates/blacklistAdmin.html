@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blacklist admin</title>
+    <!-- Lägg till Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007bff;
+            backdrop-filter: blur(10px);
+            height: 80px;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 40px;
+        }
+        .nav-link {
+            color: #fff;
+            font-size: 20px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container mt-4">
+    <h1 class="text-center">Blacklist Admin</h1>
+
+    <!-- Sökformulär -->
+    <form action="/blacklist" method="post">
+        <div class="form-group">
+            <label for="email">E-post:</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sök</button><br><br>
+    </form>
+    <!-- Kundinformation eller formulär för att uppdatera kund -->
+    <div th:if="${blacklisted}">
+        <form th:if="${blacklistedFormToggle}" action="/blacklist/update" method="post">
+            <h2 class="text-center">Lägg till eller uppdatera</h2>
+            <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->
+            <div th:if="${blacklistedFound}" class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" class="form-control" id="blacklistedEmail" name="email" th:value="${blacklisted.email}" required readonly>
+            </div>
+            <div th:if="${blacklistedNotFound}" class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" class="form-control" id="blacklistedEmailFromSearch" name="email" th:value="${blacklisted.email}" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Namn:</label>
+                <input type="text" class="form-control" id="name" name="name" th:value="${blacklisted.name}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Lägg till på blacklist</button>
+            <a th:href="@{/blacklist/update(email=${blacklisted.email})}" class="btn btn-danger">Ta bort från blacklist</a>
+        </form>
+    </div>
+    <!-- Bekräftelsemeddelande för att blacklistuppgifterna har uppdaterats -->
+    <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunduppgifterna har uppdaterats!
+    </div>
+
+    <!-- Bekräftelsemeddelande för att kunden har tagits bort -->
+    <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunden har tagits bort!
+    </div>
+
+    <!-- Meddelande om att kunden inte kunde tas bort på grund av bokningar -->
+    <div th:if="${bookingExists}" id="bookingExistsMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Kunden kan inte tas bort eftersom det finns bokningar för den.
+    </div>
+
+    <!-- Meddelande om att kunden inte hittades -->
+    <div th:if="${customerNotFound}" id="customerNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Vi kunde inte hitta en kund med den angivna e-postadressen. Vill du skapa en ny kund?
+    </div>
+</div>
+
+<div th:if="${customerNotFound}" class="container mt-4">
+    <a href="/customer/create" class="btn btn-success">Skapa ny kund</a>
+    <a href="/customer/search" class="btn btn-danger">Avbryt</a>
+</div>
+<script>
+    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till söksidan
+    document.querySelectorAll(".alert .close").forEach(function(closeButton) {
+        closeButton.addEventListener("click", function() {
+            window.location.href = "/customer/search";
+        });
+    });
+</script>
+</body>
+</html>

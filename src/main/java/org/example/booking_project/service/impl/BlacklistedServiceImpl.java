@@ -12,7 +12,12 @@ public class BlacklistedServiceImpl implements BlacklistService {
     }
 
     @Override
-    public BlacklistedDTO findBlacklistedByEmail(String email) {
+    public BlacklistedDTO getBlacklistedByEmail(String email) {
         return null;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return false;
     }
 }
