@@ -5,46 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avtalskunder</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 <div class="container">
 
-    <h1>Avtalskunder</h1>
+    <h1 class="text-center">Avtalskunder</h1>
+    <div th:if="${customers.size() > 0}">
 
-    <table id="cc-table" class="" style="width:100%">
-        <thead>
-        <tr>
-            <th>Företag</th>
-            <th>Kontakt</th>
-            <th>Land</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Persson Kommanditbolag</td>
-            <td>Maria Åslund</td>
-            <td>Sverige</td>
-        </tr>
-        <tr>
-            <td>Karlsson-Eriksson</td>
-            <td>Jörgen Gustafsson</td>
-            <td>Sverige</td>
-        </tr>
-        <tr>
-            <td>Eriksson Group</td>
-            <td>Anna Karlsson</td>
-            <td>Sverige</td>
-        </tr>
+        <form action="contract-customer/search" method="post">
+            <div class="form-group" style="float: right">
+                <label for="search"></label>
+                <input type="text" id="search" name="search">
+                <input type="submit" value="Sök" class="btn btn-primary">
+            </div>
+        </form>
 
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Företag</th>
-            <th>Kontakt</th>
-            <th>Land</th>
-        </tr>
-        </tfoot>
-    </table>
+        <table id="cc-table" class="table table-striped" style="width:100%">
+            <thead>
+            <tr>
+                <th>Företag <i class="fa-sharp fa-solid fa-sort"></i></th>
+                <th>Kontaktperson <i class="fa-sharp fa-solid fa-sort"></i></th>
+                <th>Land <i class="fa-sharp fa-solid fa-sort"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <td th:text="${customer.email}">Företagsnamn</td>
+                <td th:text="${customer.customerName}">Kontaktperson</td>
+                <td th:text="${customer.email}">Land</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="" th:unless="${customers.size() > 0}">
+        <span>Inga avtalskunder hittades</span>
+    </div>
 </div>
 </body>
 </html>
