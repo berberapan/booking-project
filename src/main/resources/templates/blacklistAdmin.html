@@ -62,8 +62,8 @@
     <!-- Formulär för att uppdatera blacklist -->
     <div th:if="${blacklisted}">
         <form th:if="${blacklistedFormToggle}" action="/blacklist/update" method="post">
+            <input type="hidden" id="ok" name="ok" th:value="${blacklisted.ok}">
             <h2 class="text-center">Lägg till eller ta bort</h2>
-
             <div th:if="${blacklistedFound}" class="form-group">
                 <label for="email">Email:</label>
                 <input type="text" class="form-control" id="blacklistedEmail" name="email" th:value="${blacklisted.email}" required readonly>

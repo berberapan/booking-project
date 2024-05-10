@@ -17,16 +17,13 @@ import java.net.http.HttpResponse;
 public class BlacklistedServiceImpl implements BlacklistService {
     @Override
     public void updateBlacklisted(BlacklistedDTO blacklistedDTO) throws IOException {
-        if (blacklistedDTO.isOk()) {
-            blacklistedDTO.setOk(false);
-        } else {
-            blacklistedDTO.setOk(true);
-        }
+
+        blacklistedDTO.ok = !blacklistedDTO.ok;
 
         HttpClient client = HttpClient.newHttpClient();
 
         if (!existsByEmail(blacklistedDTO.email)) {
-
+        blacklistedDTO.ok = false;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist"))
                     .header("Content-Type", "application/json")
@@ -41,14 +38,15 @@ public class BlacklistedServiceImpl implements BlacklistService {
                     .thenAccept(System.out::println)
                     .join();
         } else {
-            System.out.println("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.getEmail().trim());
+            System.out.println(blacklistedDTO.name);
+            System.out.println("Allowed to book: " + blacklistedDTO.ok);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.getEmail().trim()))
+                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.email.trim()))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers
-                            .ofString("{\"name\":\"" + blacklistedDTO.getName() + "\", " +
-                                    "\"ok\":\"" + blacklistedDTO.isOk() + "\" }"))
+                            .ofString("{\"name\":\"" + blacklistedDTO.name + "\", " +
+                                    "\"ok\":\"" + blacklistedDTO.ok + "\" }"))
                     .build();
 
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())

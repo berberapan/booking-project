@@ -17,7 +17,4 @@ public class BlacklistedDTO {
     public Date created;
     public boolean ok;
 
-    public boolean isOk() {
-        return ok;
-    }
 }
