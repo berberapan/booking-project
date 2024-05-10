@@ -11,5 +11,7 @@ public interface ContractCustomerService {
 
     public void updateOrAddContractCustomer(Long id, ContractCustomerDTO contractCustomerDTO);
 
+    public ContractCustomer getContractCustomerById(Long customerId);
+
 }
 

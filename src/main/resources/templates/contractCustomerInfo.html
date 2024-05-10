@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skapa kund</title>
+    <title>Avtalskund</title>
+    <!-- Lägg till Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
@@ -34,38 +35,19 @@
     </nav>
 </div>
 <div class="container mt-4">
-    <h1>Skapa kund</h1>
-    <form action="/customer/create" method="post">
-        <input type="hidden" id="customerNr" name="customerNumber" th:value="${generatedCustomerNr}">
-        <div class="form-group">
-            <label for="customerName">Namn:</label>
-            <input type="text" class="form-control" id="customerName" name="customerName">
-        </div>
-        <div class="form-group">
-            <label for="phoneNumber">Telefon:</label>
-            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
-        </div>
-        <div class="form-group">
-            <label for="email">E-post:</label>
-            <input type="text" class="form-control" id="email" name="email" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Skapa</button>
-        <a href="/customer/search" class="btn btn-danger">Avbryt</a><br><br>
-    </form>
-    <!-- Bekräftelsemeddelande för att en ny kund har skapats -->
-    <div th:if="${created}" id="createdMessage" class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        En ny kund har skapats!
+    <div class="customer-details">
+        <h2>Kundinformation</h2>
+        <br>
+        <p><strong>Företagsnamn:</strong> <span th:text="${contractCustomer.companyName}"></span></p>
+        <p><strong>Kontaktnamn:</strong> <span th:text="${contractCustomer.contactName}"></span></p>
+        <p><strong>Kontakttitel:</strong> <span th:text="${contractCustomer.contactTitle}"></span></p>
+        <p><strong>Gatuadress:</strong> <span th:text="${contractCustomer.streetAddress}"></span></p>
+        <p><strong>Stad:</strong> <span th:text="${contractCustomer.city}"></span></p>
+        <p><strong>Postnummer:</strong> <span th:text="${contractCustomer.postalCode}"></span></p>
+        <p><strong>Land:</strong> <span th:text="${contractCustomer.country}"></span></p>
+        <p><strong>Telefonnummer:</strong> <span th:text="${contractCustomer.phone}"></span></p>
+        <p><strong>Fax:</strong> <span th:text="${contractCustomer.fax}"></span></p>
     </div>
 </div>
-<script>
-    // Lyssna på klickhändelser på krysset för att stänga meddelandet och omdirigera till söksidan
-    document.getElementById("createdMessage").addEventListener("click", function () {
-        window.location.href = "/customer/search";
-    });
-</script>
 </body>
 </html>
-
