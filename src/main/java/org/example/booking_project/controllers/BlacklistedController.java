@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+
 @Controller
 public class BlacklistedController {
 
@@ -34,17 +36,20 @@ public class BlacklistedController {
     }
 
     @PostMapping("/blacklist")
-    public String searchBlacklisted(@RequestParam String email, Model model) {
+    public String searchBlacklisted(@RequestParam String email, Model model) throws IOException {
         BlacklistedDTO blacklistedDTO = new BlacklistedDTO();
         if (blacklistedServiceImpl.existsByEmail(email)) {
             blacklistedDTO = blacklistedServiceImpl.getBlacklistedByEmail(email);
             model.addAttribute("blacklistedNotFound", false);
             model.addAttribute("blacklistedFound", true);
+            if(blacklistedDTO.ok){model.addAttribute("isOk", true);}
+            else {model.addAttribute("isNotOk", true);}
         }
         else{
             blacklistedDTO.setEmail(email);
             model.addAttribute("blacklistedNotFound", true);
             model.addAttribute("blacklistedFound", false);
+            model.addAttribute("isOk", true);
         }
         model.addAttribute("blacklisted", blacklistedDTO);
         model.addAttribute("blacklistedFormToggle", true);

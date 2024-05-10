@@ -59,7 +59,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Sök</button><br><br>
     </form>
-    <!-- Kundinformation eller formulär för att uppdatera kund -->
+    <!-- Formulär för att uppdatera blacklist -->
     <div th:if="${blacklisted}">
         <form th:if="${blacklistedFormToggle}" action="/blacklist/update" method="post">
             <h2 class="text-center">Lägg till eller uppdatera</h2>
@@ -80,48 +80,28 @@
             <a th:href="@{/blacklist/update(email=${blacklisted.email})}" class="btn btn-danger">Ta bort från blacklist</a>
         </form>
     </div>
-    <!-- Bekräftelsemeddelande för att blacklistuppgifterna har uppdaterats -->
+    <!-- Bekräftelsemeddelande för att blacklisten har lagts till -->
     <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        Kunduppgifterna har uppdaterats!
+        Personen är blacklistad!
     </div>
 
-    <!-- Bekräftelsemeddelande för att kunden har tagits bort -->
+    <!-- Bekräftelsemeddelande för att blacklisten har tagits bort -->
     <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        Kunden har tagits bort!
-    </div>
-
-    <!-- Meddelande om att kunden inte kunde tas bort på grund av bokningar -->
-    <div th:if="${bookingExists}" id="bookingExistsMessage" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        Kunden kan inte tas bort eftersom det finns bokningar för den.
-    </div>
-
-    <!-- Meddelande om att kunden inte hittades -->
-    <div th:if="${customerNotFound}" id="customerNotFoundMessage" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        Vi kunde inte hitta en kund med den angivna e-postadressen. Vill du skapa en ny kund?
+        Personen är inte längre blacklistad!
     </div>
 </div>
 
-<div th:if="${customerNotFound}" class="container mt-4">
-    <a href="/customer/create" class="btn btn-success">Skapa ny kund</a>
-    <a href="/customer/search" class="btn btn-danger">Avbryt</a>
-</div>
 <script>
     // Lyssna på klickhändelser på stängningsknappen för att omdirigera till söksidan
     document.querySelectorAll(".alert .close").forEach(function(closeButton) {
         closeButton.addEventListener("click", function() {
-            window.location.href = "/customer/search";
+            window.location.href = "/index";
         });
     });
 </script>
