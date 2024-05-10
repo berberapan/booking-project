@@ -16,24 +16,46 @@ import java.net.http.HttpResponse;
 @Service
 public class BlacklistedServiceImpl implements BlacklistService {
     @Override
-    public void updateBlacklisted(BlacklistedDTO blacklistedDTO) {
-        if (!blacklistedDTO.ok){blacklistedDTO.ok = true;}
-        else {blacklistedDTO.ok=false;}
+    public void updateBlacklisted(BlacklistedDTO blacklistedDTO) throws IOException {
+        if (blacklistedDTO.isOk()) {
+            blacklistedDTO.setOk(false);
+        } else {
+            blacklistedDTO.setOk(true);
+        }
 
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers
-                        .ofString("{\"email\":\"" + blacklistedDTO.email + "\", " +
-                                "\"name\":\"" + blacklistedDTO.name + "\", " +
-                                "\"ok\":\"" + blacklistedDTO.ok + "\" }"))
-                .build();
 
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(System.out::println)
-                .join();
+        if (!existsByEmail(blacklistedDTO.email)) {
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers
+                            .ofString("{\"email\":\"" + blacklistedDTO.email + "\", " +
+                                    "\"name\":\"" + blacklistedDTO.name + "\", " +
+                                    "\"ok\":\"" + blacklistedDTO.ok + "\" }"))
+                    .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(System.out::println)
+                    .join();
+        } else {
+            System.out.println("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.getEmail().trim());
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.getEmail().trim()))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers
+                            .ofString("{\"name\":\"" + blacklistedDTO.getName() + "\", " +
+                                    "\"ok\":\"" + blacklistedDTO.isOk() + "\" }"))
+                    .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(System.out::println)
+                    .join();
+        }
 
     }
 

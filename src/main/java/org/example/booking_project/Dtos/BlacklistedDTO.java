@@ -16,4 +16,8 @@ public class BlacklistedDTO {
     public String group;
     public Date created;
     public boolean ok;
+
+    public boolean isOk() {
+        return ok;
+    }
 }

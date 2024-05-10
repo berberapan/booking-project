@@ -33,26 +33,27 @@ public class BlacklistedController {
 
     @PostMapping("/blacklist")
     public String searchBlacklisted(@RequestParam String email, Model model) throws IOException {
-        BlacklistedDTO blacklistedDTO = new BlacklistedDTO();
+        BlacklistedDTO blacklisted = new BlacklistedDTO();
         if (blacklistedServiceImpl.existsByEmail(email)) {
-            blacklistedDTO = blacklistedServiceImpl.getBlacklistedByEmail(email);
+            blacklisted = blacklistedServiceImpl.getBlacklistedByEmail(email);
             model.addAttribute("blacklistedNotFound", false);
             model.addAttribute("blacklistedFound", true);
-            if(blacklistedDTO.ok){model.addAttribute("isOk", true);}
+            if(blacklisted.ok){model.addAttribute("isOk", true);}
             else {model.addAttribute("isNotOk", true);}
         }
         else{
-            blacklistedDTO.setEmail(email);
+            blacklisted.setEmail(email);
+            blacklisted.setOk(true);
             model.addAttribute("blacklistedNotFound", true);
             model.addAttribute("blacklistedFound", false);
             model.addAttribute("isOk", true);
         }
-        model.addAttribute("blacklisted", blacklistedDTO);
+        model.addAttribute("blacklisted", blacklisted);
         model.addAttribute("blacklistedFormToggle", true);
         return "blacklistAdmin";
     }
     @PostMapping("/blacklist/update")
-    public String updateBlacklist(@ModelAttribute BlacklistedDTO blacklistedDTO, Model model) {
+    public String updateBlacklist(@ModelAttribute BlacklistedDTO blacklistedDTO, Model model) throws IOException {
         blacklistedServiceImpl.updateBlacklisted(blacklistedDTO);
         model.addAttribute("updated", true);
         return "blacklistAdmin";
