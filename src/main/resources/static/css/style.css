@@ -42,15 +42,15 @@
 
 /* Index */
 .btn-lg {
-    padding: 30px 120px;
+    padding: 5px 160px;
     font-size: 1.5rem;
 }
 .container-index {
     border: 2px solid #007bff;
-    border-radius: 10px;
-    padding: 50px;
+    border-radius: 5px;
+    padding: 40px;
     max-width: 700px;
-    margin: 30px auto auto;
+    margin: 10px auto auto;
 }
 .btn-group {
     display: flex;
@@ -59,7 +59,11 @@
 }
 .btn-group .btn {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+}
+.container-index img {
+    margin-top: -20px;
+    margin-bottom: 20px;
 }
 
 /* Contract customer info */
