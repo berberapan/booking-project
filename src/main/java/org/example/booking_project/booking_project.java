@@ -27,6 +27,12 @@ public class booking_project {
             SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
             fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
             fetchShippersApp.run(args);
+
+        } else if (Objects.equals(args[0], "fetchcustomers")) {
+            SpringApplication fetchShippersApp = new SpringApplication(FetchCustomers.class);
+            fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
+            fetchShippersApp.run(args);
+
         }
     }
 /*

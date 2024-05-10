@@ -5,46 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avtalskunder</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div class="container">
+<div class="container mt-4">
 
-    <h1>Avtalskunder</h1>
+    <h1 class="text-center mb-5">Avtalskunder</h1>
 
-    <table id="cc-table" class="" style="width:100%">
-        <thead>
-        <tr>
-            <th>Företag</th>
-            <th>Kontakt</th>
-            <th>Land</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Persson Kommanditbolag</td>
-            <td>Maria Åslund</td>
-            <td>Sverige</td>
-        </tr>
-        <tr>
-            <td>Karlsson-Eriksson</td>
-            <td>Jörgen Gustafsson</td>
-            <td>Sverige</td>
-        </tr>
-        <tr>
-            <td>Eriksson Group</td>
-            <td>Anna Karlsson</td>
-            <td>Sverige</td>
-        </tr>
+    <div th:if="${customers.size() > 0}">
+        <form action="contractCustomer/search" method="post" class="d-flex flex-row justify-content-end mb-3">
+            <div class="mr-2">
+                <label for="search" class="visually-hidden" style="display: none"></label>
+                <input type="text" id="search" name="search" class="form-control">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+        <table id="cc-table" class="table table-striped " style="width:100%">
+            <thead>
+            <tr>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <td th:text="${customer.email}">Företagsnamn</td>
+                <td th:text="${customer.customerName}">Kontaktperson</td>
+                <td th:text="${customer.email}">Land</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Företag</th>
-            <th>Kontakt</th>
-            <th>Land</th>
-        </tr>
-        </tfoot>
-    </table>
+    <div class="" th:unless="${customers.size() > 0}">
+        <div class="alert alert-danger text-center" role="alert">Inga avtalskunder hittades</div>
+        <a class="btn btn-success" href="/contractCustomer" role="button">Gå tillbaka</a>
+    </div>
+
 </div>
 </body>
 </html>

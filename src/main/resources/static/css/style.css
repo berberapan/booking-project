@@ -1,0 +1,86 @@
+/* Table */
+.table-link a{
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.table-link:hover {
+    text-decoration: none;
+    color: black;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.table-link i{
+    margin-top: 4px;
+    float: right;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #007bff;
+    backdrop-filter: blur(10px);
+    height: 80px;
+}
+.navbar-brand {
+    color: #fff;
+    font-size: 40px;
+}
+.nav-link {
+    color: #fff;
+    font-size: 20px;
+}
+.container {
+    margin-top: 30px;
+}
+
+/* Card */
+.card {
+    border-color: #007bff;
+}
+
+/* Index */
+.btn-lg {
+    padding: 30px 120px;
+    font-size: 1.5rem;
+}
+.container-index {
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 50px;
+    max-width: 700px;
+    margin: 30px auto auto;
+}
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-group .btn {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* Contract customer info */
+.customer-details {
+    background-color: #f2f2f2;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #007bff; /* Lägg till en solid blå ram */
+}
+
+.customer-details h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff; /* Lägg till en blå ram under rubriken */
+    padding-bottom: 30px; /* Lägg till lite utrymme under rubriken */
+}
+
+.customer-details p {
+    margin-bottom: 30px;
+}
+
+.customer-details strong {
+    font-weight: bold;
+}
