@@ -23,7 +23,7 @@ public class BlacklistedServiceImpl implements BlacklistService {
         BlacklistedDTO[] allBlacklisted = getBlacklistedArrayFromSource();
 
         for (BlacklistedDTO b : allBlacklisted) {
-            if (b.email.equals(email.trim())) {
+            if (b.email != null && b.email.equals(email.trim())) {
                 return b;
             }
         }
@@ -35,7 +35,7 @@ public class BlacklistedServiceImpl implements BlacklistService {
         BlacklistedDTO[] allBlacklisted = getBlacklistedArrayFromSource();
 
         for (BlacklistedDTO b : allBlacklisted) {
-            if (b.email.equals(email.trim())) {
+            if (b.email != null && b.email.equals(email.trim())) {
                 return true;
             }
         }

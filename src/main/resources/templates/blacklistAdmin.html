@@ -76,6 +76,9 @@
                 <label for="name">Namn:</label>
                 <input type="text" class="form-control" id="name" name="name" th:value="${blacklisted.name}" required>
             </div>
+            <h3 th:if="${isNotOk}" style="color:red;">Personen finns med i blacklist</h3>
+            <h3 th:if="${isOk}">Personen finns inte med i blacklist</h3>
+            <br>
             <button type="submit" class="btn btn-success">Lägg till på blacklist</button>
             <a th:href="@{/blacklist/update(email=${blacklisted.email})}" class="btn btn-danger">Ta bort från blacklist</a>
         </form>
