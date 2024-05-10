@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 public interface BlacklistService {
-    public BlacklistedDTO saveUpdateBlacklisted(BlacklistedDTO blacklistedDTO);
+    public void updateBlacklisted(BlacklistedDTO blacklistedDTO);
     public BlacklistedDTO getBlacklistedByEmail(String email) throws IOException;
 
     public boolean existsByEmail(String email) throws IOException;

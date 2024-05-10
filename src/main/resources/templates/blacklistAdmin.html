@@ -62,8 +62,8 @@
     <!-- Formulär för att uppdatera blacklist -->
     <div th:if="${blacklisted}">
         <form th:if="${blacklistedFormToggle}" action="/blacklist/update" method="post">
-            <h2 class="text-center">Lägg till eller uppdatera</h2>
-            <!-- Lägg till ett dolt input-fält för att skicka kundens ID -->
+            <h2 class="text-center">Lägg till eller ta bort</h2>
+
             <div th:if="${blacklistedFound}" class="form-group">
                 <label for="email">Email:</label>
                 <input type="text" class="form-control" id="blacklistedEmail" name="email" th:value="${blacklisted.email}" required readonly>
@@ -76,32 +76,25 @@
                 <label for="name">Namn:</label>
                 <input type="text" class="form-control" id="name" name="name" th:value="${blacklisted.name}" required>
             </div>
-            <h3 th:if="${isNotOk}" style="color:red;">Personen finns med i blacklist</h3>
-            <h3 th:if="${isOk}">Personen finns inte med i blacklist</h3>
+            <h4 th:if="${isNotOk}" style="color:red;">Personen finns med i blacklist</h4>
+            <h4 th:if="${isOk}">Personen finns inte med i blacklist</h4>
             <br>
-            <button type="submit" class="btn btn-success">Lägg till på blacklist</button>
-            <a th:href="@{/blacklist/update(email=${blacklisted.email})}" class="btn btn-danger">Ta bort från blacklist</a>
+            <button th:if="${isOk}" type="submit" class="btn btn-danger">Lägg till i blacklist</button>
+            <button th:if="${isNotOk}" type="submit" class="btn btn-warning">Ta bort från blacklist</button>
         </form>
     </div>
-    <!-- Bekräftelsemeddelande för att blacklisten har lagts till -->
+    <!-- Bekräftelsemeddelande för att blacklisten har uppdaterats -->
     <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        Personen är blacklistad!
+        Blacklist uppdaterad!
     </div>
 
-    <!-- Bekräftelsemeddelande för att blacklisten har tagits bort -->
-    <div th:if="${deleted}" id="deletedMessage" class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        Personen är inte längre blacklistad!
-    </div>
 </div>
 
 <script>
-    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till söksidan
+    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till startsidan
     document.querySelectorAll(".alert .close").forEach(function(closeButton) {
         closeButton.addEventListener("click", function() {
             window.location.href = "/index";

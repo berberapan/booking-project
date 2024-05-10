@@ -5,10 +5,7 @@ import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.impl.BlacklistedServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -29,7 +26,6 @@ public class BlacklistedController {
         model.addAttribute("blacklistedFormToggle", false);
         model.addAttribute("blacklistedNotFound", false);
         model.addAttribute("updated", false);
-        model.addAttribute("deleted", false);
         model.addAttribute("blacklistedExists", false);
         model.addAttribute("created", false);
         return "blacklistAdmin";
@@ -55,9 +51,10 @@ public class BlacklistedController {
         model.addAttribute("blacklistedFormToggle", true);
         return "blacklistAdmin";
     }
-
-    @PostMapping("https://javabl.systementor.se/api/gul/blacklist/{email}")
-    public void addBlacklisted(@PathVariable String email) {
-
+    @PostMapping("/blacklist/update")
+    public String updateBlacklist(@ModelAttribute BlacklistedDTO blacklistedDTO, Model model) {
+        blacklistedServiceImpl.updateBlacklisted(blacklistedDTO);
+        model.addAttribute("updated", true);
+        return "blacklistAdmin";
     }
 }
