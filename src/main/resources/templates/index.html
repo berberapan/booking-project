@@ -9,18 +9,16 @@
 </head>
 <body>
 <div class="container-index mt-5">
-    <h1 class="text-center">Startsida</h1><br><br>
+    <div class="d-flex justify-content-center">
+        <img th:src="@{/images/glada-uttern-trnsp.png}" alt="logo">
+        <br>
+    </div>
     <div class="btn-group">
         <a href="/book" class="btn btn-primary btn-lg">Sök lediga rum</a>
         <a href="/bookings/search" class="btn btn-primary btn-lg">Sök bokningar</a>
         <a href="/customer/search" class="btn btn-primary btn-lg">Ändra kund</a>
         <a href="/contractCustomer" class="btn btn-primary btn-lg">Sök avtalskund</a>
         <a href="/blacklist" class="btn btn-primary btn-lg">Blacklist admin</a>
-    </div>
-    <br>
-    <div class="d-flex justify-content-center">
-        <img th:src="@{/images/glada-uttern-trnsp.png}" alt="logo">
-        <br>
     </div>
 </div>
 </body>
