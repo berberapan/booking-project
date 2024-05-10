@@ -5,31 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startsida</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .btn-lg {
-            padding: 30px 120px; /* Stor knappstorlek */
-            font-size: 1.5rem; /* Stor textstorlek */
-        }
-        .container {
-            border: 2px solid #007bff; /* Ramfärg */
-            border-radius: 10px; /* Rundade hörn */
-            padding: 50px; /* Inre fyllning */
-            max-width: 700px; /* Max bredd */
-            margin: 30px auto auto;
-        }
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .btn-group .btn {
-            width: 100%;
-            margin-bottom: 30px; /* Avstånd mellan knapparna */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container-index mt-5">
     <h1 class="text-center">Startsida</h1><br><br>
     <div class="btn-group">
         <a href="/book" class="btn btn-primary btn-lg">Sök lediga rum</a>

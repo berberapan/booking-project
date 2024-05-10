@@ -6,27 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .navbar {
-            background-color: #007bff;
-            backdrop-filter: blur(10px);
-            height: 80px;
-        }
-
-        .navbar-brand {
-            color: #fff;
-            font-size: 40px;
-        }
-
-        .nav-link {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        .container {
-            margin-top: 30px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
 <div class="container">
@@ -46,6 +26,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contractCustomer">Sök avtalskund</a> <!-- Länk till sök avtalskund -->
                 </li>
             </ul>
         </div>
@@ -94,7 +77,6 @@
         <br>
     </div>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const checkInDateInput = document.getElementById("checkInDate");
@@ -128,7 +110,5 @@
         });
     });
 </script>
-
-
 </body>
 </html>

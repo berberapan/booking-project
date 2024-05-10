@@ -54,4 +54,9 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
             System.out.println(newCustomer.getCompanyName() +" added");
         }
     }
+
+    @Override
+    public ContractCustomer getContractCustomerById(Long customerId) {
+        return contractCustomerRepo.findById(customerId).orElse(null);
+    }
 }
