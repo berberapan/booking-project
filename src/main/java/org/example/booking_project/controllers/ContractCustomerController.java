@@ -19,20 +19,29 @@ public class ContractCustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("contract-customer")
+    @GetMapping("contractCustomer")
     public String showContractCustomers(Model model) {
 
         //Mock data! Byt till lista av contract customers DTO i modellen
         model.addAttribute("customers",customerService.getAllCustomers());
-        return "contractCustomerTable";
+        return "contractCustomerTable.html";
     }
 
-    @PostMapping("contract-customer/search")
+    @PostMapping("contractCustomer/search")
     public String searchInContractCustomer(@RequestParam String search, Model model){
 
         //Mock data! Filtrerad lista ska in i modellen
         List<Customer> list = List.of();
         model.addAttribute("customers", list);
-        return "contractCustomerTable";
+        return "contractCustomerTable.html";
+    }
+
+    @GetMapping("contractCustomer/sort")
+    public String sortContractCustomers(Model model){
+
+        //Mock data! Filtrerad lista ska in i modellen
+        List<Customer> list = List.of();
+        model.addAttribute("customers", list);
+        return "contractCustomerTable.html";
     }
 }

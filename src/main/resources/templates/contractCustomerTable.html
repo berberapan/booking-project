@@ -6,27 +6,35 @@
     <title>Avtalskunder</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div class="container">
+<div class="container mt-4">
 
-    <h1 class="text-center">Avtalskunder</h1>
+    <h1 class="text-center mb-5">Avtalskunder</h1>
+
     <div th:if="${customers.size() > 0}">
-
-        <form action="contract-customer/search" method="post">
-            <div class="form-group" style="float: right">
-                <label for="search"></label>
-                <input type="text" id="search" name="search">
-                <input type="submit" value="Sök" class="btn btn-primary">
+        <form action="contractCustomer/search" method="post" class="d-flex flex-row justify-content-end mb-3">
+            <div class="mr-2">
+                <label for="search" class="visually-hidden" style="display: none"></label>
+                <input type="text" id="search" name="search" class="form-control">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
-
-        <table id="cc-table" class="table table-striped" style="width:100%">
+        <table id="cc-table" class="table table-striped " style="width:100%">
             <thead>
             <tr>
-                <th>Företag <i class="fa-sharp fa-solid fa-sort"></i></th>
-                <th>Kontaktperson <i class="fa-sharp fa-solid fa-sort"></i></th>
-                <th>Land <i class="fa-sharp fa-solid fa-sort"></i></th>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{/contractCostumer/sort}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -38,9 +46,12 @@
             </tbody>
         </table>
     </div>
+
     <div class="" th:unless="${customers.size() > 0}">
-        <span>Inga avtalskunder hittades</span>
+        <div class="alert alert-danger text-center" role="alert">Inga avtalskunder hittades</div>
+        <a class="btn btn-success" href="/contractCustomer" role="button">Gå tillbaka</a>
     </div>
+
 </div>
 </body>
 </html>
