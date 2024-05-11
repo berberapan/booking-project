@@ -6,6 +6,8 @@ import org.example.booking_project.repos.ContractCustomerRepo;
 import org.example.booking_project.service.ContractCustomerService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
 
@@ -56,7 +58,13 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     }
 
     @Override
-    public ContractCustomer getContractCustomerById(Long customerId) {
-        return contractCustomerRepo.findById(customerId).orElse(null);
+    public ContractCustomerDTO getContractCustomerById(Long customerId) {
+        ContractCustomer cc = contractCustomerRepo.findById(customerId).orElse(null);
+        return contractCustomerToContractCustomerDTO(cc);
+    }
+
+    @Override
+    public List<ContractCustomerDTO> getAllContractCustomers() {
+        return contractCustomerRepo.findAll().stream().map(this::contractCustomerToContractCustomerDTO).toList();
     }
 }
