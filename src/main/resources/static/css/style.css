@@ -88,3 +88,27 @@
 .customer-details strong {
     font-weight: bold;
 }
+
+/* Dropdown-menyn */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 56, 168);
+    border: 2px solid rgba(0, 56, 168);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+.dropdown-item {
+    color: #ffffff;
+}
+.dropdown-item:hover {
+    background-color: rgba(0, 123, 255, 0.7);
+    color: #ffffff;
+}
+
+
+
