@@ -48,6 +48,7 @@
         </form>
         <table id="cc-table" class="table table-striped " style="width:100%">
             <thead>
+            <!-- Without ternary
             <tr>
                 <th class="table-link">
                     <div th:if="${sortOrder == 'ASC' && sortCol == 'companyName'}">
@@ -72,6 +73,22 @@
                     <div th:unless="${sortOrder == 'ASC' && sortCol == 'country'}">
                         <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
                     </div>
+                </th>
+            </tr>
+            -->
+
+            <tr>
+                <th class="table-link">
+                    <a th:href="@{/contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'companyName') ? 'DESC' : 'ASC'},
+                    sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'contactName') ? 'DESC' : 'ASC'},
+                    sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                </th>
+                <th class="table-link">
+                    <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'country') ? 'DESC' : 'ASC'},
+                      sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
                 </th>
             </tr>
             </thead>
