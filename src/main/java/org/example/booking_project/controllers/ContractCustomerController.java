@@ -29,14 +29,18 @@ public class ContractCustomerController {
                                         @RequestParam(defaultValue = "companyName") String sortCol,
                                         @RequestParam(defaultValue = "") String search) {
 
+        search = search.strip();
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("sortCol", sortCol);
+        model.addAttribute("search", search);
         /*
         List<ContractCustomerDTO> contractCustomerDTOS = contractCustomerService.getAllContractCustomers();
         model.addAttribute("customers", contractCustomerDTOS)
          */
-        model.addAttribute("customers", contractCustomerRepo.findAll(sort));
+        // model.addAttribute("customers", contractCustomerRepo.findAll(sort));
+        model.addAttribute("customers", contractCustomerRepo.
+                findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(search, search, search, sort));
         return "contractCustomerTable";
     }
 

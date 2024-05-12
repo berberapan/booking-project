@@ -37,40 +37,41 @@
 <div class="container mt-4">
     <h1 class="text-center mb-5">Avtalskunder</h1>
     <div th:if="${customers.size() > 0}">
-        <form action="contractCustomer/search" method="post" class="d-flex flex-row justify-content-end mb-3">
+        <form action="/contractCustomer" method="get" class="d-flex flex-row justify-content-end mb-3">
             <div class="mr-2">
                 <label for="search" class="visually-hidden" style="display: none"></label>
-                <input type="text" id="search" name="search" class="form-control">
+                <input type="text" id="search" name="search" th:value="${search}" class="form-control">
             </div>
             <div>
                 <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
+        <span th:text="${search}"></span>
         <table id="cc-table" class="table table-striped " style="width:100%">
             <thead>
             <tr>
                 <th class="table-link">
                     <div th:if="${sortOrder == 'ASC' && sortCol == 'companyName'}">
-                        <a th:href="@{/contractCustomer?sortOrder=DESC&sortCol=companyName}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                        <a th:href="@{/contractCustomer(sortOrder=DESC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
                     </div>
                     <div th:unless="${sortOrder == 'ASC' && sortCol == 'companyName'}">
-                        <a th:href="@{/contractCustomer?sortOrder=ASC&sortCol=companyName}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                        <a th:href="@{/contractCustomer(sortOrder=ASC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
                     </div>
                 </th>
                 <th class="table-link">
                     <div th:if="${sortOrder == 'ASC' && sortCol == 'contactName'}">
-                        <a th:href="@{contractCustomer?sortOrder=DESC&sortCol=contactName}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
                     </div>
                     <div th:unless="${sortOrder == 'ASC' && sortCol == 'contactName'}">
-                        <a th:href="@{contractCustomer?sortOrder=ASC&sortCol=contactName}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
                     </div>
                 </th>
                 <th class="table-link">
                     <div th:if="${sortOrder == 'ASC' && sortCol == 'country'}">
-                        <a th:href="@{contractCustomer?sortOrder=DESC&sortCol=country}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
                     </div>
                     <div th:unless="${sortOrder == 'ASC' && sortCol == 'country'}">
-                        <a th:href="@{contractCustomer?sortOrder=ASC&sortCol=country}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
                     </div>
                 </th>
             </tr>
