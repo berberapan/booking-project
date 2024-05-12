@@ -89,4 +89,16 @@ public class BlacklistedServiceImpl implements BlacklistService {
         return jm.readValue(new URL("https://javabl.systementor.se/api/gul/blacklist"),
                 BlacklistedDTO[].class);
     }
+
+    @Override
+    public boolean checkIfCstBlacklisted(String email) throws IOException {
+        BlacklistedDTO[] allBlacklisted = getBlacklistedArrayFromSource();
+
+        for(BlacklistedDTO b : allBlacklisted){
+            if (b.email != null && b.email.equals(email.trim()) && !b.isOk()){
+                return true;
+            }
+        }
+        return false;
+    }
 }
