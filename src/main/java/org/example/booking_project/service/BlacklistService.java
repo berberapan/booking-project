@@ -12,5 +12,5 @@ public interface BlacklistService {
     public boolean existsByEmail(String email) throws IOException;
 
     public BlacklistedDTO[] getBlacklistedArrayFromSource() throws IOException;
-
+    public boolean checkIfCstBlacklisted(String email) throws IOException;
 }

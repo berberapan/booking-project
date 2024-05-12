@@ -42,6 +42,9 @@
                     <em>Ingen användare hittades med den emailen. Vänligen fyll i alla fält för att registrera en ny
                         kund.</em>
                 </div>
+                <div th:if="${blacklistedCustomer}" class="alert alert-danger text-center" role="alert">
+                    <em>Kunden är med på blacklist och får ej boka!</em>
+                </div>
             </div>
         </div>
         <form action="createbooking" method="post">
