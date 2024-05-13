@@ -86,16 +86,16 @@
             -->
 
             <tr>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{/contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'companyName') ? 'DESC' : 'ASC'},
                     sortCol=companyName, search=${search})}">Företag <i th:class="${sortCol == 'companyName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up': 'fa-solid fa-sort-down')"></i>
                     </a>
                 </th>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'contactName') ? 'DESC' : 'ASC'},
                     sortCol=contactName, search=${search})}">Kontaktperson <i th:class="${sortCol == 'contactName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up': 'fa-solid fa-sort-down')"></i></a>
                 </th>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'country') ? 'DESC' : 'ASC'},
                       sortCol=country, search=${search})}">Land <i th:class="${sortCol == 'country'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up': 'fa-solid fa-sort-down')"></i></a>
                 </th>
