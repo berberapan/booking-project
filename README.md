@@ -10,7 +10,7 @@ Systemet hanterar även information om pensionatets olika rum och deras tillgän
 Utöver detta hanterar systemet kontraktkunder, levernatörer samt svartlistade personer genom kommunikation med externa resurser.
 
 Arbetet gjordes som ett team, dels under två veckor som en del i kursen Backend 1 och dels under 4 veckor i kursen Backend 2, på Nackademin. 
-Utöver Java-programmering och att arbeta med "Code First", Spring Boot, Hivernate och Thymeleaf fick gruppen ytterligare erfarenhet av att 
+Utöver Java-programmering och att arbeta med "Code First", Spring Boot, Hibernate och Thymeleaf fick gruppen ytterligare erfarenhet av att 
 arbeta i en agil process med sprintplanering, scrum-board, daily stand-ups och sprintdemo för kund. 
 
 # Medverkande
