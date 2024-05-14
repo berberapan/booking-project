@@ -48,15 +48,15 @@
     <table id="cc-table" class="table table-striped" style="width:100%">
       <thead>
       <tr>
-        <th>Rumsnummer</th>
-        <th>Rumstyp</th>
-        <th>Max antal sängar</th>
-        <th>Pris</th>
+        <th class="table-link">Rumsnummer</th>
+        <th class="table-link">Rumstyp</th>
+        <th class="table-link">Max antal sängar</th>
+        <th class="table-link">Pris</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="room : ${rooms}">
-        <td><a th:href="@{/rooms/{id}(id=${room.id})}" style="cursor: pointer;"><span th:text="${room.roomNumber}">Rumsnummer</span></a></td>
+        <td><a th:href="@{/events(roomNumber=${room.roomNumber})}" style="cursor: pointer;"><span th:text="${room.roomNumber}">Rumsnummer</span></a></td>
         <td th:text="${room.roomType}">Rumstyp</td>
         <td th:text="${room.maxBeds}">Max antal sängar</td>
         <td th:text="${room.pricePerNight + ' kr'}">Pris</td>

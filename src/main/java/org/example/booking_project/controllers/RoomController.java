@@ -25,4 +25,9 @@ public class RoomController {
         model.addAttribute("rooms", rooms);
         return "allRooms";
     }
+
+    @GetMapping("events")
+    public String getEvents() {
+        return "roomEvent";
+    }
 }
