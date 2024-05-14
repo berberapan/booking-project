@@ -43,7 +43,7 @@
     </nav>
 </div>
 <div class="container mt-4">
-    <h1 class="text-center mb-5">Avtalskunder</h1>
+    <h1 class="text-center mb-5 mt-5">Avtalskunder</h1>
     <div th:if="${customers.size() > 0}">
         <form action="/contractCustomer" method="get" class="d-flex flex-row justify-content-end mb-3">
             <div class="mr-2">
@@ -86,17 +86,18 @@
             -->
 
             <tr>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{/contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'companyName') ? 'DESC' : 'ASC'},
-                    sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                    sortCol=companyName, search=${search})}">Företag<i th:class="${sortCol == 'companyName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i>
+                    </a>
                 </th>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'contactName') ? 'DESC' : 'ASC'},
-                    sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                    sortCol=contactName, search=${search})}">Kontakt<i th:class="${sortCol == 'contactName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i></a>
                 </th>
-                <th class="table-link">
+                <th class="table-link col-md-4">
                     <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'country') ? 'DESC' : 'ASC'},
-                      sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                      sortCol=country, search=${search})}">Land<i th:class="${sortCol == 'country'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i></a>
                 </th>
             </tr>
             </thead>
