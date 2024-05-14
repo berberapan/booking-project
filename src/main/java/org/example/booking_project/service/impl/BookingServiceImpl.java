@@ -16,10 +16,13 @@ import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
@@ -64,12 +67,26 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public double calculatePrice(BookingDTO b) {
-        double finalPrice;
+        //ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
 
-        double priceBeforeDiscounts = ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
+        double finalPrice = 0;
 
-        finalPrice = priceBeforeDiscounts * 0.98;
+        double priceForThisDay;
 
+        //Kollar räknar ihop totalpriset samt ger 2% rabatt för eventuell söndagsnatt.
+        for (LocalDate thisDate = b.getCheckInDate(); thisDate.isBefore(b.getCheckOutDate()); thisDate = thisDate.plusDays(1)){
+            if(thisDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+                priceForThisDay = b.getRoom().getPricePerNight() * 0.98;
+            }
+            else  { priceForThisDay = b.getRoom().getPricePerNight();}
+
+            finalPrice = finalPrice + priceForThisDay;
+        }
+
+        //Ger 0.5% rabatt vid bokningar minst 2 nätter.
+        if(ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) >= 2){
+            finalPrice = finalPrice * 0.995;
+        }
         return finalPrice;
     }
 
