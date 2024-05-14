@@ -24,7 +24,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
                         <a class="dropdown-item" href="/book">Boka rum</a>
                         <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
-                        <a class="dropdown-item" href="">Alla rum</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -42,9 +42,9 @@
     </nav>
 </div>
 <div class="container mt-4">
-    <h1 class="text-center mb-5 mt-5" th:text="Logg rum ${roomNr}">Logg</h1>
+    <h1 class="text-center mb-5 mt-5">Logg rum ${roomNr}</h1>
 
-    <div th:if="${events.size() > 0}">
+    <div th:if="${events?.size() > 0}">
         <table id="event-table" class="table table-striped" style="width:100%">
             <thead>
             <tr>
@@ -56,15 +56,15 @@
             <tbody>
             <tr th:each="event : ${events}">
                 <td th:text="${event.type}">Städning påbörjat</td>
-                <td th:text="${event.CleaningByUser}">Per Persson</td>
-                <td th:text="${event.TimeStamp}">2022-12-12 18:11:04</td>
+                <td th:text="${event.cleaningByUser}">Per Persson</td>
+                <td th:text="${event.timeStamp}">2022-12-12 18:11:04</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="" th:unless="${events.size() > 0}">
+    <div class="" th:unless="${events?.size() > 0}">
         <div class="alert alert-danger text-center" role="alert">Ingen aktivitet registrerad på detta rum</div>
-        <a class="btn btn-success" href="/contractCustomer" role="button">Gå tillbaka</a>
+        <a class="btn btn-success" href="/" role="button">Gå tillbaka</a>
     </div>
 </div>
 </body>
