@@ -64,7 +64,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public double calculatePrice(BookingDTO b) {
-        return ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
+        double finalPrice;
+
+        double priceBeforeDiscounts = ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) * b.getRoom().getPricePerNight();
+
+        finalPrice = priceBeforeDiscounts * 0.98;
+
+        return finalPrice;
     }
 
     @Override
