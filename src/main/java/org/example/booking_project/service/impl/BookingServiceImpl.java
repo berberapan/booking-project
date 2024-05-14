@@ -17,7 +17,6 @@ import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -102,6 +101,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return finalPrice * (1 - fullDiscount);
+
     }
 
     @Override
