@@ -107,8 +107,11 @@ public class BookingServiceImpl implements BookingService {
     public long bookedNightsLastYear(CustomerDTO customer) {
         long nights = 0;
 
+        LocalDate today = LocalDate.now();
+
         for (Booking b : bookingRepo.findAll()){
-            if(b.getCustomer().getCustomerNumber().equals(customer.getCustomerNumber())){
+            if(b.getCustomer().getCustomerNumber().equals(customer.getCustomerNumber()) &&
+            b.getCheckInDate().isAfter(today.minusYears(1)) ){
                 nights = nights + ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate());
             }
         }
