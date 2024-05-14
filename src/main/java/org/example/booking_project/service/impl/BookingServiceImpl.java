@@ -76,13 +76,17 @@ public class BookingServiceImpl implements BookingService {
     public double calculatePrice(BookingDTO b) {
 
         double finalPrice = 0;
+        double fullDiscount = 0;
+        double discountSundayNight = 0.02;
+        double discountOverTwoNights = 0.005;
+        double discountOverTenNights = 0.02;
 
         double priceForThisDay;
 
         //Räknar ihop totalpriset samt ger 2% rabatt för eventuell söndagsnatt.
         for (LocalDate thisDate = b.getCheckInDate(); thisDate.isBefore(b.getCheckOutDate()); thisDate = thisDate.plusDays(1)) {
             if (thisDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                priceForThisDay = b.getRoom().getPricePerNight() * 0.98;
+                priceForThisDay = b.getRoom().getPricePerNight() * (1 - discountSundayNight);
             } else {
                 priceForThisDay = b.getRoom().getPricePerNight();
             }
@@ -92,26 +96,26 @@ public class BookingServiceImpl implements BookingService {
 
         //Ger 0.5% rabatt på totalpriset vid bokningar minst 2 nätter.
         if (ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate()) >= 2) {
-            finalPrice = finalPrice * 0.995;
+            fullDiscount = fullDiscount + discountOverTwoNights;
         }
 
         //Ger 2% rabatt på totalpriset om kunden har bokat minst 10 nätter senaste året
         if (bookedNightsLastYear(b.getCustomer()) >= 10) {
-            finalPrice = finalPrice * 0.98;
+            fullDiscount = fullDiscount + discountOverTenNights;
         }
 
-        return finalPrice;
+        return finalPrice * (1 - fullDiscount);
     }
 
     @Override
-    public long bookedNightsLastYear(CustomerDTO customer) {
+    public long bookedNightsLastYear(CustomerDTO customer) {    //Returnerar antal bokade nätter senaste året från dagens datum
         long nights = 0;
 
         LocalDate today = LocalDate.now();
 
-        for (Booking b : bookingRepo.findAll()){
-            if(b.getCustomer().getCustomerNumber().equals(customer.getCustomerNumber()) &&
-            b.getCheckInDate().isAfter(today.minusYears(1)) ){
+        for (Booking b : bookingRepo.findAll()) {
+            if (b.getCustomer().getCustomerNumber().equals(customer.getCustomerNumber()) &&
+                    b.getCheckInDate().isAfter(today.minusYears(1))) {
                 nights = nights + ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate());
             }
         }
