@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avtalskunder</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="/"><i>Startsida</i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Bokningshantering
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+            <a class="dropdown-item" href="/book">Boka rum</a>
+            <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+            <a class="dropdown-item" href="/rooms">Alla rum</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Kundhantering
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+            <a class="dropdown-item" href="/customer/search">Sök kund</a>
+            <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+            <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container mt-4">
+  <h1 class="text-center mb-5 mt-5">Alla rum</h1>
+  <div th:if="${not #lists.isEmpty(rooms)}">
+    <table id="cc-table" class="table table-striped" style="width:100%">
+      <thead>
+      <tr>
+        <th>Rumsnummer</th>
+        <th>Rumstyp</th>
+        <th>Max antal sängar</th>
+        <th>Pris</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="room : ${rooms}">
+        <td><a th:href="@{/rooms/{id}(id=${room.id})}" style="cursor: pointer;"><span th:text="${room.roomNumber}">Rumsnummer</span></a></td>
+        <td th:text="${room.roomType}">Rumstyp</td>
+        <td th:text="${room.maxBeds}">Max antal sängar</td>
+        <td th:text="${room.pricePerNight + ' kr'}">Pris</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:unless="${not #lists.isEmpty(rooms)}">
+    <div class="alert alert-danger text-center" role="alert">Inga rum hittades</div>
+    <a class="btn btn-success" href="/" role="button">Gå tillbaka</a>
+  </div>
+</div>

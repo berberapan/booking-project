@@ -25,20 +25,38 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation:3.2.5")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.1")
+    implementation("org.yaml:snakeyaml")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
+    implementation("com.rabbitmq:amqp-client")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
     compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val integrationTestTask = tasks.register<Test>("integrationTest") {
+    group = "verification"
+    filter {
+        includeTestsMatching("*IT")
+    }
+}
+
+tasks.test{
+    filter{
+        includeTestsMatching("*Tests")
+
+    }
+}
+
+tasks.check {
+    dependsOn(integrationTestTask)
 }
