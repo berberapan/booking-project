@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avtalskund</title>
-    <!-- Lägg till Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
@@ -43,7 +42,7 @@
     </nav>
 </div>
 <div class="container mt-4">
-    <div class="customer-details">
+    <div class="customer-details d-flex flex-column">
         <h2>Kundinformation</h2>
         <br>
         <p><strong>Företagsnamn:</strong> <span th:text="${customer.companyName}"></span></p>
@@ -55,6 +54,9 @@
         <p><strong>Land:</strong> <span th:text="${customer.country}"></span></p>
         <p><strong>Telefonnummer:</strong> <span th:text="${customer.phone}"></span></p>
         <p><strong>Fax:</strong> <span th:text="${customer.fax}"></span></p>
+        <div class="mt-auto">
+        <a class="btn btn-success" style="float: right" href="/contractCustomer" role="button">Gå tillbaka</a>
+        </div>
     </div>
 </div>
 </body>
