@@ -14,7 +14,6 @@ import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
-import org.example.booking_project.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 
