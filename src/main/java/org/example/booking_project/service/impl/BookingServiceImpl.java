@@ -17,6 +17,7 @@ import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -34,13 +35,16 @@ public class BookingServiceImpl implements BookingService {
     BookingRepo bookingRepo;
     CustomerRepo customerRepo;
     RoomServiceImpl roomServiceImpl;
+    CustomerServiceImpl customerServiceImpl;
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl) {
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl,
+                              CustomerServiceImpl customerServiceImpl) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomServiceImpl = roomServiceImpl;
+        this.customerServiceImpl = customerServiceImpl;
     }
 
     @Override
@@ -108,11 +112,10 @@ public class BookingServiceImpl implements BookingService {
     public long bookedNightsLastYear(CustomerDTO customer) {    //Returnerar antal bokade nätter senaste året från dagens datum
         long nights = 0;
 
-        for (Booking b : bookingRepo.findAll()) {
-            if (b.getCustomer().getCustomerNumber().equals(customer.getCustomerNumber()) &&
-                    b.getCheckInDate().isAfter(LocalDate.now().minusYears(1))) {
-                nights = nights + ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate());
-            }
+        for (Booking b : bookingRepo.findAllByCustomerAndCheckInDateAfter(
+                customerServiceImpl.customerDTOToCustomer(customer),
+                LocalDate.now().minusYears(1).minusDays(1))) {
+            nights = nights + ChronoUnit.DAYS.between(b.getCheckInDate(), b.getCheckOutDate());
         }
 
         return nights;

@@ -36,9 +36,12 @@ class BookingServiceImplTest {
 
     @Mock
     private RoomServiceImpl roomServiceImpl;
+
+    @Mock
+    private CustomerServiceImpl customerServiceImpl;
     @InjectMocks
 
-    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl);
+    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
 
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
@@ -84,7 +87,7 @@ class BookingServiceImplTest {
     @Test
     void generateBookingNr() {
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(testbooking1));
-        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl);
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl,customerServiceImpl);
         String testBookingNr = service2.generateBookingNr();
         assertEquals("BN102", testBookingNr);
     }
