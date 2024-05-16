@@ -136,7 +136,8 @@ public class BookingController {
         if (cs.existsCustomerByEmail(customer.getEmail())) {
             BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
             model.addAttribute("booking", bdto);
-            model.addAttribute("totalPrice", bs.calculatePrice(bdto));
+
+            model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
 
             return "bookingConfirmation.html";
         }

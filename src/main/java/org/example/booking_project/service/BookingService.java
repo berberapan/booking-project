@@ -20,6 +20,8 @@ public interface BookingService {
 
     public double calculatePrice(BookingDTO b);
 
+    public long bookedNightsLastYear(CustomerDTO customer);
+
     public BookingDTO addBooking(CustomerDTO customerDTO, MiniBookingDTO miniBookingDTO, String roomNumber);
 
     public String generateBookingNr();
