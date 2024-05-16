@@ -19,7 +19,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Bokningshantering
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
@@ -29,7 +30,8 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Kundhantering
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
@@ -43,30 +45,45 @@
     </nav>
 </div>
 <div class="container mt-4">
-    <h1 class="text-center mb-5 mt-5">Logg rum ${roomNr}</h1>
+    <h1 class="text-center mb-5 mt-5" th:text="'Logg för rum ' + ${roomNumber}"></h1>
 
-    <div th:if="${events?.size() > 0}">
+    <div th:unless="${#lists.isEmpty(events)}">
         <table id="event-table" class="table table-striped" style="width:100%">
             <thead>
             <tr>
                 <th class="table-link col-md-4">Aktivitet</th>
-                <th class="table-link col-md-4">Namn</th>
                 <th class="table-link col-md-4">Klockslag</th>
+                <th class="table-link col-md-4">Namn</th>
             </tr>
             </thead>
             <tbody>
+
             <tr th:each="event : ${events}">
-                <td th:text="${event.type}">Städning påbörjat</td>
-                <td th:text="${event.cleaningByUser}">Per Persson</td>
-                <td th:text="${event.timeStamp}">2022-12-12 18:11:04</td>
+
+                <td th:switch="${event.getType()}">
+                    <p th:case="'RoomCleaningFinished'">Städning avslutat</p>
+                    <p th:case="'RoomCleaningStarted'">Städning påbörjat</p>
+                    <p th:case="'RoomClosed'">Dörren stängd</p>
+                    <p th:case="'RoomOpened'">Dörren öppnad</p>
+                </td>
+
+                <td th:text="${#temporals.format(event.TimeStamp, 'dd-MM-yyyy HH:mm')}"></td>
+
+
+                <td>
+                    <div th:if="${event.getType()} eq 'RoomCleaningFinished' or ${event.getType()} eq 'RoomCleaningStarted'"
+                         th:text="${event.CleaningByUser}">
+                        <p th:text="${event.CleaningByUser}"></p>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="" th:unless="${events?.size() > 0}">
-        <div class="alert alert-danger text-center" role="alert">Ingen aktivitet registrerad på detta rum</div>
-        <a class="btn btn-success" href="/" role="button">Gå tillbaka</a>
-    </div>
-</div>
+   <div th:if="${#lists.isEmpty(events)}">
+       <div class="alert alert-danger text-center" role="alert">Ingen aktivitet registrerad på detta rum</div>
+       <a class="btn btn-success" href="/" role="button">Gå tillbaka</a>
+   </div>
+</div>-->
 </body>
 </html>

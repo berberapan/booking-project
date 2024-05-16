@@ -28,11 +28,12 @@ dependencies {
     implementation("org.yaml:snakeyaml")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3") // Behövdes för Marias fil-inläsning. Inget viktigt
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("com.rabbitmq:amqp-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
+    implementation("com.github.javafaker:javafaker:1.0.2") { exclude("org.yaml") }
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")
@@ -50,8 +51,8 @@ val integrationTestTask = tasks.register<Test>("integrationTest") {
     }
 }
 
-tasks.test{
-    filter{
+tasks.test {
+    filter {
         includeTestsMatching("*Tests")
 
     }

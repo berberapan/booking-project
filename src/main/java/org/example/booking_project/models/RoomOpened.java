@@ -1,5 +1,9 @@
 package org.example.booking_project.models;
 
-public class RoomOpened extends EventBase{
+import jakarta.persistence.Entity;
+
+
+@Entity(name = "RoomOpened")
+public class RoomOpened extends EventBase {
     public String RoomNo;
 }

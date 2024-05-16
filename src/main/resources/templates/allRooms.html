@@ -57,7 +57,7 @@
       </thead>
       <tbody>
       <tr th:each="room : ${rooms}">
-        <td><a th:href="@{/events(roomNumber=${room.roomNumber})}" style="cursor: pointer;"><span th:text="${room.roomNumber}">Rumsnummer</span></a></td>
+        <td><a th:href="@{/events/{roomNumber}(roomNumber=${room.roomNumber})}" style="cursor: pointer;"><span th:text="${room.roomNumber}">Rumsnummer</span></a></td>
         <td th:text="${room.roomType}">Rumstyp</td>
         <td th:text="${room.maxBeds}">Max antal sängar</td>
         <td th:text="${room.pricePerNight + ' kr'}">Pris</td>
