@@ -1,22 +1,31 @@
 package org.example.booking_project.service.impl;
 
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.example.booking_project.Dtos.ContractCustomerDTO;
+import org.example.booking_project.models.AllCustomers;
 import org.example.booking_project.models.ContractCustomer;
 import org.example.booking_project.repos.ContractCustomerRepo;
 import org.example.booking_project.service.ContractCustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     private final ContractCustomerRepo contractCustomerRepo;
+    private final XmlStreamProvider xmlStreamProvider;
 
-    public ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo) {
+    @Autowired
+    ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo, XmlStreamProvider xmlStreamProvider){
         this.contractCustomerRepo = contractCustomerRepo;
+        this.xmlStreamProvider = xmlStreamProvider;
     }
-
 
     @Override
     public ContractCustomerDTO contractCustomerToContractCustomerDTO(ContractCustomer c) {
@@ -65,6 +74,22 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public List<ContractCustomerDTO> getAllContractCustomers() {
-        return contractCustomerRepo.findAll().stream().map(this::contractCustomerToContractCustomerDTO).toList();
+        List<ContractCustomer> contractCustomers = contractCustomerRepo.findAll();
+        return contractCustomers.stream()
+                .map(this::contractCustomerToContractCustomerDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContractCustomerDTO> getContractCustomers() throws IOException {
+        JacksonXmlModule module = new JacksonXmlModule();
+        module.setDefaultUseWrapper(false);
+        XmlMapper xmlMapper = new XmlMapper(module);
+        try (InputStream stream = xmlStreamProvider.getDataStream()) {
+            AllCustomers customers = xmlMapper.readValue(stream, AllCustomers.class);
+            return customers.customers.stream()
+                    .map(this::contractCustomerToContractCustomerDTO)
+                    .collect(Collectors.toList());
+        }
     }
 }
