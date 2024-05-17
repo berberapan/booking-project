@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avtalskunder</title>
+  <title>Alla rum</title>
   <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -64,9 +64,5 @@
       </tr>
       </tbody>
     </table>
-  </div>
-  <div th:unless="${not #lists.isEmpty(rooms)}">
-    <div class="alert alert-danger text-center" role="alert">Inga rum hittades</div>
-    <a class="btn btn-success" href="/" role="button">Gå tillbaka</a>
   </div>
 </div>
