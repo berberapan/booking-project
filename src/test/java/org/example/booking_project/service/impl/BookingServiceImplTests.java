@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class BookingServiceImplTest {
+class BookingServiceImplTests {
 
     @Mock
     private BookingRepo bookingRepo;

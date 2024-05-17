@@ -29,5 +29,4 @@ class BookingProjectApplicationTests {
         assertThat(customerController).isNotNull();
         assertThat(roomController).isNotNull();
     }
-
 }

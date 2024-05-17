@@ -1,6 +1,5 @@
 package org.example.booking_project.controllers;
 
-import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -25,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BookingControllerTest {
+class BookingControllerTests {
 
     @MockBean
     private CustomerRepo mockRepo;
