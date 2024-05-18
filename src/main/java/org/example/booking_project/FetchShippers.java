@@ -2,6 +2,7 @@ package org.example.booking_project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.EventBase;
 import org.example.booking_project.models.Shipper;
 import org.example.booking_project.repos.EventRepo;
@@ -25,7 +26,6 @@ public class FetchShippers implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Jahapp! Nu kör vi FetchShippers!");
 
         JsonMapper jm = new JsonMapper();
 
@@ -36,7 +36,7 @@ public class FetchShippers implements CommandLineRunner {
             ssimpl.updateOrAddShipper(s.getId(), ssimpl.shipperToShipperDTO(s));
         }
 
-
+/*
 //------OBS TA BORT SEN!!!! = Mock-data för Room event
         ObjectMapper objMapper = new ObjectMapper();
         objMapper.findAndRegisterModules();
@@ -48,5 +48,6 @@ public class FetchShippers implements CommandLineRunner {
             eventRepo.save(ev);
             //ssimpl.updateOrAddShipper(s.getId(), ssimpl.shipperToShipperDTO(s));
         }
+        */
     }
 }

@@ -1,15 +1,19 @@
 package org.example.booking_project.service.impl;
 
 import org.example.booking_project.Dtos.ShipperDTO;
+import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Shipper;
 import org.example.booking_project.repos.ShipperRepo;
 import org.example.booking_project.service.ShipperService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShipperServiceImpl implements ShipperService {
 
     private final ShipperRepo shipperRepo;
+    private static final Logger log = LoggerFactory.getLogger(ShipperServiceImpl.class);
 
     public ShipperServiceImpl(ShipperRepo shipperRepo){
         this.shipperRepo = shipperRepo;
@@ -33,6 +37,7 @@ public class ShipperServiceImpl implements ShipperService {
 
     @Override
     public void updateOrAddShipper(Long id, ShipperDTO shipperDTO) {
+        log.info("Fetching shippers.");
         Shipper existingShipper = shipperRepo.findById(id).orElse(null);
         if (existingShipper != null) {
             existingShipper.setEmail(shipperDTO.getEmail());
@@ -46,11 +51,11 @@ public class ShipperServiceImpl implements ShipperService {
             existingShipper.setPhone(shipperDTO.getPhone());
             existingShipper.setFax(shipperDTO.getFax());
             shipperRepo.save(existingShipper);
-            System.out.println(existingShipper.getCompanyName() +" updated");
+            log.info("{} updated", existingShipper.getCompanyName());
         } else {
             Shipper newShipper = shipperDTOToShipper(shipperDTO);
             shipperRepo.save(newShipper);
-            System.out.println(newShipper.getCompanyName() +" added");
+            log.info("{} added", newShipper.getCompanyName());
         }
     }
 }
