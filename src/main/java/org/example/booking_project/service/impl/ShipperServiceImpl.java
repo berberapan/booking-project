@@ -37,7 +37,6 @@ public class ShipperServiceImpl implements ShipperService {
 
     @Override
     public void updateOrAddShipper(Long id, ShipperDTO shipperDTO) {
-        log.info("Fetching shippers.");
         Shipper existingShipper = shipperRepo.findById(id).orElse(null);
         if (existingShipper != null) {
             existingShipper.setEmail(shipperDTO.getEmail());
