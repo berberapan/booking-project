@@ -31,21 +31,12 @@ public class FetchShippers implements CommandLineRunner {
         this.jsonStreamProvider = jsonStreamProvider;
     }
 
-    public void fetchShippersToDatabase() throws Exception {
-        JsonMapper jm = new JsonMapper();
-        InputStream data = jsonStreamProvider.getDataStream();
 
-        Shipper[] allShippers = jm.readValue(data, Shipper[].class);
-
-        for (Shipper s : allShippers) {
-            ssimpl.updateOrAddShipper(s.getId(), ssimpl.shipperToShipperDTO(s));
-        }
-    }
 
     @Override
     public void run(String... args) throws Exception {
         log.info("Fetching shippers");
-        fetchShippersToDatabase();
+        ssimpl.shippersToDatabase(ssimpl.shippersJsonMapper());
 
 
 /*

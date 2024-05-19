@@ -1,5 +1,6 @@
 package org.example.booking_project.service.impl;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.example.booking_project.Dtos.ShipperDTO;
 import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Shipper;
@@ -9,14 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 @Service
 public class ShipperServiceImpl implements ShipperService {
 
     private final ShipperRepo shipperRepo;
+    private final JsonStreamProvider jsp;
     private static final Logger log = LoggerFactory.getLogger(ShipperServiceImpl.class);
 
-    public ShipperServiceImpl(ShipperRepo shipperRepo){
+    public ShipperServiceImpl(ShipperRepo shipperRepo, JsonStreamProvider jsp){
         this.shipperRepo = shipperRepo;
+        this.jsp = jsp;
     }
 
     @Override
@@ -55,6 +61,18 @@ public class ShipperServiceImpl implements ShipperService {
             Shipper newShipper = shipperDTOToShipper(shipperDTO);
             shipperRepo.save(newShipper);
             log.info("{} added", newShipper.getCompanyName());
+        }
+    }
+
+    public Shipper[] shippersJsonMapper() throws IOException {
+        JsonMapper jm = new JsonMapper();
+        InputStream data = jsp.getDataStream();
+        return jm.readValue(data, Shipper[].class);
+    }
+
+    public void shippersToDatabase(Shipper[] allShippers) {
+        for (Shipper s : allShippers) {
+            updateOrAddShipper(s.getId(), shipperToShipperDTO(s));
         }
     }
 }
