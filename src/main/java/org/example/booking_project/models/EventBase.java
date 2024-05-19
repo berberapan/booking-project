@@ -3,6 +3,7 @@ package org.example.booking_project.models;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,13 @@ public class EventBase {
     @GeneratedValue
     public Long id;
 
+    @NotEmpty(message = "Type är obligatoriskt")
+    @Size(min = 4,message = "Type måste vara minst 3 tecken")
+    @Pattern(regexp = "^[A-Öa-ö]*$", message = "Type får endast innehålla bokstäver")
     public String type;
+
+    @NotNull(message = "Timestamp är obligatoriskt")
+    @PastOrPresent(message = "Timestamp får inte vara i framtiden")
     public LocalDateTime TimeStamp;
 }
 
