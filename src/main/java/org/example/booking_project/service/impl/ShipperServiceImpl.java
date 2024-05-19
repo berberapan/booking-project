@@ -64,12 +64,14 @@ public class ShipperServiceImpl implements ShipperService {
         }
     }
 
+    @Override
     public Shipper[] shippersJsonMapper() throws IOException {
         JsonMapper jm = new JsonMapper();
         InputStream data = jsp.getDataStream();
         return jm.readValue(data, Shipper[].class);
     }
 
+    @Override
     public void shippersToDatabase(Shipper[] allShippers) {
         for (Shipper s : allShippers) {
             updateOrAddShipper(s.getId(), shipperToShipperDTO(s));
