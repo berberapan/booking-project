@@ -1,18 +1,20 @@
 package org.example.booking_project.Dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
+@Setter
+@Getter
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 public class EventBaseDTO {
-    private Long id;
-    private String type;
-    private LocalDateTime timeStamp;
+    public Long id;
+    public String type;
+    public LocalDateTime TimeStamp;
+    public String roomNo;
+    public String CleaningByUser;
 }

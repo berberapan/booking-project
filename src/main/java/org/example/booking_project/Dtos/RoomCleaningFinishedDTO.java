@@ -1,20 +1,9 @@
 package org.example.booking_project.Dtos;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+//@EqualsAndHashCode(callSuper = true)
+//@Data
+public class RoomCleaningFinishedDTO  {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class RoomCleaningFinishedDTO extends EventBaseDTO {
-
-    @NotEmpty
     public String RoomNo;
-
-    @NotEmpty
     public String CleaningByUser;
 }

@@ -26,7 +26,6 @@ public class EventBase {
     @Id
     @GeneratedValue
     public Long id;
-
     public String type;
     public LocalDateTime TimeStamp;
 }

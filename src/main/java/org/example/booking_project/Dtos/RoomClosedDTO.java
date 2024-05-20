@@ -1,15 +1,7 @@
 package org.example.booking_project.Dtos;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class RoomClosedDTO extends EventBaseDTO {
-
-    @NotEmpty
+//@EqualsAndHashCode(callSuper = true)
+//@Data
+public class RoomClosedDTO  {
     public String RoomNo;
-
 }
