@@ -42,11 +42,9 @@ class DiscountServiceTests {
         Booking booking2 = new Booking("BN100", test, testroom, 2, LocalDate.now().minusYears(1).minusDays(5), LocalDate.now().minusYears(1).minusDays(4));
 
         List<Booking> bookings = List.of(booking1, booking2);
-       // List<Booking> bookingsCurrentYear = bookings.stream().filter(b -> b.getCheckInDate().isAfter(LocalDate.now().minusYears(1).minusDays(1))).toList();
 
-        when(bookingRepo.findAllByCustomerAndCheckInDateAfter(eq(test), eq(LocalDate.now().minusYears(1).minusDays(1)))).thenReturn(bookings);
-
-        System.out.println(booking2.getCheckInDate());
+        when(bookingRepo.findAllByCustomerAndCheckInDateAfter(eq(test), eq(LocalDate.now().minusYears(1).minusDays(1)))).thenReturn(
+                bookings.stream().filter(b -> b.getCheckInDate().isAfter(LocalDate.now().minusYears(1).minusDays(1))).toList());
 
         assertEquals(2, sut.bookedNightsLastYear(testDTO));
     }
