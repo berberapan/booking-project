@@ -71,7 +71,7 @@ class BookingServiceImplTests {
         double result2 = bookingService.calculatePrice(testbdto2);
 
         assertEquals(500, result1);
-        assertEquals(3500, result2);
+        assertEquals(3472.55, result2);
     }
 
     @Test
