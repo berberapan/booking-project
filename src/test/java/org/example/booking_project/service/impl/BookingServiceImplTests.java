@@ -52,12 +52,12 @@ class BookingServiceImplTests {
     private Room testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
     private Room testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
     private RoomDTO testroomDTO = new RoomDTO((long) 321, 101, 3, 500, RoomType.DOUBLE);
-    private LocalDate checkIn = LocalDate.parse("2024-10-01");
-    private LocalDate checkOut1 = LocalDate.parse("2024-10-02");
-    private LocalDate checkOut2 = LocalDate.parse("2024-10-08");
+    private LocalDate checkIn = LocalDate.now().plusMonths(1);    //LocalDate.parse("2024-10-01");
+    private LocalDate checkOut1 = LocalDate.now().plusMonths(1).plusDays(1);   //LocalDate.parse("2024-10-02");
+    private LocalDate checkOut2 = LocalDate.now().plusMonths(1).plusDays(7);  //LocalDate.parse("2024-10-08");
 
-    private Booking testbooking1 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut1);
-    private Booking testbooking2 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut2);
+    private Booking testbooking1;
+    private Booking testbooking2;
 
     private BookingDTO actualBookingDTO = new BookingDTO((long) 213, "BN101", testcustomerDTO, testroomDTO, 2, checkIn, checkOut1);
 
@@ -69,6 +69,8 @@ class BookingServiceImplTests {
     @BeforeEach
     void setUp(){
         bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
+        testbooking1 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut1);
+        testbooking2 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut2);
         testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
         testbdto2 = bookingService.bookingToBookingDTO(testbooking2);
     }
@@ -119,7 +121,7 @@ class BookingServiceImplTests {
 
         assertEquals(2, booking.getBookedBeds());
         assertEquals("abc@abcdef.se", booking.getCustomer().getEmail());
-        assertEquals(LocalDate.of(2024,10,1), booking.getCheckInDate());
+        assertEquals(LocalDate.now().plusMonths(1), booking.getCheckInDate());
     }
 
     @Test
@@ -140,6 +142,7 @@ class BookingServiceImplTests {
 
         assertEquals("BedsError",result);
     }
+
     @Test
     void UpdateBookingShouldReturnSavedWhenEnoughBedsAndCorrectDates(){
         Booking testbooking3 = new Booking((long) 222, "BN100", testcustomer, testroom, 1, checkIn, checkOut2);
@@ -149,12 +152,39 @@ class BookingServiceImplTests {
 
         assertEquals("Saved",result);
     }
+
     @Test
-    void UpdateBookingShouldReturnErrorWhenExistingbookingIsNull(){
+    void UpdateBookingShouldReturnErrorWhenExistingBookingIsNull(){
         when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.empty());
 
         String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
 
         assertEquals("Error",result);
+    }
+
+    @Test
+    void UpdateBookingShouldReturnDateErrorWhenCheckinIsAfterCheckout(){
+        Booking testbooking3 = new Booking((long) 222, "BN100", testcustomer, testroom, 1, checkIn, checkOut2);
+        when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.of(testbooking3));
+
+        testbdto1.setCheckInDate(LocalDate.now().plusMonths(1).plusDays(1));
+        testbdto1.setCheckOutDate(LocalDate.now().plusMonths(1));
+
+        String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
+
+        assertEquals("DateError",result);
+    }
+
+    @Test
+    void UpdateBookingShouldReturnDateErrorWhenCheckinIsEqualToCheckout(){
+        Booking testbooking3 = new Booking((long) 222, "BN100", testcustomer, testroom, 1, checkIn, checkOut2);
+        when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.of(testbooking3));
+
+        testbdto1.setCheckInDate(LocalDate.now().plusMonths(1).plusDays(1));
+        testbdto1.setCheckOutDate(LocalDate.now().plusMonths(1).plusDays(1));
+
+        String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
+
+        assertEquals("DateError",result);
     }
 }
