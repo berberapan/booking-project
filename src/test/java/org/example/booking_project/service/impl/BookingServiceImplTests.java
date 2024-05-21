@@ -10,14 +10,19 @@ import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +30,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class BookingServiceImplTests {
-
     @Mock
     private BookingRepo bookingRepo;
 
@@ -37,8 +41,8 @@ class BookingServiceImplTests {
 
     @Mock
     private CustomerServiceImpl customerServiceImpl;
-    @InjectMocks
-    private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
+
+    private BookingServiceImpl bookingService;
 
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
@@ -46,6 +50,7 @@ class BookingServiceImplTests {
     private CustomerDTO testcustomerDTO = new CustomerDTO((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
     private Room testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
+    private Room testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
     private RoomDTO testroomDTO = new RoomDTO((long) 321, 101, 3, 500, RoomType.DOUBLE);
     private LocalDate checkIn = LocalDate.parse("2024-10-01");
     private LocalDate checkOut1 = LocalDate.parse("2024-10-02");
@@ -56,10 +61,17 @@ class BookingServiceImplTests {
 
     private BookingDTO actualBookingDTO = new BookingDTO((long) 213, "BN101", testcustomerDTO, testroomDTO, 2, checkIn, checkOut1);
 
-    private BookingDTO testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
-    private BookingDTO testbdto2 = bookingService.bookingToBookingDTO(testbooking2);
+    private BookingDTO testbdto1;
+    private BookingDTO testbdto2;
 
     private MiniBookingDTO testMini = new MiniBookingDTO(2, checkIn, checkOut1);
+
+    @BeforeEach
+    void setUp(){
+        bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
+        testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
+        testbdto2 = bookingService.bookingToBookingDTO(testbooking2);
+    }
 
     @Test
     void calculatePrice() {
@@ -108,5 +120,41 @@ class BookingServiceImplTests {
         assertEquals(2, booking.getBookedBeds());
         assertEquals("abc@abcdef.se", booking.getCustomer().getEmail());
         assertEquals(LocalDate.of(2024,10,1), booking.getCheckInDate());
+    }
+
+    @Test
+    void isNumericShouldReturnTrueOnNumberAndFalseOnNumberFormatException(){
+        boolean b1 = bookingService.isNumeric("123");
+        boolean b2 = bookingService.isNumeric("ABC");
+
+        assertTrue(b1);
+        assertFalse(b2);
+    }
+
+    @Test
+    void UpdateBookingShouldReturnBedsErrorWhenTooManyBedsInDTO(){
+        Booking testbooking3 = new Booking((long) 222, "BN100", testcustomer, testroom2, 1, checkIn, checkOut2);
+        when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.of(testbooking3));
+
+        String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
+
+        assertEquals("BedsError",result);
+    }
+    @Test
+    void UpdateBookingShouldReturnSavedWhenEnoughBedsAndCorrectDates(){
+        Booking testbooking3 = new Booking((long) 222, "BN100", testcustomer, testroom, 1, checkIn, checkOut2);
+        when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.of(testbooking3));
+
+        String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
+
+        assertEquals("Saved",result);
+    }
+    @Test
+    void UpdateBookingShouldReturnErrorWhenExistingbookingIsNull(){
+        when(bookingRepo.findById(testbdto1.getId())).thenReturn(Optional.empty());
+
+        String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
+
+        assertEquals("Error",result);
     }
 }
