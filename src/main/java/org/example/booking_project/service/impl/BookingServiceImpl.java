@@ -190,7 +190,7 @@ public class BookingServiceImpl implements BookingService {
         List<BookingDTO> filteredBookingList = listBDTO.stream().
                 filter(r -> r.getRoom().getId() == roomID).
                 filter(bookingDTO -> bookingDTO.getId() != bookingID).toList();
-
+        System.out.println(filteredBookingList);
         for (BookingDTO booking : filteredBookingList) {
             if ((booking.getCheckInDate().isBefore(checkOut) || booking.getCheckInDate().isEqual(checkOut)) &&
                     (booking.getCheckOutDate().isAfter(checkIn) || booking.getCheckOutDate().isEqual(checkIn))

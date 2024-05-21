@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.BlockingDeque;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,9 +53,9 @@ class BookingServiceImplTests {
     private Room testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
     private Room testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
     private RoomDTO testroomDTO = new RoomDTO((long) 321, 101, 3, 500, RoomType.DOUBLE);
-    private LocalDate checkIn = LocalDate.now().plusMonths(1);    //LocalDate.parse("2024-10-01");
-    private LocalDate checkOut1 = LocalDate.now().plusMonths(1).plusDays(1);   //LocalDate.parse("2024-10-02");
-    private LocalDate checkOut2 = LocalDate.now().plusMonths(1).plusDays(7);  //LocalDate.parse("2024-10-08");
+    private LocalDate checkIn = LocalDate.now().plusMonths(1);
+    private LocalDate checkOut1 = LocalDate.now().plusMonths(1).plusDays(1);
+    private LocalDate checkOut2 = LocalDate.now().plusMonths(1).plusDays(7);
 
     private Booking testbooking1;
     private Booking testbooking2;
@@ -186,5 +187,14 @@ class BookingServiceImplTests {
         String result = bookingService.updateBooking(testbdto1.getId(),testbdto1);
 
         assertEquals("DateError",result);
+    }
+
+    @Test
+    void CheckAvailabilityRoomTest() {
+        when(bookingService.getAllBookings()).thenReturn(List.of(testbdto1, testbdto2));
+        when(bookingRepo.findAll()).thenReturn(List.of(testbooking1, testbooking2));
+        assertTrue(bookingService.checkAvailabilityInRoom((long) 100, (long) 321, LocalDate.now(), LocalDate.now().plusDays(1)));
+
+        //assertFalse(bookingService.checkAvailabilityInRoom((long) 100, (long) 321, LocalDate.now(), LocalDate.now().plusMonths(1).plusDays(2)));
     }
 }
