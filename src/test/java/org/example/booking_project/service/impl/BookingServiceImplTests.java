@@ -28,8 +28,6 @@ class BookingServiceImplTests {
 
     @Mock
     private BookingRepo bookingRepo;
-    //private CustomerRepo customerRepo;
-    //private RoomServiceImpl roomServiceImpl;
 
     @Mock
     private CustomerRepo customerRepo;
@@ -40,7 +38,6 @@ class BookingServiceImplTests {
     @Mock
     private CustomerServiceImpl customerServiceImpl;
     @InjectMocks
-
     private BookingServiceImpl bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
 
 
