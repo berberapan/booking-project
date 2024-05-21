@@ -50,8 +50,8 @@ class BookingServiceImplTests {
             "012-345678", "abc@abcdef.se");
     private CustomerDTO testcustomerDTO = new CustomerDTO((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
-    private Room testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
-    private Room testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
+    private Room testroom;
+    private Room testroom2;
     private RoomDTO testroomDTO = new RoomDTO((long) 321, 101, 3, 500, RoomType.DOUBLE);
     private LocalDate checkIn = LocalDate.now().plusMonths(1);
     private LocalDate checkOut1 = LocalDate.now().plusMonths(1).plusDays(1);
@@ -70,6 +70,8 @@ class BookingServiceImplTests {
     @BeforeEach
     void setUp(){
         bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
+        testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
+        testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
         testbooking1 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut1);
         testbooking2 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut2);
         testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
@@ -191,10 +193,13 @@ class BookingServiceImplTests {
 
     @Test
     void CheckAvailabilityRoomTest() {
-        when(bookingService.getAllBookings()).thenReturn(List.of(testbdto1, testbdto2));
-        when(bookingRepo.findAll()).thenReturn(List.of(testbooking1, testbooking2));
-        assertTrue(bookingService.checkAvailabilityInRoom((long) 100, (long) 321, LocalDate.now(), LocalDate.now().plusDays(1)));
+        when(bookingService.getAllBookings()).thenReturn(List.of(testbdto1));
+        when(bookingRepo.findAll()).thenReturn(List.of(testbooking1));
 
-        //assertFalse(bookingService.checkAvailabilityInRoom((long) 100, (long) 321, LocalDate.now(), LocalDate.now().plusMonths(1).plusDays(2)));
+        assertTrue(bookingService.checkAvailabilityInRoom(testbdto1.getId()+10, testbdto1.getRoom().getId(),
+                LocalDate.now(), LocalDate.now().plusDays(1)));
+
+        assertFalse(bookingService.checkAvailabilityInRoom(testbdto1.getId()+10, testbdto1.getRoom().getId(),
+                LocalDate.now(), LocalDate.now().plusMonths(1).plusDays(2)));
     }
 }
