@@ -29,6 +29,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3") // Behövdes för Marias fil-inläsning. Inget viktigt
+    implementation("org.modelmapper:modelmapper:2.1.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("com.rabbitmq:amqp-client")

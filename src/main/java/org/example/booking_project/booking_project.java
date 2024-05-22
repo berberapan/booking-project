@@ -33,6 +33,10 @@ public class booking_project {
             fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
             fetchShippersApp.run(args);
 
+        } else if (Objects.equals(args[0], "readqueueapp")) {
+            SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
+            readQueueApp.setWebApplicationType(WebApplicationType.NONE);
+            readQueueApp.run(args);
         }
     }
 /*
