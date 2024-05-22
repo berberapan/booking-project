@@ -116,9 +116,8 @@
     <div>
     <ul class="pagination">
         <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <li th:if="${pageNum == i}" class="page-item active" th:text="${i}"></li>
-            <li th:unless="${pageNum == i}" class="page-item">
-                <a class="page-link" th:href="@{contractCustomer(search=${search}, pageNum=${i})}" th:text="${i}"></a>
+            <li class="page-item" th:classappend="${pageNum == i} ? ' active' : ''">
+                <a class="page-link" th:href="${pageNum == i} ? @{#} : @{contractCustomer(search=${search}, pageNum=${i})}" th:text="${i}"></a>
             </li>
         </th:block>
     </ul>
