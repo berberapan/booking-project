@@ -27,7 +27,7 @@ private final ContractCustomerServiceImpl ccimpl;
         JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
-        String fetchURL = ccimpl.getXmlStreamProvider().getProperties().getFetchurl();
+        String fetchURL = ccimpl.getXmlStreamProvider().getProperties().contractCustomers.fetchurl;
 
         URL url = new URL(fetchURL);
         AllCustomers allCustomers = xmlMapper.readValue(url, AllCustomers.class);

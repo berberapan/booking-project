@@ -10,14 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 @ConfigurationPropertiesScan
 @Configuration
-@ConfigurationProperties (prefix = "integrations")
+@ConfigurationProperties(prefix = "bookings")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IntegrationsProperties {
-    public BookingProperties bookings;
-    public ContractCustomersProperties contractCustomers;
-    public ShippersProperties shippers;
-    public BlacklistProperties blacklist;
+public class BookingProperties {
+    private double discountSundayNight;
+    private double discountOverTwoNights;
+    private double discountOverTenNights;
 }
