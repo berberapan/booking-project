@@ -34,6 +34,7 @@ dependencies {
     implementation("com.rabbitmq:amqp-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.github.javafaker:javafaker:1.0.2") { exclude("org.yaml") }
+    implementation("org.springframework.boot:spring-boot-configuration-processor:3.2.5")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
