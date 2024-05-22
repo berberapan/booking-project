@@ -1,5 +1,6 @@
 package org.example.booking_project.service;
 
+import jakarta.mail.MessagingException;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
@@ -35,4 +36,5 @@ public interface BookingService {
     public BookingDTO getBookingByBookingNr(String bookingNr);
     public boolean checkAvailabilityInRoom(Long bookingID, Long roomID, LocalDate checkIn, LocalDate checkOut);
     public List<BookingDTO> getAllBookings();
+
 }

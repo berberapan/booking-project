@@ -1,5 +1,6 @@
 package org.example.booking_project.controllers;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.example.booking_project.Dtos.BookingDTO;
@@ -7,10 +8,7 @@ import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.service.BookingService;
-import org.example.booking_project.service.impl.BlacklistedServiceImpl;
-import org.example.booking_project.service.impl.BookingServiceImpl;
-import org.example.booking_project.service.impl.CustomerServiceImpl;
-import org.example.booking_project.service.impl.RoomServiceImpl;
+import org.example.booking_project.service.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,12 +28,14 @@ public class BookingController {
     private final RoomServiceImpl rs;
     private final CustomerServiceImpl cs;
     private final BlacklistedServiceImpl bls;
+    private final EmailTemplateServiceImpl ets;
 
-    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService, BlacklistedServiceImpl bls) {
+    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService, BlacklistedServiceImpl bls, EmailTemplateServiceImpl ets) {
         this.rs = rs;
         this.cs = cs;
         this.bs = bs;
         this.bls = bls;
+        this.ets = ets;
     }
 
     @GetMapping("/bookings/delete")
@@ -115,7 +115,7 @@ public class BookingController {
     @RequestMapping("createbooking")
     public String createBooking(@ModelAttribute MiniBookingDTO booking,
                                 @ModelAttribute CustomerDTO customer,
-                                @RequestParam String roomNumber, Model model) throws IOException {
+                                @RequestParam String roomNumber, Model model) throws IOException, MessagingException {
 
         model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
@@ -136,6 +136,8 @@ public class BookingController {
         if (cs.existsCustomerByEmail(customer.getEmail())) {
             BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
             model.addAttribute("booking", bdto);
+
+            ets.sendBookingConfirmationEmail(customer.getEmail(), customer.getCustomerName(), booking.getCheckInDate(), booking.getCheckOutDate());
 
             model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
 

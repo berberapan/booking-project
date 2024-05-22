@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokningsbekräftelse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+<p>Hej <span th:text="${name}">Namn</span>,</p>
+<p>Du har bokat hotellrum från <span th:text="${startDate}">startdate</span> till <span th:text="${endDate}">enddate</span>.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+<h1>Email Templates</h1>
+<a href="/admin/templates/add">Add New Template</a>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="template : ${templates}">
+        <td th:text="${template.name}">Template Name</td>
+        <td th:text="${template.subject}">Template Subject</td>
+        <td>
+            <a th:href="@{/admin/templates/edit/{id}(id=${template.id})}">Edit</a>
+            <a th:href="@{/admin/templates/delete/{id}(id=${template.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

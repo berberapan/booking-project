@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add template</title>
+    <title>Add Email Template</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 th:text="${emailTemplate.id == null} ? 'Add New Template' : 'Edit Template'"></h1>
+    <form th:action="@{/admin/templates/save}" th:object="${emailTemplate}" method="post">
+        <div class="form-group">
+            <label for="name">Template Name</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Enter template name" required>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" class="form-control" th:field="*{subject}" placeholder="Enter subject" required>
+        </div>
+        <div class="form-group">
+            <label for="body">Body</label>
+            <textarea id="body" class="form-control" th:field="*{body}" placeholder="Enter email body" rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Template</button>
+    </form>
+</div>
+</body>
+</html>
