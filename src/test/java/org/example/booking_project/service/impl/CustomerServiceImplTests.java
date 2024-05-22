@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class CustomerServiceImplTest {
+class CustomerServiceImplTests {
 
     @Mock
     private CustomerRepo customerRepo = null;
@@ -27,7 +27,7 @@ class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
     @Autowired
-    public CustomerServiceImplTest(CustomerRepo customerRepo, BookingRepo bookingRepo) {
+    public CustomerServiceImplTests(CustomerRepo customerRepo, BookingRepo bookingRepo) {
         this.customerRepo = customerRepo;
         this.bookingRepo = bookingRepo;
         this.customerService = new CustomerServiceImpl(customerRepo, bookingRepo);
@@ -69,17 +69,17 @@ class CustomerServiceImplTest {
         List<CustomerDTO> customers = service3.getAllCustomers();
 
         assertEquals(2, customers.size());
-        assertEquals(124, testCustomer1.getId());
-        assertEquals("CN102", testCustomer1.getCustomerNumber());
-        assertEquals("Lisa", testCustomer1.getCustomerName());
-        assertEquals("012-666666", testCustomer1.getPhoneNumber());
-        assertEquals("abc@example.se", testCustomer1.getEmail());
+        assertEquals(124, customers.get(1).getId());
+        assertEquals("CN102", customers.get(1).getCustomerNumber());
+        assertEquals("Lisa", customers.get(1).getCustomerName());
+        assertEquals("012-666666", customers.get(1).getPhoneNumber());
+        assertEquals("abc@example.se", customers.get(1).getEmail());
 
-        assertEquals(125, testCustomer2.getId());
-        assertEquals("CN103", testCustomer2.getCustomerNumber());
-        assertEquals("Märta", testCustomer2.getCustomerName());
-        assertEquals("012-777777", testCustomer2.getPhoneNumber());
-        assertEquals("test@example.se", testCustomer2.getEmail());
+        assertEquals(123, customers.get(0).getId());
+        assertEquals("CN101", customers.get(0).getCustomerNumber());
+        assertEquals("Kalle", customers.get(0).getCustomerName());
+        assertEquals("012-345678", customers.get(0).getPhoneNumber());
+        assertEquals("abc@abcdef.se", customers.get(0).getEmail());
     }
 
     @Test

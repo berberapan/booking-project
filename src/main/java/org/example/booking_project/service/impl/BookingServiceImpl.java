@@ -163,7 +163,7 @@ public class BookingServiceImpl implements BookingService {
                     return "DateError";
                 }
 
-                if (newCheckOutDate.isBefore(newCheckInDate)) {
+                if (newCheckOutDate.isEqual(newCheckInDate)) {
                     return "DateError";
                 }
 

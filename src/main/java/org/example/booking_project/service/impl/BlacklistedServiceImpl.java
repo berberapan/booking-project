@@ -23,7 +23,7 @@ public class BlacklistedServiceImpl implements BlacklistService {
         HttpClient client = HttpClient.newHttpClient();
 
         if (!existsByEmail(blacklistedDTO.email)) {
-        blacklistedDTO.ok = false;
+            blacklistedDTO.ok = false;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist"))
                     .header("Content-Type", "application/json")
@@ -94,8 +94,10 @@ public class BlacklistedServiceImpl implements BlacklistService {
     public boolean checkIfCstBlacklisted(String email) throws IOException {
         BlacklistedDTO[] allBlacklisted = getBlacklistedArrayFromSource();
 
-        for(BlacklistedDTO b : allBlacklisted){
-            if (b.email != null && b.email.equals(email.trim()) && !b.isOk()){
+        if (email == null) {email = "";}
+
+        for (BlacklistedDTO b : allBlacklisted) {
+            if (b.email != null && b.email.equals(email.trim()) && !b.isOk()) {
                 return true;
             }
         }
