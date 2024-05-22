@@ -2,9 +2,11 @@ package org.example.booking_project;
 
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.example.booking_project.configs.ContractCustomersProperties;
 import org.example.booking_project.models.AllCustomers;
 import org.example.booking_project.models.ContractCustomer;
 import org.example.booking_project.service.impl.ContractCustomerServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import java.net.URL;
@@ -25,8 +27,9 @@ private final ContractCustomerServiceImpl ccimpl;
         JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
+        String fetchURL = ccimpl.getXmlStreamProvider().getProperties().getFetchurl();
 
-        URL url = new URL("https://javaintegration.systementor.se/customers");
+        URL url = new URL(fetchURL);
         AllCustomers allCustomers = xmlMapper.readValue(url, AllCustomers.class);
 
             for (ContractCustomer c : allCustomers.customers) {
