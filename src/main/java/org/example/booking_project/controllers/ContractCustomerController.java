@@ -1,8 +1,12 @@
 package org.example.booking_project.controllers;
 
 import org.example.booking_project.Dtos.ContractCustomerDTO;
+import org.example.booking_project.models.ContractCustomer;
 import org.example.booking_project.repos.ContractCustomerRepo;
 import org.example.booking_project.service.ContractCustomerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,12 +29,15 @@ public class ContractCustomerController {
 
     @GetMapping("contractCustomer")
     public String showContractCustomers(Model model,
+                                        @RequestParam(defaultValue = "1") int pageNum,
+                                        @RequestParam(defaultValue = "20") int pageSize,
                                         @RequestParam(defaultValue = "ASC") String sortOrder,
                                         @RequestParam(defaultValue = "companyName") String sortCol,
                                         @RequestParam(defaultValue = "") String search) {
 
         search = search.strip();
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
+        Pageable pageable = PageRequest.of(pageNum-1, pageSize, sort);
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("sortCol", sortCol);
         model.addAttribute("search", search);
@@ -39,8 +46,19 @@ public class ContractCustomerController {
         model.addAttribute("customers", contractCustomerDTOS)
          */
         // model.addAttribute("customers", contractCustomerRepo.findAll(sort));
-        model.addAttribute("customers", contractCustomerRepo.
-                findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(search, search, search, sort));
+        if(!search.isEmpty()) {
+            Page<ContractCustomer> contractCustomers =
+                    contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(search, search, search, pageable);
+            model.addAttribute("customers", contractCustomers);
+            model.addAttribute("totalPages", contractCustomers.getTotalPages());
+            model.addAttribute("pageNum", pageNum);
+        } else {
+            Page<ContractCustomer> contractCustomers = contractCustomerRepo.findAll(pageable);
+            model.addAttribute("customers", contractCustomers);
+            model.addAttribute("totalPages", contractCustomers.getTotalPages());
+            model.addAttribute("pageNum", pageNum);
+        }
+
         return "contractCustomerTable";
     }
 
