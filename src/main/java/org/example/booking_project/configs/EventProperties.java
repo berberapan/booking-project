@@ -11,16 +11,15 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationPropertiesScan
 @Configuration
-@ConfigurationProperties (prefix = "integrations")
+@ConfigurationProperties(prefix = "events")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class IntegrationsProperties {
-    public BookingProperties bookings;
-    public ContractCustomersProperties contractCustomers;
-    public ShippersProperties shippers;
-    public BlacklistProperties blacklist;
-    public EventProperties events;
+public class EventProperties {
+    public String queueName;
+    public String factoryHost;
+    public String factoryUsername;
+    public String factoryPassword;
 }

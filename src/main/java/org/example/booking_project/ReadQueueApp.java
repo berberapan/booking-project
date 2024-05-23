@@ -4,8 +4,10 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.repos.EventRepo;
 import org.example.booking_project.service.impl.EventServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,9 @@ public class ReadQueueApp implements CommandLineRunner {
     private final EventRepo eventRepo;
     private final EventServiceImpl eventService;
 
+    @Autowired
+    IntegrationsProperties properties;
+
     public ReadQueueApp(EventRepo eventRepo, EventServiceImpl eventService) {
         this.eventRepo = eventRepo;
         this.eventService = eventService;
@@ -26,11 +31,11 @@ public class ReadQueueApp implements CommandLineRunner {
     public void run(String... args) {
 
         try {
-            String queueName = "9ac8f638-965a-44af-8204-d51b025d2dd1";
+            String queueName = properties.events.queueName;
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("128.140.81.47");
-            factory.setUsername("djk47589hjkew789489hjf894");
-            factory.setPassword("sfdjkl54278frhj7");
+            factory.setHost(properties.events.factoryHost);
+            factory.setUsername(properties.events.factoryUsername);
+            factory.setPassword(properties.events.factoryPassword);
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 
