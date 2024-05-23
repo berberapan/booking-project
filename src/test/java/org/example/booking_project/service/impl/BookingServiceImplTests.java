@@ -214,4 +214,25 @@ class BookingServiceImplTests {
         assertFalse(bookingService.checkAvailabilityInRoom(testbdto1.getId()+10, testbdto1.getRoom().getId(),
                 LocalDate.now(), LocalDate.now().plusMonths(1).plusDays(2)));
     }
+
+    @Test
+    void existsBookingByBookingNrTest() {
+        String bookingNr = testbooking1.getBookingNr();
+        when(bookingRepo.existsByBookingNr(bookingNr)).thenReturn(true);
+
+        boolean exists = bookingService.existsBookingByBookingNr(bookingNr);
+
+        assertTrue(exists);
+    }
+    @Test
+    void getBookingByBookingNrTest(){
+        String bookingNr = testbooking1.getBookingNr();
+        when(bookingRepo.findByBookingNr(bookingNr)).thenReturn(testbooking1);
+
+        BookingDTO result = bookingService.getBookingByBookingNr(bookingNr);
+
+        assertEquals(testbdto1, result);
+    }
+
+
 }
