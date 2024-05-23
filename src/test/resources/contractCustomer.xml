@@ -1,0 +1,38 @@
+<allcustomers>
+    <customers>
+        <id>1</id>
+        <companyName>ABC</companyName>
+        <contactName>John Doe</contactName>
+        <contactTitle>Manager</contactTitle>
+        <streetAddress>123 Main St</streetAddress>
+        <city>Springfield</city>
+        <postalCode>12345</postalCode>
+        <country>USA</country>
+        <phone>555-123-4567</phone>
+        <fax>555-987-6543</fax>
+    </customers>
+    <customers>
+        <id>2</id>
+        <companyName>XYZ Ltd</companyName>
+        <contactName>Alice Smith</contactName>
+        <contactTitle>Engineer</contactTitle>
+        <streetAddress>456 Elm St</streetAddress>
+        <city>Rivertown</city>
+        <postalCode>54321</postalCode>
+        <country>USA</country>
+        <phone>555-987-6543</phone>
+        <fax>555-123-4567</fax>
+    </customers>
+    <customers>
+        <id>3</id>
+        <companyName>Blue Ocean Corp</companyName>
+        <contactName>Lisa Johnson</contactName>
+        <contactTitle>Director</contactTitle>
+        <streetAddress>789 Oak St</streetAddress>
+        <city>Lakeside</city>
+        <postalCode>67890</postalCode>
+        <country>Canada</country>
+        <phone>555-222-3333</phone>
+        <fax>555-444-5555</fax>
+    </customers>
+</allcustomers>

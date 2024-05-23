@@ -4,54 +4,45 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bokning</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .navbar {
-            background-color: #007bff;
-            backdrop-filter: blur(10px);
-            height: 80px;
-        }
-
-        .navbar-brand {
-            color: #fff;
-            font-size: 40px;
-        }
-
-        .nav-link {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        .container {
-            margin-top: 30px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="/"><i>Startsida</i></a> <!-- Länk till startsidan -->
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/book">Sök lediga rum</a> <!-- Länk till sök lediga rum -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/bookings/search">Sök bokningar</a> <!-- Länk till sök bokningar -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/customer/search">Ändra kund</a> <!-- Länk till ändra kund -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                    </div>
                 </li>
             </ul>
         </div>
     </nav>
 </div>
-
 <div class="container ">
     <h1 class="text-center" style="margin-bottom: 3rem; margin-top: 5rem;">Sök lediga rum</h1>
     <div class="form-container">
@@ -94,7 +85,6 @@
         <br>
     </div>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const checkInDateInput = document.getElementById("checkInDate");
@@ -128,7 +118,5 @@
         });
     });
 </script>
-
-
 </body>
 </html>

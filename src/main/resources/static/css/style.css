@@ -1,0 +1,119 @@
+/* Table */
+.table-link a{
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.table-link:hover {
+    text-decoration: none;
+    color: black;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.table-link i{
+    margin-top: 4px;
+    float: right;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #007bff;
+    backdrop-filter: blur(10px);
+    height: 90px;
+    border-radius: 10px
+}
+.navbar-brand {
+    color: #fff;
+    font-size: 40px;
+    font-family: "sans-serif", serif;
+    font-style: italic;
+}
+.nav-link {
+    color: #fff;
+    font-size: 20px;
+}
+.container {
+    margin-top: 30px;
+}
+
+/* Card */
+.card {
+    border-color: #007bff;
+}
+
+/* Index */
+.btn-lg {
+    padding: 10px 100px;
+    font-size: 2.5rem;
+    font-family: "sans-serif", Serif;
+}
+.container-index {
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    padding: 40px;
+    max-width: 700px;
+    margin: 10px auto auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-group .btn {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.container-index img {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+/* Contract customer info */
+.customer-details {
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #007bff;
+}
+
+.customer-details h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 30px;
+}
+
+.customer-details p {
+    margin-bottom: 30px;
+}
+
+.customer-details strong {
+    font-weight: bold;
+}
+
+/* Dropdown-menyn */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 56, 168);
+    border: 2px solid rgba(0, 56, 168);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+}
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+.dropdown-item {
+    color: #ffffff;
+}
+.dropdown-item:hover {
+    background-color: rgba(0, 123, 255, 0.7);
+}
+
+
+
+

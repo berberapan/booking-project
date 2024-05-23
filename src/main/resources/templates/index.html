@@ -4,42 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startsida</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .btn-lg {
-            padding: 30px 120px; /* Stor knappstorlek */
-            font-size: 1.5rem; /* Stor textstorlek */
-        }
-        .container {
-            border: 2px solid #007bff; /* Ramfärg */
-            border-radius: 10px; /* Rundade hörn */
-            padding: 50px; /* Inre fyllning */
-            max-width: 700px; /* Max bredd */
-            margin: 30px auto auto;
-        }
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .btn-group .btn {
-            width: 100%;
-            margin-bottom: 30px; /* Avstånd mellan knapparna */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="text-center">Startsida</h1><br><br>
-    <div class="btn-group">
-        <a href="/book" class="btn btn-primary btn-lg">Sök lediga rum</a>
-        <a href="/bookings/search" class="btn btn-primary btn-lg">Sök bokningar</a>
-        <a href="/customer/search" class="btn btn-primary btn-lg">Ändra kund</a>
-    </div>
-    <br>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-index mt-5">
     <div class="d-flex justify-content-center">
         <img th:src="@{/images/glada-uttern-trnsp.png}" alt="logo">
-        <br>
+    </div>
+    <div class="btn-group">
+        <a href="/book" class="btn btn-primary btn-lg">Boka rum</a>
     </div>
 </div>
 </body>

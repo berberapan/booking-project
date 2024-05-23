@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtalskunder</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container mt-4">
+    <h1 class="text-center mb-5 mt-5">Avtalskunder</h1>
+    <div th:if="${customers.size() > 0}">
+        <form action="/contractCustomer" method="get" class="d-flex flex-row justify-content-end mb-3">
+            <div class="mr-2">
+                <label for="search" class="visually-hidden" style="display: none"></label>
+                <input type="text" id="search" name="search" th:value="${search}" class="form-control">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+        <table id="cc-table" class="table table-striped " style="width:100%">
+            <thead>
+            <!-- Without ternary
+            <tr>
+                <th class="table-link">
+                    <div th:if="${sortOrder == 'ASC' && sortCol == 'companyName'}">
+                        <a th:href="@{/contractCustomer(sortOrder=DESC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                    </div>
+                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'companyName'}">
+                        <a th:href="@{/contractCustomer(sortOrder=ASC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
+                    </div>
+                </th>
+                <th class="table-link">
+                    <div th:if="${sortOrder == 'ASC' && sortCol == 'contactName'}">
+                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                    </div>
+                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'contactName'}">
+                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
+                    </div>
+                </th>
+                <th class="table-link">
+                    <div th:if="${sortOrder == 'ASC' && sortCol == 'country'}">
+                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                    </div>
+                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'country'}">
+                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
+                    </div>
+                </th>
+            </tr>
+            -->
+
+            <tr>
+                <th class="table-link col-md-4">
+                    <a th:href="@{/contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'companyName') ? 'DESC' : 'ASC'},
+                    sortCol=companyName, search=${search})}">Företag<i th:class="${sortCol == 'companyName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i>
+                    </a>
+                </th>
+                <th class="table-link col-md-4">
+                    <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'contactName') ? 'DESC' : 'ASC'},
+                    sortCol=contactName, search=${search})}">Kontakt<i th:class="${sortCol == 'contactName'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i></a>
+                </th>
+                <th class="table-link col-md-4">
+                    <a th:href="@{contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'country') ? 'DESC' : 'ASC'},
+                      sortCol=country, search=${search})}">Land<i th:class="${sortCol == 'country'} ? (${sortOrder =='ASC'} ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down')"></i></a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <td><a th:href="@{/contractCustomer/{id}(id=${customer.id})}" style="cursor: pointer;"><span th:text="${customer.companyName}">Företagsnamn</span></a></td>
+                <td th:text="${customer.contactName}">Kontaktperson</td>
+                <td th:text="${customer.country}">Land</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="" th:unless="${customers.size() > 0}">
+        <div class="alert alert-danger text-center" role="alert">Inga avtalskunder hittades</div>
+        <a class="btn btn-success" href="/contractCustomer" role="button">Gå tillbaka</a>
+    </div>
+</div>
+</body>
+</html>

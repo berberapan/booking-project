@@ -9,17 +9,35 @@ import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.repos.RoomRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @SpringBootApplication
 public class booking_project {
 
     public static void main(String[] args) {
-        SpringApplication.run(booking_project.class, args);
+        if(args.length == 0) {
+            SpringApplication.run(booking_project.class, args);
 
+        } else if (Objects.equals(args[0], "fetchshippers")) {
+            SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
+            fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
+            fetchShippersApp.run(args);
+
+        } else if (Objects.equals(args[0], "fetchcustomers")) {
+            SpringApplication fetchShippersApp = new SpringApplication(FetchCustomers.class);
+            fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
+            fetchShippersApp.run(args);
+
+        } else if (Objects.equals(args[0], "readqueueapp")) {
+            SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
+            readQueueApp.setWebApplicationType(WebApplicationType.NONE);
+            readQueueApp.run(args);
+        }
     }
 /*
     @Bean

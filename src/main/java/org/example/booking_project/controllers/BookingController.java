@@ -7,6 +7,7 @@ import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
 import org.example.booking_project.service.BookingService;
+import org.example.booking_project.service.impl.BlacklistedServiceImpl;
 import org.example.booking_project.service.impl.BookingServiceImpl;
 import org.example.booking_project.service.impl.CustomerServiceImpl;
 import org.example.booking_project.service.impl.RoomServiceImpl;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,11 +29,13 @@ public class BookingController {
     private final BookingServiceImpl bs;
     private final RoomServiceImpl rs;
     private final CustomerServiceImpl cs;
+    private final BlacklistedServiceImpl bls;
 
-    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService) {
+    public BookingController(RoomServiceImpl rs, CustomerServiceImpl cs, BookingServiceImpl bs, BookingService bookingService, BlacklistedServiceImpl bls) {
         this.rs = rs;
         this.cs = cs;
         this.bs = bs;
+        this.bls = bls;
     }
 
     @GetMapping("/bookings/delete")
@@ -111,13 +115,18 @@ public class BookingController {
     @RequestMapping("createbooking")
     public String createBooking(@ModelAttribute MiniBookingDTO booking,
                                 @ModelAttribute CustomerDTO customer,
-                                @RequestParam String roomNumber, Model model) {
+                                @RequestParam String roomNumber, Model model) throws IOException {
 
         model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
         model.addAttribute("customer", customer);
         List<RoomDTO> listOfRooms = rs.availableRooms(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getBookedBeds());
         model.addAttribute("listOfRooms", listOfRooms);
+
+        if(bls.checkIfCstBlacklisted(customer.getEmail())){
+            model.addAttribute("blacklistedCustomer", true);
+            return "searchAvailabilityResult.html";
+        }
 
         if (customer.getCustomerName() != null && customer.getPhoneNumber() != null) {
             customer.setCustomerNumber(cs.generateCustomerNr());
@@ -127,7 +136,8 @@ public class BookingController {
         if (cs.existsCustomerByEmail(customer.getEmail())) {
             BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
             model.addAttribute("booking", bdto);
-            model.addAttribute("totalPrice", bs.calculatePrice(bdto));
+
+            model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
 
             return "bookingConfirmation.html";
         }
