@@ -17,6 +17,6 @@ public class RoomCleaningStarted extends EventBase {
 
     @NotEmpty(message = "User är obligatoriskt")
     @Size(min = 3,message = "User måste vara minst 3 tecken")
-    @Pattern(regexp = "^[A-Öa-ö -]*$", message = "User får endast innehålla bokstäver,bindestreck och mellanslag")
+    @Pattern(regexp = "^[A-Öa-ö. -]*$", message = "User får endast innehålla bokstäver,bindestreck och mellanslag")
     public String CleaningByUser;
 }
