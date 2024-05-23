@@ -5,30 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Templates</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
 </head>
 <body>
 <div class="container mt-5">
-<h1>Email Templates</h1>
-<a href="/admin/templates/add">Add New Template</a>
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Subject</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="template : ${templates}">
-        <td th:text="${template.name}">Template Name</td>
-        <td th:text="${template.subject}">Template Subject</td>
-        <td>
-            <a th:href="@{/admin/templates/edit/{id}(id=${template.id})}">Edit</a>
-            <a th:href="@{/admin/templates/delete/{id}(id=${template.id})}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Templates</h1>
+        <a href="/admin/templates/add" class="btn btn-primary">Lägg till ny mall</a>
+    </div>
+    <table class="table table-striped mt-4 table-blue">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ämne</th>
+            <th>Åtgärder</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="template : ${templates}">
+            <td th:text="${template.name}">Template Name</td>
+            <td th:text="${template.subject}">Template Subject</td>
+            <td class="action-buttons">
+                <a th:href="@{/admin/templates/edit/{id}(id=${template.id})}" class="btn btn-warning btn-sm">Redigera</a>
+                <a th:href="@{/admin/templates/delete/{id}(id=${template.id})}" class="btn btn-danger btn-sm">Ta bort</a>
+                <a th:href="@{/admin/templates/preview/{id}(id=${template.id})}" class="btn btn-info btn-sm">Förhandsgranska</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

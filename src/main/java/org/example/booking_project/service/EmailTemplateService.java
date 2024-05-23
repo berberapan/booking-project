@@ -12,7 +12,7 @@ public interface EmailTemplateService {
 
     public String processTemplate(EmailTemplate template, Map<String, Object> variables);
 
-    public void sendBookingConfirmationEmail(String to, String name, String phone, LocalDate checkInDate, LocalDate checkOutDate, String roomNumber, String bookingNumber, double totalPrice) throws MessagingException;
+    public void sendBookingConfirmationEmail(String email, String name, String phone, LocalDate checkInDate, LocalDate checkOutDate, String roomNumber, String bookingNumber, double totalPrice) throws MessagingException;
 
     public EmailTemplate getEmailTemplateByName(String name);
 
@@ -23,5 +23,7 @@ public interface EmailTemplateService {
     public void deleteTemplateById(Long id);
 
     public void saveTemplate(EmailTemplate emailTemplate);
+
+    public String renderHtmlContent(EmailTemplate template);
 
 }

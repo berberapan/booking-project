@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lägg till template</title>
+    <title>Redigera template</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
 </head>
 <body>
 <div class="container mt-5">
     <h1 th:text="${emailTemplate.id == null} ? 'Add New Template' : 'Edit Template'"></h1>
-    <form th:action="@{/admin/templates/save}" th:object="${emailTemplate}" method="post">
+    <form th:action="@{/admin/templates/update/{id}(id=${emailTemplate.id})}" th:object="${emailTemplate}" method="post">
         <div class="form-group">
             <label for="name">Template namn</label>
             <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Ange mallens namn" required>
@@ -23,7 +23,7 @@
             <label for="body">Meddelande</label>
             <textarea id="body" class="form-control" th:field="*{body}" placeholder="Ange meddelandetext" rows="15" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Spara mall</button>
+        <button type="submit" class="btn btn-primary">Spara</button>
         <a href="/admin/templates" class="btn btn-secondary">Tillbaka</a>
     </form>
 </div>

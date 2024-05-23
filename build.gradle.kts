@@ -43,6 +43,7 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-mail")
     implementation ("ognl:ognl:3.2.21")
 
+
 }
 
 tasks.withType<Test> {

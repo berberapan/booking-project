@@ -94,4 +94,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     public void deleteTemplateById(Long id) {
         emailTemplateRepo.deleteById(id);
     }
+
+    @Override
+    public String renderHtmlContent(EmailTemplate template) {
+        return template.getBody();
+    }
 }

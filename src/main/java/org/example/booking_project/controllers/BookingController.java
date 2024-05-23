@@ -145,7 +145,8 @@ public class BookingController {
                                             bdto.getCheckOutDate(),
                                             roomNumber,
                                             bdto.getBookingNr(),
-                                            bs.calculatePrice(bdto));
+                                            bs.calculatePrice(bdto)
+                                            );
 
             model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
 

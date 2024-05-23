@@ -1,10 +1,13 @@
 package org.example.booking_project.controllers;
 
 import org.example.booking_project.models.EmailTemplate;
+import org.example.booking_project.repos.EmailTemplateRepo;
 import org.example.booking_project.service.impl.EmailTemplateServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @Controller
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class EmailTemplateController {
 
     private final EmailTemplateServiceImpl emailTemplateServiceImpl;
+    private final EmailTemplateRepo emailTemplateRepo;
 
-    public EmailTemplateController(EmailTemplateServiceImpl emailTemplateServiceImpl) {
+    public EmailTemplateController(EmailTemplateServiceImpl emailTemplateServiceImpl, EmailTemplateRepo emailTemplateRepo) {
         this.emailTemplateServiceImpl = emailTemplateServiceImpl;
+        this.emailTemplateRepo = emailTemplateRepo;
     }
 
     @GetMapping
@@ -34,10 +39,27 @@ public class EmailTemplateController {
         EmailTemplate emailTemplate = emailTemplateServiceImpl.getTemplateById(id);
         if (emailTemplate != null) {
             model.addAttribute("emailTemplate", emailTemplate);
-            return "addTemplate";
+            return "editTemplate";
         } else {
             return "redirect:/admin/templates";
         }
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateTemplate(@PathVariable Long id, @ModelAttribute EmailTemplate updatedTemplate) {
+        Optional<EmailTemplate> templateOptional = emailTemplateRepo.findById(id);
+
+        if (templateOptional.isPresent()) {
+            EmailTemplate existingTemplate = templateOptional.get();
+
+            existingTemplate.setName(updatedTemplate.getName());
+            existingTemplate.setSubject(updatedTemplate.getSubject());
+            existingTemplate.setBody(updatedTemplate.getBody());
+
+            emailTemplateRepo.save(existingTemplate);
+        }
+
+        return "redirect:/admin/templates";
     }
 
     @PostMapping("/save")
@@ -51,4 +73,20 @@ public class EmailTemplateController {
         emailTemplateServiceImpl.deleteTemplateById(id);
         return "redirect:/admin/templates";
     }
+
+    @GetMapping("/preview/{id}")
+    public String previewTemplate(@PathVariable Long id, Model model) {
+        Optional<EmailTemplate> templateOptional = emailTemplateRepo.findById(id);
+
+        if (templateOptional.isPresent()) {
+            EmailTemplate template = templateOptional.get();
+            String htmlContent = emailTemplateServiceImpl.renderHtmlContent(template);
+            model.addAttribute("htmlContent", htmlContent);
+            return "templatePreview";
+        } else {
+            return "error";
+        }
+    }
 }
+
+
