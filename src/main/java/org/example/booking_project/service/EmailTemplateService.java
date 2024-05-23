@@ -10,6 +10,9 @@ import java.util.Map;
 
 public interface EmailTemplateService {
 
+    public String processTemplate(EmailTemplate template, Map<String, Object> variables);
+
+    public void sendBookingConfirmationEmail(String to, String name, String phone, LocalDate checkInDate, LocalDate checkOutDate, String roomNumber, String bookingNumber, double totalPrice) throws MessagingException;
 
     public EmailTemplate getEmailTemplateByName(String name);
 
@@ -21,7 +24,4 @@ public interface EmailTemplateService {
 
     public void saveTemplate(EmailTemplate emailTemplate);
 
-    public String parseTemplate(EmailTemplate template, Map<String, String> variables);
-
-    public void sendBookingConfirmationEmail(String to, String name, LocalDate startDate, LocalDate endDate) throws MessagingException;
 }

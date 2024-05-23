@@ -1,11 +1,7 @@
 package org.example.booking_project;
 
-import org.example.booking_project.models.Booking;
-import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
-import org.example.booking_project.repos.BookingRepo;
-import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.repos.RoomRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,14 +9,13 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 @SpringBootApplication
 public class booking_project {
 
     public static void main(String[] args) {
-        if(args.length == 0) {
+        if (args.length == 0) {
             SpringApplication.run(booking_project.class, args);
 
         } else if (Objects.equals(args[0], "fetchshippers")) {
@@ -32,9 +27,17 @@ public class booking_project {
             SpringApplication fetchShippersApp = new SpringApplication(FetchCustomers.class);
             fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
             fetchShippersApp.run(args);
-
         }
     }
+/*
+        @Bean
+        public CommandLineRunner init(TemplateSeeder templateSeeder) {
+            return args -> {
+                // Köra seedTemplates-metoden vid starten av applikationen
+                templateSeeder.seedTemplate();
+            };
+    }
+
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {

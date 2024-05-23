@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.example.booking_project.models.EmailTemplate;
 import org.example.booking_project.repos.EmailTemplateRepo;
 import org.example.booking_project.service.EmailTemplateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,52 @@ import java.util.Optional;
 @Service
 public class EmailTemplateServiceImpl implements EmailTemplateService {
 
+    @Autowired
     public EmailTemplateRepo emailTemplateRepo;
+
+    @Autowired
     private final JavaMailSender mailSender;
-    private final TemplateEngine templateEngine;
+
+    @Autowired
+    private final TemplateEngine customTemplateEngine;
 
 
     public EmailTemplateServiceImpl(EmailTemplateRepo emailTemplateRepo, JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.mailSender = mailSender;
         this.emailTemplateRepo = emailTemplateRepo;
-        this.templateEngine = templateEngine;
+        this.customTemplateEngine = templateEngine;
+    }
+
+    public String processTemplate(EmailTemplate template, Map<String, Object> variables) {
+        Context context = new Context();
+        context.setVariables(variables);
+        return customTemplateEngine.process(template.getBody(), context);
+    }
+
+    public void sendBookingConfirmationEmail(String email, String name, String phone, LocalDate checkInDate, LocalDate checkOutDate, String roomNumber, String bookingNumber, double totalPrice) throws MessagingException {
+        EmailTemplate template = emailTemplateRepo.findByName("bookingEmailConfirmation");
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("email", email);
+        variables.put("name", name);
+        variables.put("phone", phone);
+        variables.put("checkInDate", checkInDate);
+        variables.put("checkOutDate", checkOutDate);
+        variables.put("roomNumber", roomNumber);
+        variables.put("bookingNumber", bookingNumber);
+        variables.put("totalPrice", String.format("%.2f", totalPrice));
+
+        String body = processTemplate(template, variables);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject(template.getSubject());
+        helper.setText(body, true);
+
+        mailSender.send(message);
+
     }
 
     @Override
@@ -42,16 +80,6 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     @Override
-    public String parseTemplate(EmailTemplate template, Map<String, String> variables) {
-        String body = template.getBody();
-        for (Map.Entry<String, String> entry : variables.entrySet()) {
-            String key = "{{" + entry.getKey() + "}}";
-            String value = entry.getValue() != null ? entry.getValue() : "";
-            body = body.replace(key, value);
-        }
-        return body;
-    }
-
     public List<EmailTemplate> getAllTemplates() {
         return emailTemplateRepo.findAll();
     }
@@ -62,27 +90,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         return templateOptional.orElse(null);
     }
 
+    @Override
     public void deleteTemplateById(Long id) {
         emailTemplateRepo.deleteById(id);
     }
-
-    public void sendBookingConfirmationEmail(String to, String name, LocalDate startDate, LocalDate endDate) throws MessagingException {
-        EmailTemplate template = getEmailTemplateByName("Email");
-        Map<String, String> variables = new HashMap<>();
-        variables.put("name", name);
-        variables.put("startDate", startDate.toString());
-        variables.put("endDate", endDate.toString());
-
-        String body = parseTemplate(template, variables);
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setTo(to);
-        helper.setSubject(template.getSubject());
-        helper.setText(body, true);
-
-        mailSender.send(message);
-    }
-
 }

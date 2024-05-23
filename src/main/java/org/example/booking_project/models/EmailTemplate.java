@@ -25,4 +25,9 @@ public class EmailTemplate {
     @Column(columnDefinition = "TEXT")
     String body;
 
+    public EmailTemplate(String name, String subject, String body) {
+        this.name = name;
+        this.subject = subject;
+        this.body = body;
+    }
 }

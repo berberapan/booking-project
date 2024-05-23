@@ -5,11 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bokningsbekräftelse</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-<p>Hej <span th:text="${name}">Namn</span>,</p>
-<p>Du har bokat hotellrum från <span th:text="${startDate}">startdate</span> till <span th:text="${endDate}">enddate</span>.</p>
+<div class="container">
+    <h1>Bokningsbekräftelse</h1>
+    <p>Hej <span th:text="${name}">name</span></p>
+    <p>Tack för din bokning! Du är välkommen till Glada Utterns Pensionat den <span th:text="${checkInDate}">checkInDate</span>.</p>
+    <h2>Kundinformation:</h2>
+    <p>Namn: <span th:text="${name}">name</span></p>
+    <p>Email: <span th:text="${email}">email</span></p>
+    <p>Telefonnummer: <span th:text="${phone}">phone</span></p>
+    <hr>
+    <h2>Bokningsinformation:</h2>
+    <p>Bokningsnummer: <span th:text="${bookingNumber}">bookingNumber</span></p>
+    <p>Incheckningsdatum: <span th:text="${checkInDate}">checkInDate</span></p>
+    <p>Utcheckningsdatum: <span th:text="${checkOutDate}">checkoutDate</span></p>
+    <p>Rumsnummer: <span th:text="${roomNumber}">roomNumber</span></p>
+    <p>Totalpris: <span th:text="${totalPrice}">totalPrice</span></p>
 </div>
 </body>
 </html>

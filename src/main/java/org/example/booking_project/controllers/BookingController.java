@@ -115,7 +115,8 @@ public class BookingController {
     @RequestMapping("createbooking")
     public String createBooking(@ModelAttribute MiniBookingDTO booking,
                                 @ModelAttribute CustomerDTO customer,
-                                @RequestParam String roomNumber, Model model) throws IOException, MessagingException {
+                                @RequestParam String roomNumber,
+                                Model model) throws IOException, MessagingException {
 
         model.addAttribute("book", booking);
         model.addAttribute("roomNumber", roomNumber);
@@ -137,7 +138,14 @@ public class BookingController {
             BookingDTO bdto = bs.addBooking(customer, booking, roomNumber);
             model.addAttribute("booking", bdto);
 
-            ets.sendBookingConfirmationEmail(customer.getEmail(), customer.getCustomerName(), booking.getCheckInDate(), booking.getCheckOutDate());
+            ets.sendBookingConfirmationEmail(customer.getEmail(),
+                                            bdto.getCustomer().getCustomerName(),
+                                            bdto.getCustomer().getPhoneNumber(),
+                                            bdto.getCheckInDate(),
+                                            bdto.getCheckOutDate(),
+                                            roomNumber,
+                                            bdto.getBookingNr(),
+                                            bs.calculatePrice(bdto));
 
             model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
 
