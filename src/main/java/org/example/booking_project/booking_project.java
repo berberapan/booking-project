@@ -1,5 +1,6 @@
 package org.example.booking_project;
 
+import lombok.AllArgsConstructor;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
@@ -7,6 +8,8 @@ import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.repos.RoomRepo;
+import org.example.booking_project.service.impl.SeederService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -16,8 +19,11 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@AllArgsConstructor
 @SpringBootApplication
 public class booking_project {
+
+    SeederService seeder;
 
     public static void main(String[] args) {
         if(args.length == 0) {
@@ -34,6 +40,14 @@ public class booking_project {
             fetchShippersApp.run(args);
 
         }
+    }
+
+    @Bean
+    CommandLineRunner commandLineRunner() {
+        return (args) -> {
+            seeder.userSeed();
+            seeder.roomSeed();
+        };
     }
 /*
     @Bean
