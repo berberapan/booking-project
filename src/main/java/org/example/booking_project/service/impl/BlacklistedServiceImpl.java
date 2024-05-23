@@ -2,8 +2,11 @@ package org.example.booking_project.service.impl;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.example.booking_project.Dtos.BlacklistedDTO;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.service.BlacklistService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,8 +18,14 @@ import java.net.http.HttpResponse;
 
 @Service
 public class BlacklistedServiceImpl implements BlacklistService {
+
+    @Autowired
+    IntegrationsProperties properties;
+
     @Override
     public void updateBlacklisted(BlacklistedDTO blacklistedDTO) throws IOException {
+        String blacklistPostURL = properties.blacklist.postUrl;
+        String blacklistPutURL = properties.blacklist.putUrl;
 
         blacklistedDTO.ok = !blacklistedDTO.ok;
 
@@ -25,7 +34,7 @@ public class BlacklistedServiceImpl implements BlacklistService {
         if (!existsByEmail(blacklistedDTO.email)) {
             blacklistedDTO.ok = false;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist"))
+                    .uri(URI.create(blacklistPostURL))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers
                             .ofString("{\"email\":\"" + blacklistedDTO.email + "\", " +
@@ -42,7 +51,7 @@ public class BlacklistedServiceImpl implements BlacklistService {
             System.out.println("Allowed to book: " + blacklistedDTO.ok);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://javabl.systementor.se/api/gul/blacklist/" + blacklistedDTO.email.trim()))
+                    .uri(URI.create(blacklistPutURL + blacklistedDTO.email.trim()))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers
                             .ofString("{\"name\":\"" + blacklistedDTO.name + "\", " +
@@ -85,8 +94,9 @@ public class BlacklistedServiceImpl implements BlacklistService {
     @Override
     public BlacklistedDTO[] getBlacklistedArrayFromSource() throws IOException {
         JsonMapper jm = new JsonMapper();
+        String blacklistFetchURL = properties.blacklist.fetchUrl;
 
-        return jm.readValue(new URL("https://javabl.systementor.se/api/gul/blacklist"),
+        return jm.readValue(new URL(blacklistFetchURL),
                 BlacklistedDTO[].class);
     }
 

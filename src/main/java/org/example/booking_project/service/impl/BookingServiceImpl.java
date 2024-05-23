@@ -6,6 +6,8 @@ import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.configs.BookingProperties;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
@@ -16,6 +18,8 @@ import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -36,15 +40,17 @@ public class BookingServiceImpl implements BookingService {
     CustomerRepo customerRepo;
     RoomServiceImpl roomServiceImpl;
     CustomerServiceImpl customerServiceImpl;
+    IntegrationsProperties properties;
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl,
-                              CustomerServiceImpl customerServiceImpl) {
+                              CustomerServiceImpl customerServiceImpl, IntegrationsProperties properties) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomServiceImpl = roomServiceImpl;
         this.customerServiceImpl = customerServiceImpl;
+        this.properties = properties;
     }
 
     @Override
@@ -77,9 +83,9 @@ public class BookingServiceImpl implements BookingService {
 
         double finalPrice = 0;
         double fullDiscount = 0;
-        double discountSundayNight = 0.02;
-        double discountOverTwoNights = 0.005;
-        double discountOverTenNights = 0.02;
+        double discountSundayNight = properties.bookings.getDiscountSundayNight();
+        double discountOverTwoNights = properties.bookings.getDiscountOverTwoNights();
+        double discountOverTenNights = properties.bookings.getDiscountOverTenNights();
 
         double priceForThisDay;
 
