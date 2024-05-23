@@ -20,7 +20,6 @@ import java.net.http.HttpResponse;
 public class BlacklistedServiceImpl implements BlacklistService {
 
     @Autowired
-    @Qualifier("integrationsProperties")
     IntegrationsProperties properties;
 
     @Override

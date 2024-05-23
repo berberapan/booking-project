@@ -16,7 +16,6 @@ import java.net.URL;
 public class XmlStreamProvider {
 
     @Autowired
-    @Qualifier("integrationsProperties")
     IntegrationsProperties properties;
     public InputStream getDataStream() throws IOException {
 

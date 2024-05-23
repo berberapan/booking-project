@@ -40,19 +40,17 @@ public class BookingServiceImpl implements BookingService {
     CustomerRepo customerRepo;
     RoomServiceImpl roomServiceImpl;
     CustomerServiceImpl customerServiceImpl;
-
-    @Autowired
-    @Qualifier("integrationsProperties")
     IntegrationsProperties properties;
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomServiceImpl roomServiceImpl,
-                              CustomerServiceImpl customerServiceImpl) {
+                              CustomerServiceImpl customerServiceImpl, IntegrationsProperties properties) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomServiceImpl = roomServiceImpl;
         this.customerServiceImpl = customerServiceImpl;
+        this.properties = properties;
     }
 
     @Override

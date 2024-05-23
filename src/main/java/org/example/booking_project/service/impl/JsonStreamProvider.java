@@ -14,7 +14,6 @@ import java.net.URL;
 public class JsonStreamProvider {
 
     @Autowired
-    @Qualifier("integrationsProperties")
     IntegrationsProperties properties;
     public InputStream getDataStream() throws IOException {
 

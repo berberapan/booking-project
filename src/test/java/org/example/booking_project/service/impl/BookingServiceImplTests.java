@@ -4,6 +4,7 @@ import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
@@ -14,12 +15,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.Assert;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +49,8 @@ class BookingServiceImplTests {
 
     private BookingServiceImpl bookingService;
 
+    @Autowired
+    private IntegrationsProperties properties;
 
     private Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
             "012-345678", "abc@abcdef.se");
@@ -60,7 +66,7 @@ class BookingServiceImplTests {
     private Booking testbooking1;
     private Booking testbooking2;
 
-    private BookingDTO actualBookingDTO = new BookingDTO((long) 213, "BN101", testcustomerDTO, testroomDTO, 2, checkIn, checkOut1);
+    private BookingDTO actualBookingDTO;
 
     private BookingDTO testbdto1;
     private BookingDTO testbdto2;
@@ -69,13 +75,19 @@ class BookingServiceImplTests {
 
     @BeforeEach
     void setUp(){
-        bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl);
+        bookingService = new BookingServiceImpl(bookingRepo, customerRepo,roomServiceImpl, customerServiceImpl, properties);
         testroom = new Room((long) 321, 101, RoomType.DOUBLE, 3, 500);
         testroom2 = new Room((long) 322, 102, RoomType.SINGLE, 1, 200);
+        if(checkIn.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+            checkIn =checkIn.minusDays(1);
+            checkOut1 = checkOut1.minusDays(1);
+            checkOut2 = checkOut2.minusDays(1);
+        }
         testbooking1 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut1);
         testbooking2 = new Booking((long) 213, "BN101", testcustomer, testroom, 2, checkIn, checkOut2);
         testbdto1 = bookingService.bookingToBookingDTO(testbooking1);
         testbdto2 = bookingService.bookingToBookingDTO(testbooking2);
+        actualBookingDTO = new BookingDTO((long) 213, "BN101", testcustomerDTO, testroomDTO, 2, checkIn, checkOut1);
     }
 
     @Test
@@ -101,7 +113,7 @@ class BookingServiceImplTests {
     @Test
     void generateBookingNr() {
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(testbooking1));
-        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl,customerServiceImpl);
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl,customerServiceImpl,properties);
         String testBookingNr = service2.generateBookingNr();
         assertEquals("BN102", testBookingNr);
     }
