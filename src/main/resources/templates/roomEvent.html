@@ -67,15 +67,10 @@
                     <p th:case="'RoomOpened'">Dörren öppnad</p>
                 </td>
 
-                <td th:text="${#temporals.format(event.TimeStamp, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(event.getTimeStamp(), 'dd-MM-yyyy HH:mm')}"></td>
 
+                <td th:text="${event.getCleaningByUser()}"></td>
 
-                <td>
-                    <div th:if="${event.getType()} eq 'RoomCleaningFinished' or ${event.getType()} eq 'RoomCleaningStarted'"
-                         th:text="${event.CleaningByUser}">
-                        <p th:text="${event.CleaningByUser}"></p>
-                    </div>
-                </td>
             </tr>
             </tbody>
         </table>

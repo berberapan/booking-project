@@ -3,6 +3,7 @@ package org.example.booking_project.service.impl;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.RoomDTO;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
@@ -11,6 +12,8 @@ import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -18,7 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@SpringBootTest
 class DiscountServiceTests {
 
     BookingRepo bookingRepo = mock(BookingRepo.class);
@@ -31,9 +34,12 @@ class DiscountServiceTests {
     RoomDTO testroomDTO;
     BookingServiceImpl sut;
 
+    @Autowired
+    IntegrationsProperties properties;
+
     @BeforeEach
     void setUp() {
-        sut = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl, customerServiceImpl);
+        sut = new BookingServiceImpl(bookingRepo, customerRepo, roomServiceImpl, customerServiceImpl,properties);
         testDTO = new CustomerDTO(2L, "CN002", "Test Testsson", "123456789", "test@test.com");
         test = new Customer(2L, "CN002", "Test Testsson", "123456789", "test@test.com");
         when(customerServiceImpl.customerDTOToCustomer(testDTO)).thenReturn(test);
