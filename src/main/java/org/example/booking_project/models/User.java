@@ -1,6 +1,7 @@
 package org.example.booking_project.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,9 @@ public class User {
     @Column(name = "id")
     private UUID id;
 
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     @OneToMany(fetch = FetchType.EAGER)
