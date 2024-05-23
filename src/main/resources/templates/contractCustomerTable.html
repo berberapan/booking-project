@@ -113,11 +113,11 @@
     </div>
 
 
-    <div>
+    <div class>
     <ul class="pagination">
         <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
             <li class="page-item" th:classappend="${pageNum == i} ? ' active' : ''">
-                <a class="page-link" th:href="${pageNum == i} ? @{#} : @{contractCustomer(search=${search}, pageNum=${i})}" th:text="${i}"></a>
+                <a class="page-link" th:href="${pageNum == i} ? @{#} : @{contractCustomer(search=${search}, pageNum=${i}, sortOrder=${sortOrder}, sortCol=${sortCol})}" th:text="${i}"></a>
             </li>
         </th:block>
     </ul>

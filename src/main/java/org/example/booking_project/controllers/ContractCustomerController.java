@@ -30,7 +30,7 @@ public class ContractCustomerController {
     @GetMapping("contractCustomer")
     public String showContractCustomers(Model model,
                                         @RequestParam(defaultValue = "1") int pageNum,
-                                        @RequestParam(defaultValue = "20") int pageSize,
+                                        @RequestParam(defaultValue = "15") int pageSize,
                                         @RequestParam(defaultValue = "ASC") String sortOrder,
                                         @RequestParam(defaultValue = "companyName") String sortCol,
                                         @RequestParam(defaultValue = "") String search) {
