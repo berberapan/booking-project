@@ -38,19 +38,5 @@ public class FetchShippers implements CommandLineRunner {
         log.info("Fetching shippers");
         ssimpl.shippersToDatabase(ssimpl.shippersJsonMapper());
 
-
-/*
-//------OBS TA BORT SEN!!!! = Mock-data för Room event
-        ObjectMapper objMapper = new ObjectMapper();
-        objMapper.findAndRegisterModules();
-        String eventJson = "[{\"type\":\"RoomClosed\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\",\"RoomNo\":\"104\"},{\"type\":\"RoomCleaningFinished\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\",\"RoomNo\":\"104\",\"CleaningByUser\":\"Britt-Marie Henrisch\"}]";
-        EventBase[] allEvents = objMapper.readValue(eventJson,
-                EventBase[].class);
-
-        for (EventBase ev : allEvents) {
-            eventRepo.save(ev);
-            //ssimpl.updateOrAddShipper(s.getId(), ssimpl.shipperToShipperDTO(s));
-        }
-        */
     }
 }

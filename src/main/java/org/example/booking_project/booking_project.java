@@ -1,8 +1,13 @@
 package org.example.booking_project;
 
+import lombok.AllArgsConstructor;
+import org.example.booking_project.models.Booking;
+import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.RoomRepo;
+import org.example.booking_project.service.impl.SeederService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -11,8 +16,11 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Objects;
 
+@AllArgsConstructor
 @SpringBootApplication
 public class booking_project {
+
+    SeederService seeder;
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -27,6 +35,11 @@ public class booking_project {
             SpringApplication fetchShippersApp = new SpringApplication(FetchCustomers.class);
             fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
             fetchShippersApp.run(args);
+
+        } else if (Objects.equals(args[0], "readqueueapp")) {
+            SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
+            readQueueApp.setWebApplicationType(WebApplicationType.NONE);
+            readQueueApp.run(args);
         }
     }
 /*
@@ -38,6 +51,14 @@ public class booking_project {
             };
     }
 
+*/
+    @Bean
+    CommandLineRunner commandLineRunner() {
+        return (args) -> {
+            seeder.userSeed();
+            seeder.roomSeed();
+        };
+    }
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {

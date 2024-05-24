@@ -2,6 +2,7 @@ package org.example.booking_project.service.impl;
 
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.Getter;
 import org.example.booking_project.Dtos.ContractCustomerDTO;
 import org.example.booking_project.models.AllCustomers;
 import org.example.booking_project.models.ContractCustomer;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Getter
 public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     private final ContractCustomerRepo contractCustomerRepo;

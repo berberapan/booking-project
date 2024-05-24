@@ -1,9 +1,13 @@
 package org.example.booking_project.models;
 
 import jakarta.persistence.Entity;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
 
-
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Entity(name = "RoomCleaningFinished")
 public class RoomCleaningFinished extends EventBase {
     @NotEmpty(message = "Rumsnummer är obligatoriskt")
@@ -13,6 +17,6 @@ public class RoomCleaningFinished extends EventBase {
 
     @NotEmpty(message = "User är obligatoriskt")
     @Size(min = 3,message = "User måste vara minst 3 tecken")
-    @Pattern(regexp = "^[A-Öa-ö -]*$", message = "User får endast innehålla bokstäver,bindestreck och mellanslag")
+    @Pattern(regexp = "^[A-Öa-ö. -]*$", message = "User får endast innehålla bokstäver,bindestreck och mellanslag")
     public String CleaningByUser;
 }

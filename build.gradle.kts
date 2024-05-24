@@ -29,11 +29,16 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3") // Behövdes för Marias fil-inläsning. Inget viktigt
+    implementation("org.modelmapper:modelmapper:2.1.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("com.rabbitmq:amqp-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.github.javafaker:javafaker:1.0.2") { exclude("org.yaml") }
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    //  Temporary explicit version to fix Thymeleaf bug
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
+    implementation("org.springframework.boot:spring-boot-configuration-processor:3.2.5")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
