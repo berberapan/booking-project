@@ -1,9 +1,11 @@
 package org.example.booking_project.controllers;
 
 import org.example.booking_project.Dtos.ContractCustomerDTO;
+import org.example.booking_project.Dtos.ContractCustomerView;
 import org.example.booking_project.models.ContractCustomer;
 import org.example.booking_project.repos.ContractCustomerRepo;
 import org.example.booking_project.service.ContractCustomerService;
+import org.example.booking_project.service.impl.ContractCustomerServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +23,12 @@ public class ContractCustomerController {
 
     private final ContractCustomerService contractCustomerService;
     private final ContractCustomerRepo contractCustomerRepo;
+    private final ContractCustomerServiceImpl contractCustomerServiceImpl;
 
-    public ContractCustomerController(ContractCustomerService contractCustomerService, ContractCustomerRepo contractCustomerRepo) {
+    public ContractCustomerController(ContractCustomerService contractCustomerService, ContractCustomerRepo contractCustomerRepo, ContractCustomerServiceImpl contractCustomerServiceImpl) {
         this.contractCustomerService = contractCustomerService;
         this.contractCustomerRepo = contractCustomerRepo;
+        this.contractCustomerServiceImpl = contractCustomerServiceImpl;
     }
 
     @GetMapping("contractCustomer")
@@ -41,19 +45,16 @@ public class ContractCustomerController {
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("sortCol", sortCol);
         model.addAttribute("search", search);
-        /*
-        List<ContractCustomerDTO> contractCustomerDTOS = contractCustomerService.getAllContractCustomers();
-        model.addAttribute("customers", contractCustomerDTOS)
-         */
-        // model.addAttribute("customers", contractCustomerRepo.findAll(sort));
+
         if(!search.isEmpty()) {
-            Page<ContractCustomer> contractCustomers =
-                    contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(search, search, search, pageable);
+            Page<ContractCustomerView> contractCustomers = contractCustomerServiceImpl.getFilteredContractCustomers(search, search, search, pageable);
+
             model.addAttribute("customers", contractCustomers);
             model.addAttribute("totalPages", contractCustomers.getTotalPages());
             model.addAttribute("pageNum", pageNum);
         } else {
-            Page<ContractCustomer> contractCustomers = contractCustomerRepo.findAll(pageable);
+            Page<ContractCustomerView> contractCustomers = contractCustomerServiceImpl.getAllContractCustomers(pageable);
+
             model.addAttribute("customers", contractCustomers);
             model.addAttribute("totalPages", contractCustomers.getTotalPages());
             model.addAttribute("pageNum", pageNum);
@@ -61,24 +62,6 @@ public class ContractCustomerController {
 
         return "contractCustomerTable";
     }
-
-    /*
-
-    @PostMapping("contractCustomer/search")
-    public String searchInContractCustomer(@RequestParam String search, Model model){
-        List<ContractCustomerDTO> filteredCustomers = contractCustomerService.searchContractCustomers(search);
-        model.addAttribute("customers", filteredCustomers);
-        return "contractCustomerTable";
-    }
-
-    @GetMapping("contractCustomer/sort")
-    public String sortContractCustomers(@RequestParam String sortBy, Model model){
-        List<ContractCustomerDTO> sortedCustomers = contractCustomerService.sortContractCustomers(sortBy);
-        model.addAttribute("customers", sortedCustomers);
-        return "contractCustomerTable";
-    }
-
-     */
 
     @GetMapping("/contractCustomer/{id}")
     public String showContractCustomerInfo(Model model, @PathVariable Long id) {
