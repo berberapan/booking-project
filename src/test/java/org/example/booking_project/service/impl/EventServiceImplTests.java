@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import static org.mockito.Mockito.*;
 
-public class EventServiceImplTestIT {
+public class EventServiceImplTests {
     EventRepo eventRepo = mock(EventRepo.class);
     EventServiceImpl sut;
 
@@ -23,7 +23,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canMapEventBaseCorrectly() throws JsonProcessingException {
+    void canMapEventBaseCorrectlyTests() throws JsonProcessingException {
         String jsonString = "{\"type\":\"RoomOpened\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\", \"RoomNo\":\"101\"}";
         LocalDateTime time = LocalDateTime.of(2024, 5, 13, 2, 45, 27, 727446667);
         sut.eventToDatabase(jsonString);
@@ -33,7 +33,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canMapRoomOpenedCorrectly() throws IOException {
+    void canMapRoomOpenedCorrectlyTests() throws IOException {
 
         String jsonString = "{\"type\":\"RoomOpened\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\", \"RoomNo\":\"101\"}";
         sut.eventToDatabase(jsonString);
@@ -42,7 +42,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canMapRoomClosedCorrectly() throws IOException {
+    void canMapRoomClosedCorrectlyTests() throws IOException {
 
         String jsonString = "{\"type\":\"RoomClosed\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\", \"RoomNo\":\"102\"}";
         sut.eventToDatabase(jsonString);
@@ -51,7 +51,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canMapCleaningStartedCorrectly() throws IOException {
+    void canMapCleaningStartedCorrectlyTests() throws IOException {
 
         String jsonString = "{\"type\":\"RoomCleaningStarted\",\"TimeStamp\":\"2024-06-13T02:40:27.727446667\", \"RoomNo\":\"103\",\"CleaningByUser\":\"Britt-Marie\"}";
         sut.eventToDatabase(jsonString);
@@ -60,7 +60,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canMapRoomCleaningFinishedCorrectly() throws IOException {
+    void canMapRoomCleaningFinishedCorrectlyTest() throws IOException {
 
         String jsonString = "{\"type\":\"RoomCleaningFinished\",\"TimeStamp\":\"2024-06-13T02:55:27.727446667\",\"RoomNo\":\"104\",\"CleaningByUser\":\"Britt-Marie\"}";
         sut.eventToDatabase(jsonString);
@@ -69,7 +69,7 @@ public class EventServiceImplTestIT {
     }
 
     @Test
-    void canSaveEventCorrectly() throws IOException, JSONException {
+    void canSaveEventCorrectlyTests() throws IOException, JSONException {
 
         String event = "{\"type\":\"RoomOpened\",\"TimeStamp\":\"2024-05-13T02:45:27.727446667\", \"RoomNo\":\"101\"}";
         sut.eventToDatabase(event);
