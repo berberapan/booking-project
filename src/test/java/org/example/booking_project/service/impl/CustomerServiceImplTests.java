@@ -1,9 +1,11 @@
 package org.example.booking_project.service.impl;
 
 import org.example.booking_project.Dtos.CustomerDTO;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,29 +22,42 @@ import static org.mockito.Mockito.*;
 class CustomerServiceImplTests {
 
     @Mock
-    private CustomerRepo customerRepo = null;
+    private CustomerRepo customerRepo;
     @Mock
-    private BookingRepo bookingRepo = null;
+    private BookingRepo bookingRepo;
     @InjectMocks
     private CustomerServiceImpl customerService;
 
     @Autowired
+    IntegrationsProperties properties;
+
+   /* @Autowired
     public CustomerServiceImplTests(CustomerRepo customerRepo, BookingRepo bookingRepo) {
         this.customerRepo = customerRepo;
         this.bookingRepo = bookingRepo;
         this.customerService = new CustomerServiceImpl(customerRepo, bookingRepo);
-    }
+    } */
 
     @Mock
-    CustomerServiceImpl service3 = new CustomerServiceImpl(customerRepo, bookingRepo);
+    CustomerServiceImpl service3;
 
-    private final Customer testcustomer = new Customer((long) 123, "CN101", "Kalle",
-            "012-345678", "abc@abcdef.se");
-    private final Customer testCustomer1 = new Customer((long) 124, "CN102", "Lisa",
-            "012-666666", "abc@example.se");
-    private final Customer testCustomer2 = new Customer((long) 125, "CN103", "Märta",
-            "012-777777", "test@example.se");
+    private Customer testcustomer;
+    private Customer testCustomer1;
+    private Customer testCustomer2;
+    private CustomerDTO testCustomerDTO;
 
+    @BeforeEach
+    void setUp(){
+        customerService = new CustomerServiceImpl(customerRepo,bookingRepo);
+        testcustomer = new Customer((long) 123, "CN101", "Kalle",
+                "012-345678", "abc@abcdef.se");
+        testCustomer1 = new Customer((long) 124, "CN102", "Lisa",
+                "012-666666", "abc@example.se");
+        testCustomer2 = new Customer((long) 125, "CN103", "Märta",
+                "012-777777", "test@example.se");
+        testCustomerDTO = new CustomerDTO((long)222,"CN222","Domino",
+                "012-888888","dtomail@mail.ml");
+    }
     @Test
     void generateCustomerNr() {
         when(customerRepo.findAll()).thenReturn(Arrays.asList(testcustomer));
@@ -60,6 +75,16 @@ class CustomerServiceImplTests {
         assertEquals(testcustomer.getCustomerName(), customerDTO.getCustomerName());
         assertEquals(testcustomer.getPhoneNumber(), customerDTO.getPhoneNumber());
         assertEquals(testcustomer.getEmail(), customerDTO.getEmail());
+    }
+
+    @Test
+    void customerDTOToCustomerTest(){
+        Customer resultCustomer = customerService.customerDTOToCustomer(testCustomerDTO);
+        assertEquals(testCustomerDTO.getId(), resultCustomer.getId());
+        assertEquals(testCustomerDTO.getCustomerNumber(), resultCustomer.getCustomerNumber());
+        assertEquals(testCustomerDTO.getCustomerName(), resultCustomer.getCustomerName());
+        assertEquals(testCustomerDTO.getPhoneNumber(), resultCustomer.getPhoneNumber());
+        assertEquals(testCustomerDTO.getEmail(), resultCustomer.getEmail());
     }
 
     @Test
