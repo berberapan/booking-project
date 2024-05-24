@@ -10,11 +10,7 @@ import java.util.List;
 
 
 public interface ContractCustomerRepo extends JpaRepository<ContractCustomer, Long> {
-/*
-    List<ContractCustomer> findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(String companyName,
-                                                                                              String contactName,
-                                                                                              String country, Sort sort);
-*/
+
     Page<ContractCustomer> findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(String companyName,
                                                                                               String contactName,
                                                                                               String country, Pageable pageable);
