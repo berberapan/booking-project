@@ -1,6 +1,0 @@
-[
-  {"type":"RoomOpened","TimeStamp":"2024-05-13T02:45:27.727446667", "RoomNo":"101"},
-  {"type":"RoomClosed","TimeStamp":"2024-05-13T02:47:27.727446667", "RoomNo":"101"},
-  {"type":"RoomCleaningStarted","TimeStamp":"2024-06-13T02:40:27.727446667", "RoomNo":"103","CleaningByUser":"Britt-Marie"},
-  {"type":"RoomCleaningFinished","TimeStamp":"2024-06-13T02:55:27.727446667","RoomNo":"103","CleaningByUser":"Britt-Marie"}
-]
