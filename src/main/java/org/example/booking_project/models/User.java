@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -32,4 +34,6 @@ public class User {
     private Collection<Role> roles;
 
     private String resetPasswordToken;
+
+    private LocalDateTime resetPasswordExpiration;
 }

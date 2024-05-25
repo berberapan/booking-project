@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -33,6 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         } else {
             user.setResetPasswordToken(resetPasswordToken);
+            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(24));
             userRepo.save(user);
         }
     }

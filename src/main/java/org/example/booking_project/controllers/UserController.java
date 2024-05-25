@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 @Controller
 public class UserController {
@@ -75,9 +76,9 @@ public class UserController {
     public String resetPassword(@RequestParam(value = "token") String token, Model model) {
         User user = userDetailsServiceImpl.getUserByToken(token);
         model.addAttribute("token", token);
-        if (user == null) {
+        if (user == null | user.getResetPasswordExpiration().isBefore(LocalDateTime.now())) {
             model.addAttribute("error", "Ogiltig token.");
-            return "error";
+            return "resetPassword.html";
         }
         return "resetPassword.html";
     }
@@ -94,7 +95,7 @@ public class UserController {
             model.addAttribute("mismatch", "Båda fälten måste matcha varandra.");
             return "resetPassword.html";
         }
-        if (user == null) {
+        if (user == null | user.getResetPasswordExpiration().isBefore(LocalDateTime.now())) {
             model.addAttribute("error", "Ogiltig token.");
             return "resetPassword.html";
         } else {
