@@ -13,6 +13,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +51,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         variables.put("email", email);
         variables.put("name", name);
         variables.put("phone", phone);
-        variables.put("checkInDate", checkInDate);
-        variables.put("checkOutDate", checkOutDate);
+        variables.put("checkInDate", checkInDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        variables.put("checkOutDate", checkOutDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         variables.put("roomNumber", roomNumber);
         variables.put("bookingNumber", bookingNumber);
         variables.put("totalPrice", String.format("%.2f", totalPrice));
@@ -66,7 +67,6 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         helper.setText(body, true);
 
         mailSender.send(message);
-
     }
 
     @Override

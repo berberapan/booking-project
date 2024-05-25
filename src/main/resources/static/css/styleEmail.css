@@ -2,11 +2,17 @@ body {
     background-color: #f9f9f9;
     color: #333;
 }
-.container {
+.container-email {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+h1 {
+    align-self: flex-start;
 }
 table {
     margin-top: 20px;
@@ -17,4 +23,30 @@ table {
 .table-blue thead {
     background-color: #007bff;
     color: white;
+}
+.preview-container-edit {
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 20px;
+}
+.preview-container {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+.editable {
+    padding: 5px;
+    min-height: 20px;
+}
+.editable:focus {
+    outline: none;
+    border: 2px dashed #ccc;
+}
+.form-container {
+    margin-top: 20px;
+}
+.info-icon {
+    cursor: pointer;
+    color: blue;
+    margin-left: 5px;
 }

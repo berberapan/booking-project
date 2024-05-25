@@ -149,6 +149,7 @@ public class BookingController {
                                             );
 
             model.addAttribute("totalPrice",String.format("%.2f", bs.calculatePrice(bdto)));
+            model.addAttribute("created", true);
 
             return "bookingConfirmation.html";
         }

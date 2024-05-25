@@ -6,26 +6,61 @@
     <title>Redigera template</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div class="container mt-5">
-    <h1 th:text="${emailTemplate.id == null} ? 'Add New Template' : 'Edit Template'"></h1>
-    <form th:action="@{/admin/templates/update/{id}(id=${emailTemplate.id})}" th:object="${emailTemplate}" method="post">
-        <div class="form-group">
-            <label for="name">Template namn</label>
-            <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Ange mallens namn" required>
+<div class="container-email container mt-4">
+    <h1 th:text="${emailTemplate.id == null} ? 'Lägg till ny mall' : 'Redigera mall'"></h1>
+    <form id="editForm" th:action="@{/admin/templates/update/{id}(id=${emailTemplate.id})}" th:object="${emailTemplate}" method="post">
+        <div id="preview" class="preview-container-edit">
+            <div>
+                <label for="previewName"><strong>Namn:</strong></label>
+                <span id="previewName" class="editable" contenteditable="true" th:text="${emailTemplate.name}"></span>
+            </div>
+            <div>
+                <label for="previewSubject"><strong>Ämne:</strong></label>
+                <span id="previewSubject" class="editable" contenteditable="true" th:text="${emailTemplate.subject}"></span>
+            </div>
+            <div>
+                <label for="previewBody"></label>
+                <div id="previewBody" class="editable" contenteditable="true" th:utext="${emailTemplate.body}"></div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="subject">Ämne</label>
-            <input type="text" id="subject" class="form-control" th:field="*{subject}" placeholder="Ange ämne" required>
-        </div>
-        <div class="form-group">
-            <label for="body">Meddelande</label>
-            <textarea id="body" class="form-control" th:field="*{body}" placeholder="Ange meddelandetext" rows="15" required></textarea>
-        </div>
+        <input type="hidden" id="name" name="name" th:field="*{name}">
+        <input type="hidden" id="subject" name="subject" th:field="*{subject}">
+        <textarea id="body" name="body" th:field="*{body}" style="display: none;"></textarea>
+
         <button type="submit" class="btn btn-primary">Spara</button>
         <a href="/admin/templates" class="btn btn-secondary">Tillbaka</a>
+        <a th:href="@{/admin/templates/editHtml/{id}(id=${emailTemplate.id})}" class="btn btn-info float-right">Redigera HTML</a>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const previewName = document.getElementById('previewName');
+        const previewSubject = document.getElementById('previewSubject');
+        const previewBody = document.getElementById('previewBody');
+
+        const nameField = document.getElementById('name');
+        const subjectField = document.getElementById('subject');
+        const bodyField = document.getElementById('body');
+
+        function updateForm() {
+            nameField.value = previewName.innerText;
+            subjectField.value = previewSubject.innerText;
+            bodyField.value = previewBody.innerHTML;
+        }
+
+        previewName.addEventListener('input', updateForm);
+        previewSubject.addEventListener('input', updateForm);
+        previewBody.addEventListener('input', updateForm);
+
+        // Initial update
+        updateForm();
+    });
+</script>
 </body>
 </html>
+
+
+
