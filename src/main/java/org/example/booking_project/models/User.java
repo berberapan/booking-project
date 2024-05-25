@@ -30,4 +30,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private Collection<Role> roles;
+
+    private String resetPasswordToken;
 }
