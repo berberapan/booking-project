@@ -3,6 +3,7 @@ package org.example.booking_project.service.impl;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.Customer;
+import org.example.booking_project.models.EventBase;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,14 +31,6 @@ class CustomerServiceImplTests {
 
     @Autowired
     IntegrationsProperties properties;
-
-   /* @Autowired
-    public CustomerServiceImplTests(CustomerRepo customerRepo, BookingRepo bookingRepo) {
-        this.customerRepo = customerRepo;
-        this.bookingRepo = bookingRepo;
-        this.customerService = new CustomerServiceImpl(customerRepo, bookingRepo);
-    } */
-
     @Mock
     CustomerServiceImpl service3;
 
@@ -106,7 +99,18 @@ class CustomerServiceImplTests {
         assertEquals("012-345678", customers.get(0).getPhoneNumber());
         assertEquals("abc@abcdef.se", customers.get(0).getEmail());
     }
+@Test
+void getCustomerByEmailTest(){
+    String email = testcustomer.getEmail();
+        when(customerRepo.findByEmail(email)).thenReturn(testcustomer);
 
+        CustomerDTO resultDTO = customerService.getCustomerByEmail(email);
+
+    assertEquals("CN101", resultDTO.getCustomerNumber());
+    assertEquals("Kalle", resultDTO.getCustomerName());
+    assertEquals("012-345678", resultDTO.getPhoneNumber());
+    assertEquals("abc@abcdef.se", resultDTO.getEmail());
+}
     @Test
     void existsCustomerByEmail() {
         String email = testcustomer.getEmail();
@@ -125,5 +129,10 @@ class CustomerServiceImplTests {
         boolean exists = bookingRepo.existsByCustomerId(id);
 
         assertTrue(exists);
+    }
+    @Test
+    void addCustomerTest(){
+        customerService.addCustomer(testCustomerDTO);
+        verify(customerRepo, times(1)).save(any(Customer.class));
     }
 }
