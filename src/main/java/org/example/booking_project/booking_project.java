@@ -54,7 +54,7 @@ public class booking_project {
                 context.close(); // Close the context after seeding */
         }
     }
-
+/*
     @Bean
     CommandLineRunner commandLineRunner() {
         return (args) -> {
@@ -62,7 +62,7 @@ public class booking_project {
             seeder.roomSeed();
             templateSeeder.seedTemplates();
         };
-    }
+    }*/
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {
