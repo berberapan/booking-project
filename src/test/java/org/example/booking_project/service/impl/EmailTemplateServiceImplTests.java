@@ -70,7 +70,6 @@ public class EmailTemplateServiceImplTests {
 
         MimeMessage mimeMessage = mock(MimeMessage.class);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         doNothing().when(mailSender).send(any(MimeMessage.class));
 
         emailTemplateService.sendBookingConfirmationEmail("test@example.com", "John", "123456789", LocalDate.now(), LocalDate.now().plusDays(1), "101", "123456", 200.00);
