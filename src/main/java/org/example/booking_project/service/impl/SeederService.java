@@ -20,8 +20,6 @@ public class SeederService {
     UserRepo userRepo;
     RoleRepo roleRepo;
     RoomRepo roomRepo;
-    EmailTemplateRepo emailTemplateRepo;
-
 
     public void userSeed() {
        if (roleRepo.findByName("admin") == null) {

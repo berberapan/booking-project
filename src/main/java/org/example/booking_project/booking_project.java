@@ -23,16 +23,12 @@ import java.util.Objects;
 public class booking_project {
 
     SeederService seeder;
+    TemplateSeeder templateSeeder;
 
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             SpringApplication.run(booking_project.class, args);
         } else {
-            /*SpringApplication app = new SpringApplication(booking_project.class);
-            app.setWebApplicationType(WebApplicationType.NONE); // Disable web server for CLI commands
-
-            ConfigurableApplicationContext context = app.run(args); // This is where we get the context
-            */
             if (Objects.equals(args[0], "fetchshippers")) {
                 SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
                 fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
@@ -45,24 +41,18 @@ public class booking_project {
                 SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
                 readQueueApp.setWebApplicationType(WebApplicationType.NONE);
                 readQueueApp.run(args);
-            } /*else if (Objects.equals(args[0], "seedtemplates")) {
-                TemplateSeeder seeder = context.getBean(TemplateSeeder.class);
-                    seeder.seedTemplates();
-
-                }
-                context.close(); // Close the context after seeding */
             }
         }
     }
 
-/*
     @Bean
     CommandLineRunner commandLineRunner() {
         return (args) -> {
             seeder.userSeed();
             seeder.roomSeed();
+            templateSeeder.seedTemplates();
         };
-    }*/
+    }
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {
@@ -130,3 +120,4 @@ public class booking_project {
     }
 
 */
+}
