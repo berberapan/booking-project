@@ -5,8 +5,6 @@ import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
-import org.example.booking_project.repos.BookingRepo;
-import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.repos.RoomRepo;
 import org.example.booking_project.service.impl.SeederService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
+import java.io.IOException;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -25,34 +24,45 @@ public class booking_project {
 
     SeederService seeder;
 
-    public static void main(String[] args) {
-        if(args.length == 0) {
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
             SpringApplication.run(booking_project.class, args);
+        } else {
+            SpringApplication app = new SpringApplication(booking_project.class);
+            app.setWebApplicationType(WebApplicationType.NONE); // Disable web server for CLI commands
 
-        } else if (Objects.equals(args[0], "fetchshippers")) {
-            SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
-            fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
-            fetchShippersApp.run(args);
+            ConfigurableApplicationContext context = app.run(args); // This is where we get the context
 
-        } else if (Objects.equals(args[0], "fetchcustomers")) {
-            SpringApplication fetchShippersApp = new SpringApplication(FetchCustomers.class);
-            fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
-            fetchShippersApp.run(args);
+            if (Objects.equals(args[0], "fetchshippers")) {
+                SpringApplication fetchShippersApp = new SpringApplication(FetchShippers.class);
+                fetchShippersApp.setWebApplicationType(WebApplicationType.NONE);
+                fetchShippersApp.run(args);
+            } else if (Objects.equals(args[0], "fetchcustomers")) {
+                SpringApplication fetchCustomersApp = new SpringApplication(FetchCustomers.class);
+                fetchCustomersApp.setWebApplicationType(WebApplicationType.NONE);
+                fetchCustomersApp.run(args);
+            } else if (Objects.equals(args[0], "readqueueapp")) {
+                SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
+                readQueueApp.setWebApplicationType(WebApplicationType.NONE);
+                readQueueApp.run(args);
+            } else if (Objects.equals(args[0], "seedtemplates")) {
+                TemplateSeeder seeder = context.getBean(TemplateSeeder.class);
+                    seeder.seedTemplates();
 
-        } else if (Objects.equals(args[0], "readqueueapp")) {
-            SpringApplication readQueueApp = new SpringApplication(ReadQueueApp.class);
-            readQueueApp.setWebApplicationType(WebApplicationType.NONE);
-            readQueueApp.run(args);
+                }
+                context.close(); // Close the context after seeding
+            }
         }
     }
 
+/*
     @Bean
     CommandLineRunner commandLineRunner() {
         return (args) -> {
             seeder.userSeed();
             seeder.roomSeed();
         };
-    }
+    }*/
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {
@@ -120,4 +130,3 @@ public class booking_project {
     }
 
 */
-}

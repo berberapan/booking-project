@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lägg till mall</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="container-email container mt-4">
+    <h1 th:text="${emailTemplate.id == null} ? 'Lägg till ny mall' : 'Redigera mall'"></h1>
+    <form id="editForm" th:action="@{/admin/templates/update/{id}(id=${emailTemplate.id})}" th:object="${emailTemplate}" method="post">
+        <div class="form-group form-container">
+            <label for="name"><strong>Namn:</strong></label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Ange mallens namn" required>
+        </div>
+        <div class="form-group">
+            <label for="subject"><strong>Ämne:</strong></label>
+            <input type="text" id="subject" class="form-control" th:field="*{subject}" placeholder="Ange ämne" required>
+        </div>
+        <div class="form-group">
+            <label for="body">
+                <strong>Meddelande:</strong>
+                <span class="info-icon" data-toggle="modal" data-target="#infoModal">[?]</span>
+            </label>
+            <textarea id="body" class="form-control" th:field="*{body}" placeholder="Ange meddelandetext" rows="15" required></textarea>
+        </div>
+        <!-- Rullgardinsmeny för variabler -->
+        <div class="form-group">
+            <label for="variables"><strong>Välj variabler:</strong></label>
+            <select id="variables" class="form-control">
+                <option value="${name}">Namn</option>
+                <option value="${email}">Email</option>
+                <option value="${phone}">Telefonnummer</option>
+                <option value="${checkInDate}">Incheckningsdatum</option>
+                <option value="${checkOutDate}">Utcheckningsdatum</option>
+                <option value="${roomNumber}">Rumsnummer</option>
+                <option value="${bookingNumber}">Bokningsnummer</option>
+                <option value="${totalPrice}">Totala priset</option>
+            </select>
+            <br>
+            <button type="button" class="btn btn-warning" onclick="insertVariable()">Infoga</button>
+        </div>
+        <button type="submit" class="btn btn-primary">Spara mall</button>
+        <a href="/admin/templates" class="btn btn-secondary">Tillbaka</a>
+    </form>
+</div>
+
+<!-- Modal för förklaring -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Hur man redigerar e-postmallen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Här är en grundläggande guide för att redigera HTML-koden i din e-postmall:</p>
+                <p>
+                    <strong>HTML-element:</strong> Används för att strukturera innehållet. Exempelvis används <code>&lt;p&gt;</code> för paragrafer och <code>&lt;div&gt;</code> för sektioner.
+                </p>
+                <p>
+                    För att lägga till eller redigera text, skriv mellan taggarna. Exempel: <code>&lt;p&gt;Din text här&lt;/p&gt;</code>.
+                </p>
+                <p>
+                    <strong>Platshållare:</strong> Platshållare som <code>${name}</code> kommer att ersättas med riktiga värden när e-postmeddelandet skickas.
+                    <br>
+                    För att infoga en variabel, använd rullgardinsmenyn och knappen "Infoga".
+                </p>
+                <p>
+                    <strong>Rubriker:</strong> Använd rubrikelement som <code>&lt;h1&gt;</code> till <code>&lt;h6&gt;</code> för att skapa rubriker i ditt meddelande. <code>&lt;h1&gt;</code> är den största rubriken och <code>&lt;h6&gt;</code> är den minsta.
+                    <br> Exempel: <code>&lt;h1&gt;Stor rubrik&lt;/h1&gt;</code>.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function insertVariable() {
+        const variable = document.getElementById("variables").value;
+        const bodyTextarea = document.getElementById("body");
+        const cursorPosition = bodyTextarea.selectionStart;
+        const textBeforeCursor = bodyTextarea.value.substring(0, cursorPosition);
+        const textAfterCursor = bodyTextarea.value.substring(cursorPosition);
+
+        bodyTextarea.value = textBeforeCursor + variable + textAfterCursor;
+    }
+</script>
+</body>
+</html>
