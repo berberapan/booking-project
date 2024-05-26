@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -135,4 +136,31 @@ void getCustomerByEmailTest(){
         customerService.addCustomer(testCustomerDTO);
         verify(customerRepo, times(1)).save(any(Customer.class));
     }
+
+    @Test
+    void deleteCustomerShouldNotDeleteIfCustomerHasBookings(){
+        when(customerRepo.findById(testcustomer.getId())).thenReturn(Optional.ofNullable(testcustomer));
+        when(bookingRepo.existsByCustomerId(testcustomer.getId())).thenReturn(false);
+        when(customerRepo.findById(testCustomer2.getId())).thenReturn(Optional.ofNullable(testCustomer2));
+        when(bookingRepo.existsByCustomerId(testCustomer2.getId())).thenReturn(true);
+
+        customerService.deleteCustomer(testcustomer.getId()); //Has no bookings
+        customerService.deleteCustomer(testCustomer2.getId());//Has bookings
+
+        verify(customerRepo, times(1)).deleteById(any());
+        verify(customerRepo, times(1)).deleteById(testcustomer.getId());
+    }
+
+    @Test
+    void updateCustomerTest(){
+        when(customerRepo.findById(any())).thenReturn(Optional.ofNullable(testcustomer));
+
+        customerService.updateCustomer(testcustomer.getId(),testCustomerDTO);
+
+        assertEquals(testcustomer.getCustomerName(),testCustomerDTO.getCustomerName());
+        assertEquals(testcustomer.getPhoneNumber(),testCustomerDTO.getPhoneNumber());
+        assertEquals(testcustomer.getEmail(),testCustomerDTO.getEmail());
+        verify(customerRepo, times(1)).save(any(Customer.class));
+    }
+
 }
