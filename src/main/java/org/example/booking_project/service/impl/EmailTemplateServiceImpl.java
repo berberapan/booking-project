@@ -22,19 +22,14 @@ import java.util.Optional;
 @Service
 public class EmailTemplateServiceImpl implements EmailTemplateService {
 
-    @Autowired
-    public EmailTemplateRepo emailTemplateRepo;
-
-    @Autowired
+    private final EmailTemplateRepo emailTemplateRepo;
     private final JavaMailSender mailSender;
-
-    @Autowired
     private final TemplateEngine customTemplateEngine;
 
-
+    @Autowired
     public EmailTemplateServiceImpl(EmailTemplateRepo emailTemplateRepo, JavaMailSender mailSender, TemplateEngine templateEngine) {
-        this.mailSender = mailSender;
         this.emailTemplateRepo = emailTemplateRepo;
+        this.mailSender = mailSender;
         this.customTemplateEngine = templateEngine;
     }
 
