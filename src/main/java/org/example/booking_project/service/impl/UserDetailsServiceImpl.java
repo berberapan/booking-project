@@ -31,7 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         return new ConcreteUserDetails(user);
     }
 
@@ -43,13 +42,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public User userDTOToUser(UserDTO userDTO) {
-        ArrayList<Role> roles = new ArrayList<>();
-
-        if (userDTO.getAdmin()) roles.add(roleRepo.findByName("admin"));
-        if (userDTO.getReceptionist()) roles.add(roleRepo.findByName("receptionist"));
-
+        ArrayList<Role> roles = getRolesAsList(userDTO);
         return User.builder().username(userDTO.getUsername()).password(userDTO.getPassword()).roles(roles).build();
     }
 
+    public void updateUser( UserDTO userDTO) {
 
+        User existingUser = userRepo.findById(userDTO.getId()).orElse(null);
+
+        if (existingUser != null) {
+            ArrayList<Role> roles = getRolesAsList(userDTO);
+            System.out.println(existingUser.getRoles().stream().toList());
+            existingUser.setUsername(userDTO.getUsername());
+            existingUser.setRoles(roles);
+            System.out.println(existingUser.getRoles().stream().toList());
+            userRepo.save(existingUser);
+        }
+    }
+
+    public ArrayList<Role> getRolesAsList(UserDTO user){
+        ArrayList<Role> roles = new ArrayList<>();
+        if (user.isAdmin()) roles.add(roleRepo.findByName("admin"));
+        if (user.isReceptionist()) roles.add(roleRepo.findByName("receptionist"));
+        return roles;
+    }
 }

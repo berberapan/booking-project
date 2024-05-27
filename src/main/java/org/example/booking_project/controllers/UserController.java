@@ -1,7 +1,6 @@
 package org.example.booking_project.controllers;
 
 import lombok.AllArgsConstructor;
-import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.UserDTO;
 import org.example.booking_project.repos.UserRepo;
 import org.example.booking_project.service.impl.UserDetailsServiceImpl;
@@ -41,9 +40,12 @@ public class UserController {
 
     @PostMapping("/user/update")
     @PreAuthorize("hasAuthority('admin')")
-    public String updateUser(@ModelAttribute CustomerDTO customerDTO, Model model) {
-
-        return "";
+    public String updateUser(@ModelAttribute UserDTO userDTO, Model model) {
+        System.out.println(userDTO.isAdmin());
+        userService.updateUser(userDTO);
+        model.addAttribute("user", userDTO);
+        model.addAttribute("message", "Ny användare skapad");
+        return "createUser.html";
     }
     @GetMapping("/user/create")
     public String redirectToCreateUser(){
@@ -53,7 +55,6 @@ public class UserController {
     @PostMapping("/user/create")
     @PreAuthorize("hasAuthority('admin')")
     public String createUser(@ModelAttribute UserDTO userDTO, Model model) {
-        System.out.println(userService.userDTOToUser(userDTO));
         userRepo.save(userService.userDTOToUser(userDTO));
         model.addAttribute("message", "Ny användare skapad");
         model.addAttribute("user", userDTO);
