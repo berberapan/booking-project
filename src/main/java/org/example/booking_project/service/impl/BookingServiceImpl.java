@@ -1,7 +1,8 @@
 package org.example.booking_project.service.impl;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.BookingDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.Dtos.MiniBookingDTO;
@@ -11,13 +12,15 @@ import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Booking;
 import org.example.booking_project.models.Customer;
+import org.example.booking_project.models.EmailTemplate;
 import org.example.booking_project.models.Room;
-import org.example.booking_project.models.RoomType;
 import org.example.booking_project.repos.BookingRepo;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,9 +30,12 @@ import java.time.LocalDate;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.example.booking_project.controllers.BookingController.handleConstraintViolationException;
 
@@ -234,4 +240,5 @@ public class BookingServiceImpl implements BookingService {
     public String localExceptionHandler(ConstraintViolationException ex, Model model) {
         return handleConstraintViolationException(ex, model);
     }
+
 }
