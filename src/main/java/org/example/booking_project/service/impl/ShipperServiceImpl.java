@@ -2,6 +2,7 @@ package org.example.booking_project.service.impl;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.example.booking_project.Dtos.ShipperDTO;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.controllers.BookingController;
 import org.example.booking_project.models.Shipper;
 import org.example.booking_project.repos.ShipperRepo;
@@ -19,10 +20,12 @@ public class ShipperServiceImpl implements ShipperService {
     private final ShipperRepo shipperRepo;
     private final JsonStreamProvider jsp;
     private static final Logger log = LoggerFactory.getLogger(ShipperServiceImpl.class);
+    IntegrationsProperties properties;
 
-    public ShipperServiceImpl(ShipperRepo shipperRepo, JsonStreamProvider jsp){
+    public ShipperServiceImpl(ShipperRepo shipperRepo, JsonStreamProvider jsp, IntegrationsProperties properties){
         this.shipperRepo = shipperRepo;
         this.jsp = jsp;
+        this.properties = properties;
     }
 
     @Override
@@ -67,7 +70,7 @@ public class ShipperServiceImpl implements ShipperService {
     @Override
     public Shipper[] shippersJsonMapper() throws IOException {
         JsonMapper jm = new JsonMapper();
-        InputStream data = jsp.getDataStream();
+        InputStream data = jsp.getDataStream(properties.shippers.fetchurl);
         return jm.readValue(data, Shipper[].class);
     }
 
