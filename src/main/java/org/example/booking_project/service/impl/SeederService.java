@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.booking_project.models.Room;
 import org.example.booking_project.models.RoomType;
 import org.example.booking_project.models.User;
+import org.example.booking_project.repos.EmailTemplateRepo;
 import org.example.booking_project.repos.RoleRepo;
 import org.example.booking_project.repos.RoomRepo;
 import org.example.booking_project.repos.UserRepo;
@@ -20,7 +21,7 @@ public class SeederService {
     RoleRepo roleRepo;
     RoomRepo roomRepo;
 
-   public void userSeed() {
+    public void userSeed() {
        if (roleRepo.findByName("admin") == null) {
            addRole("admin");
        }

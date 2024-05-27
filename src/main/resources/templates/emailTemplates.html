@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blacklist admin</title>
-    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
-    <!-- Lägg till Bootstrap CSS -->
+    <title>Templates</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
@@ -50,58 +49,31 @@
         </div>
     </nav>
 </div>
-<div class="container mt-4">
-    <h1 class="text-center">Blacklist Admin</h1>
-
-    <!-- Sökformulär -->
-    <form action="/blacklist" method="post">
-        <div class="form-group">
-            <label for="email">E-post:</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Sök</button><br><br>
-    </form>
-    <!-- Formulär för att uppdatera blacklist -->
-    <div th:if="${blacklisted}">
-        <form th:if="${blacklistedFormToggle}" action="/blacklist/update" method="post">
-            <input type="hidden" id="ok" name="ok" th:value="${blacklisted.ok}">
-            <h2 class="text-center">Lägg till eller ta bort</h2>
-            <div th:if="${blacklistedFound}" class="form-group">
-                <label for="email">Email:</label>
-                <input type="text" class="form-control" id="blacklistedEmail" name="email" th:value="${blacklisted.email}" required readonly>
-            </div>
-            <div th:if="${blacklistedNotFound}" class="form-group">
-                <label for="email">Email:</label>
-                <input type="text" class="form-control" id="blacklistedEmailFromSearch" name="email" th:value="${blacklisted.email}" required>
-            </div>
-            <div class="form-group">
-                <label for="name">Namn:</label>
-                <input type="text" class="form-control" id="name" name="name" th:value="${blacklisted.name}" required>
-            </div>
-            <h4 th:if="${isNotOk}" style="color:red;">Personen finns med i blacklist</h4>
-            <h4 th:if="${isOk}">Personen finns inte med i blacklist</h4>
-            <br>
-            <button th:if="${isOk}" type="submit" class="btn btn-danger">Lägg till i blacklist</button>
-            <button th:if="${isNotOk}" type="submit" class="btn btn-warning">Ta bort från blacklist</button>
-        </form>
+<div class="container-email container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Templates</h1>
+        <a href="/admin/templates/add" class="btn btn-primary">Lägg till ny mall</a>
     </div>
-    <!-- Bekräftelsemeddelande för att blacklisten har uppdaterats -->
-    <div th:if="${updated}" id="updatedMessage" class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        Blacklist uppdaterad!
-    </div>
-
+    <table class="table table-striped mt-4 table-blue">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ämne</th>
+            <th>Åtgärder</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="template : ${templates}">
+            <td th:text="${template.name}">Template Name</td>
+            <td th:text="${template.subject}">Template Subject</td>
+            <td class="action-buttons">
+                <a th:href="@{/admin/templates/edit/{id}(id=${template.id})}" class="btn btn-warning btn-sm">Redigera</a>
+                <a th:href="@{/admin/templates/delete/{id}(id=${template.id})}" class="btn btn-danger btn-sm">Ta bort</a>
+                <a th:href="@{/admin/templates/preview/{id}(id=${template.id})}" class="btn btn-info btn-sm">Förhandsgranska</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<script>
-    // Lyssna på klickhändelser på stängningsknappen för att omdirigera till startsidan
-    document.querySelectorAll(".alert .close").forEach(function(closeButton) {
-        closeButton.addEventListener("click", function() {
-            window.location.href = "/index";
-        });
-    });
-</script>
 </body>
 </html>

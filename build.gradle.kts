@@ -45,7 +45,12 @@ dependencies {
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test:6.3.0")
     testImplementation("com.h2database:h2")
+    implementation ("org.springframework.boot:spring-boot-starter-mail")
+    implementation ("ognl:ognl:3.2.21")
+
+
 }
 
 tasks.withType<Test> {

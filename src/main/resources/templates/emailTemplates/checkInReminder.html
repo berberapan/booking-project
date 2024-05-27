@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Påminnelse om Incheckning</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .contact {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .contact a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        .text-center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Påminnelse om Incheckning</h1>
+    <p>Hej <span class="highlight" th:text="${name}">name</span>,</p>
+    <p>Detta är en påminnelse om din kommande vistelse på Glada Utterns Pensionat. Du är bokad att checka in den <span class="highlight" th:text="${checkInDate}">checkInDate</span>.</p>
+
+    <h2>Bokningsinformation:</h2>
+    <p>Bokningsnummer: <span class="highlight" th:text="${bookingNumber}">bookingNumber</span></p>
+    <p>Rumsnummer: <span class="highlight" th:text="${roomNumber}">roomNumber</span></p>
+    <p>Incheckningsdatum: <span class="highlight" th:text="${checkInDate}">checkInDate</span></p>
+    <p>Utcheckningsdatum: <span class="highlight" th:text="${checkOutDate}">checkOutDate</span></p>
+    <br>
+
+    <p class="text-center">Vi ser fram emot att välkomna dig!</p>
+    <p class="text-center">Vänliga hälsningar,<br>Glada Utterns Pensionat</p>
+
+    <div class="contact">
+        <p>För frågor eller ändringar, vänligen kontakta oss på <a href="mailto:info@glada-utterns-pensionat.com">info@glada-utterns-pensionat.com</a></p>
+    </div>
+</div>
+</body>
+</html>
