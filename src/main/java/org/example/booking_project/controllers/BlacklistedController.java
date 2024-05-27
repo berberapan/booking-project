@@ -22,7 +22,7 @@ public class BlacklistedController {
     }
 
     @GetMapping("/blacklist")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('admin')")
     public String showBlacklistAdminPage(Model model) {
         model.addAttribute("blacklisted", new BlacklistedDTO());
         model.addAttribute("blacklistedFormToggle", false);
@@ -34,7 +34,7 @@ public class BlacklistedController {
     }
 
     @PostMapping("/blacklist")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('admin')")
     public String searchBlacklisted(@RequestParam String email, Model model) throws IOException {
         BlacklistedDTO blacklisted = new BlacklistedDTO();
         if (blacklistedServiceImpl.existsByEmail(email)) {
@@ -56,7 +56,7 @@ public class BlacklistedController {
         return "blacklistAdmin";
     }
     @PostMapping("/blacklist/update")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('admin')")
     public String updateBlacklist(@ModelAttribute BlacklistedDTO blacklistedDTO, Model model) throws IOException {
         blacklistedServiceImpl.updateBlacklisted(blacklistedDTO);
         model.addAttribute("updated", true);
