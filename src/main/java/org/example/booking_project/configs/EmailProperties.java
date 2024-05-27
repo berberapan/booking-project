@@ -11,17 +11,13 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationPropertiesScan
 @Configuration
-@ConfigurationProperties (prefix = "integrations")
+@ConfigurationProperties(prefix = "emails")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class IntegrationsProperties {
-    public BookingProperties bookings;
-    public ContractCustomersProperties contractCustomers;
-    public ShippersProperties shippers;
-    public BlacklistProperties blacklist;
-    public EventProperties events;
-    public EmailProperties emails;
+public class EmailProperties {
+    public String emailAddress;
+    public String personal;
 }
