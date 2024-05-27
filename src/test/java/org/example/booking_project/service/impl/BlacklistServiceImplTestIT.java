@@ -14,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class BlacklistServiceImplTestIT {
 
-    @MockBean
+    @Autowired
     JsonStreamProvider jsonStreamProvider;
+
     @Autowired
     IntegrationsProperties properties;
 

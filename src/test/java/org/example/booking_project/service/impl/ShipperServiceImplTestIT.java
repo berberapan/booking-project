@@ -4,6 +4,7 @@ import org.example.booking_project.configs.IntegrationsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -12,9 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ShipperServiceImplTestIT {
+
     @Autowired
     JsonStreamProvider jsonStreamProvider;
 
+    @Autowired
     IntegrationsProperties properties;
 
     @Test
