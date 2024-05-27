@@ -1,19 +1,74 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <title>Logga in</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-<div th:if="${param.error}">
-    Felaktigt användarnamn och lösenord.
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                    </div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                        <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
-<div th:if="${param.logout}">
-    Du har loggats ut.
+<div class="login-container mt-4">
+        <h1>Logga in</h1>
+        <div th:if="${param.error}" class="alert">
+            Felaktigt användarnamn och lösenord.
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Användarnamn:</label>
+                <input type="text" id="username" name="username" required/>
+            </div>
+            <div class="form-group">
+                <label for="password">Lösenord:</label>
+                <input type="password" id="password" name="password" required/>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Glömt lösenord?</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Logga in" class="btn"/>
+            </div>
+        </form>
 </div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Logga in"/></div>
-</form>
 </body>
 </html>
+
