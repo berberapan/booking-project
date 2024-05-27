@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,27 +44,32 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public User userDTOToUser(UserDTO userDTO) {
         ArrayList<Role> roles = getRolesAsList(userDTO);
-        return User.builder().username(userDTO.getUsername()).password(userDTO.getPassword()).roles(roles).build();
+        return User.builder().username(userDTO.getUsername()).password(encodePassword(userDTO.getPassword())).roles(roles).build();
     }
 
-    public void updateUser( UserDTO userDTO) {
+    public void updateUser(UserDTO userDTO) {
 
         User existingUser = userRepo.findById(userDTO.getId()).orElse(null);
 
         if (existingUser != null) {
             ArrayList<Role> roles = getRolesAsList(userDTO);
-            System.out.println(existingUser.getRoles().stream().toList());
+
             existingUser.setUsername(userDTO.getUsername());
             existingUser.setRoles(roles);
-            System.out.println(existingUser.getRoles().stream().toList());
+
             userRepo.save(existingUser);
         }
     }
 
-    public ArrayList<Role> getRolesAsList(UserDTO user){
+    public ArrayList<Role> getRolesAsList(UserDTO user) {
         ArrayList<Role> roles = new ArrayList<>();
         if (user.isAdmin()) roles.add(roleRepo.findByName("admin"));
         if (user.isReceptionist()) roles.add(roleRepo.findByName("receptionist"));
         return roles;
+    }
+
+    public String encodePassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 }

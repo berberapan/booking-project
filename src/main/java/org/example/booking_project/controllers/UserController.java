@@ -41,8 +41,8 @@ public class UserController {
 
     @PostMapping("/user/update")
     @PreAuthorize("hasAuthority('admin')")
-    public String updateUser(@RequestParam UUID Id@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, Model model) {
-        UserDTO userDTO = UserDTO.builder().username(username).admin(admin).receptionist(receptionist).build();
+    public String updateUser(@RequestParam UUID id, @RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, Model model) {
+        UserDTO userDTO = UserDTO.builder().id(id).username(username).admin(admin).receptionist(receptionist).build();
         userService.updateUser(userDTO);
         model.addAttribute("user", userDTO);
         model.addAttribute("message", "Ny användare skapad");

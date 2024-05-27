@@ -7,7 +7,6 @@ import java.util.UUID;
 
 @Data
 @Builder
-
 public class UserDTO {
     private UUID id;
     private String username;

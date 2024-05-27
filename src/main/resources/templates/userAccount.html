@@ -79,7 +79,7 @@
 
         <form action="/user/update" method="post">
 
-            <input type="hidden" name="user" th:value="${user}">
+            <input type="hidden" name="id" th:value="${user.getId()}">
             <div class="form-group">
                 <label for="username">Användarnamn:</label>
                 <input type="text" class="form-control" id="username" name="username" th:value="${user.getUsername()}">
