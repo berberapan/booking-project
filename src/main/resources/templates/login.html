@@ -7,6 +7,18 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
+<div th:if="${param.error}">
+    Felaktigt email och lösenord.
+</div>
+<div th:if="${param.logout}">
+    Du har loggats ut.
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> Email: <br><input type="text" name="username"/> </label></div>
+    <div><label> Lösenord: <br><input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Logga in"/></div>
+    <a href="/forgotPassword">Glömt lösenord?</a>
+</form>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="/"><i>Startsida</i></a>
@@ -50,11 +62,17 @@
 <div class="login-container mt-4">
         <h1>Logga in</h1>
         <div th:if="${param.error}" class="alert">
-            Felaktigt användarnamn och lösenord.
+            Felaktigt email och lösenord.
+        </div>
+        <div th:if="${param.error}">
+            Felaktigt email och lösenord.
+        </div>
+        <div th:if="${param.logout}">
+            Du har loggats ut.
         </div>
         <form th:action="@{/login}" method="post">
             <div class="form-group">
-                <label for="username">Användarnamn:</label>
+                <label for="username">Email:</label>
                 <input type="text" id="username" name="username" required/>
             </div>
             <div class="form-group">
@@ -71,4 +89,3 @@
 </div>
 </body>
 </html>
-
