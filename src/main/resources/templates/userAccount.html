@@ -76,8 +76,10 @@
 
         <h1 class="text-center mb-5 mt-5"> Ändra användare</h1>
 
+
         <form action="/user/update" method="post">
-            <input type="hidden" name="id" th:value="${user.getId()}">
+
+            <input type="hidden" name="user" th:value="${user}">
             <div class="form-group">
                 <label for="username">Användarnamn:</label>
                 <input type="text" class="form-control" id="username" name="username" th:value="${user.getUsername()}">

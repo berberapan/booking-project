@@ -62,6 +62,7 @@
 
         <form action="/user/create" method="post" >
 
+
             <div class="form-group">
                 <label for="username">Användarnamn:</label>
                 <input type="email" class="form-control" id="username" name="username">
@@ -86,8 +87,8 @@
         <div class=" d-flex flex-column">
 
             <p><strong>Användarnamn:</strong> <span th:text="${user.getUsername}"></span></p>
-            <p><strong>Admin:</strong> <span th:text="${user.isAdmin()}"></span></p>
-            <p><strong>Receptionist:</strong> <span th:text="${user.isReceptionist()}"></span></p>
+            <p><strong>Admin:</strong> <span th:text="*{user.isAdmin()}"></span></p>
+            <p><strong>Receptionist:</strong> <span th:text="*{user.isReceptionist()}"></span></p>
 
         </div>
         <div class="alert alert-success text-center" role="alert" th:text="${message}"></div>

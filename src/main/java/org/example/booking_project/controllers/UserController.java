@@ -8,9 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.UUID;
 
 @Controller
 @AllArgsConstructor
@@ -40,21 +41,24 @@ public class UserController {
 
     @PostMapping("/user/update")
     @PreAuthorize("hasAuthority('admin')")
-    public String updateUser(@ModelAttribute UserDTO userDTO, Model model) {
-        System.out.println(userDTO.isAdmin());
+    public String updateUser(@RequestParam UUID Id@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, Model model) {
+        UserDTO userDTO = UserDTO.builder().username(username).admin(admin).receptionist(receptionist).build();
         userService.updateUser(userDTO);
         model.addAttribute("user", userDTO);
         model.addAttribute("message", "Ny användare skapad");
         return "createUser.html";
     }
     @GetMapping("/user/create")
-    public String redirectToCreateUser(){
+    public String redirectToCreateUser(Model model){
+        model.addAttribute("admin", false);
+        model.addAttribute("receptionist", false);
         return "createUser.html";
     }
 
     @PostMapping("/user/create")
     @PreAuthorize("hasAuthority('admin')")
-    public String createUser(@ModelAttribute UserDTO userDTO, Model model) {
+    public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist,@RequestParam String username,@RequestParam String password, Model model) {
+        UserDTO userDTO = UserDTO.builder().username(username).password(password).admin(admin).receptionist(receptionist).build();
         userRepo.save(userService.userDTOToUser(userDTO));
         model.addAttribute("message", "Ny användare skapad");
         model.addAttribute("user", userDTO);
