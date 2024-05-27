@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.CustomerService;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -25,16 +26,19 @@ public class CustomerController {
     }
 
     @GetMapping("customers")
+    @PreAuthorize("isAuthenticated()")
     List<CustomerDTO> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
     @RequestMapping("customers/{email}")
+    @PreAuthorize("isAuthenticated()")
     public CustomerDTO getCustomerByEmail(@PathVariable String email) {
         return customerService.getCustomerByEmail(email);
     }
 
     @GetMapping("/customer/search")
+    @PreAuthorize("isAuthenticated()")
     public String showSearchCustomerPage(Model model) {
         model.addAttribute("customer", new CustomerDTO());
         model.addAttribute("customerFormToggle", false);
@@ -47,6 +51,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/search")
+    @PreAuthorize("isAuthenticated()")
     public String searchCustomer(@RequestParam String email, Model model) {
         if (customerService.existsCustomerByEmail(email)) {
             CustomerDTO customerDTO = customerService.getCustomerByEmail(email);
@@ -61,6 +66,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/create")
+    @PreAuthorize("isAuthenticated()")
     public String showCreateCustomerForm(Model model) {
         String generatedCustomerNr = customerService.generateCustomerNr();
         model.addAttribute("customer", new CustomerDTO());
@@ -69,6 +75,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create")
+    @PreAuthorize("isAuthenticated()")
     public String createCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.addCustomer(customerDTO);
         model.addAttribute("created", true);
@@ -76,6 +83,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/update")
+    @PreAuthorize("isAuthenticated()")
     public String updateCustomer(@ModelAttribute CustomerDTO customerDTO, Model model) {
         customerService.updateCustomer(customerDTO.getId(), customerDTO);
         model.addAttribute("updated", true);
@@ -83,6 +91,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/delete")
+    @PreAuthorize("isAuthenticated()")
     public String deleteCustomer(@RequestParam Long id, Model model) {
         boolean bookingExists = customerService.checkIfCustomerHasBookings(id);
 

@@ -3,6 +3,7 @@ package org.example.booking_project.controllers;
 import org.example.booking_project.Dtos.BlacklistedDTO;
 import org.example.booking_project.Dtos.CustomerDTO;
 import org.example.booking_project.service.impl.BlacklistedServiceImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class BlacklistedController {
     }
 
     @GetMapping("/blacklist")
+    @PreAuthorize("hasAuthority('Admin')")
     public String showBlacklistAdminPage(Model model) {
         model.addAttribute("blacklisted", new BlacklistedDTO());
         model.addAttribute("blacklistedFormToggle", false);
@@ -32,6 +34,7 @@ public class BlacklistedController {
     }
 
     @PostMapping("/blacklist")
+    @PreAuthorize("hasAuthority('Admin')")
     public String searchBlacklisted(@RequestParam String email, Model model) throws IOException {
         BlacklistedDTO blacklisted = new BlacklistedDTO();
         if (blacklistedServiceImpl.existsByEmail(email)) {
@@ -53,6 +56,7 @@ public class BlacklistedController {
         return "blacklistAdmin";
     }
     @PostMapping("/blacklist/update")
+    @PreAuthorize("hasAuthority('Admin')")
     public String updateBlacklist(@ModelAttribute BlacklistedDTO blacklistedDTO, Model model) throws IOException {
         blacklistedServiceImpl.updateBlacklisted(blacklistedDTO);
         model.addAttribute("updated", true);

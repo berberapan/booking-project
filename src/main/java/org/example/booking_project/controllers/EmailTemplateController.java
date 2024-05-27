@@ -4,6 +4,7 @@ import org.example.booking_project.models.EmailTemplate;
 import org.example.booking_project.repos.CustomerRepo;
 import org.example.booking_project.repos.EmailTemplateRepo;
 import org.example.booking_project.service.impl.EmailTemplateServiceImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("admin/templates")
+@PreAuthorize("hasAuthority('Admin')")
 public class EmailTemplateController {
 
     private final EmailTemplateServiceImpl emailTemplateServiceImpl;
@@ -25,12 +27,14 @@ public class EmailTemplateController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('Admin')")
     public String listTemplates(Model model) {
         model.addAttribute("templates", emailTemplateServiceImpl.getAllTemplates());
         return "emailTemplates";
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasAuthority('Admin')")
     public String showAddTemplateForm(Model model) {
         EmailTemplate emailTemplate = new EmailTemplate();
         emailTemplate.setBody("""
@@ -72,6 +76,7 @@ public class EmailTemplateController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public String showEditTemplateForm(@PathVariable Long id, Model model) {
         EmailTemplate emailTemplate = emailTemplateServiceImpl.getTemplateById(id);
         if (emailTemplate != null) {
@@ -83,6 +88,7 @@ public class EmailTemplateController {
     }
 
     @GetMapping("/editHtml/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public String showEditHtmlForm(@PathVariable Long id, Model model) {
         EmailTemplate emailTemplate = emailTemplateServiceImpl.getTemplateById(id);
         if (emailTemplate != null) {
@@ -94,6 +100,7 @@ public class EmailTemplateController {
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public String updateTemplate(@PathVariable Long id, @ModelAttribute EmailTemplate updatedTemplate) {
         Optional<EmailTemplate> templateOptional = emailTemplateRepo.findById(id);
 
@@ -108,18 +115,21 @@ public class EmailTemplateController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('Admin')")
     public String saveTemplate(@ModelAttribute EmailTemplate emailTemplate) {
         emailTemplateServiceImpl.saveTemplate(emailTemplate);
         return "redirect:/admin/templates";
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public String deleteTemplate(@PathVariable Long id) {
         emailTemplateServiceImpl.deleteTemplateById(id);
         return "redirect:/admin/templates";
     }
 
     @GetMapping("/preview/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
     public String previewTemplate(@PathVariable Long id, Model model) {
         Optional<EmailTemplate> templateOptional = emailTemplateRepo.findById(id);
 
