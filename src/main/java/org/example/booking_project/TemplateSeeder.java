@@ -1,5 +1,6 @@
 package org.example.booking_project;
 
+import lombok.AllArgsConstructor;
 import org.example.booking_project.models.EmailTemplate;
 import org.example.booking_project.repos.EmailTemplateRepo;
 import org.slf4j.Logger;
@@ -33,8 +34,9 @@ public class TemplateSeeder {
                 new EmailTemplate("welcomeMessage", "Välkomstmeddelande", loadHtmlFromFile("welcomeMessage.html")));
 
         for (EmailTemplate template : templates) {
+            if(emailTemplateRepo.findByName(template.getName())== null){
             emailTemplateRepo.save(template);
-            logger.info("Templates seeded successfully.");
+            logger.info(template.getName() +"-template seeded successfully.");}
         }
     }
     private String loadHtmlFromFile(String filename) throws IOException {
