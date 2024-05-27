@@ -1,5 +1,6 @@
 package org.example.booking_project.service.impl;
 
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +15,12 @@ class ShipperServiceImplTestIT {
     @Autowired
     JsonStreamProvider jsonStreamProvider;
 
+    IntegrationsProperties properties;
+
     @Test
     void shippersToJsonWillGetData() throws IOException {
-        Scanner scanner = new Scanner(jsonStreamProvider.getDataStream()).useDelimiter("\\A");
+        Scanner scanner = new Scanner(jsonStreamProvider.getDataStream(properties.shippers.fetchurl))
+                .useDelimiter("\\A");
         String result = scanner.hasNext() ? scanner.next() : "";
         assert (!result.isEmpty());
         assertTrue(result.contains("id"));

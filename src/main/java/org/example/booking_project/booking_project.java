@@ -53,6 +53,7 @@ public class booking_project {
             seeder.roomSeed();
         };
     }
+
 /*
     @Bean
     public CommandLineRunner saveRooms(RoomRepo repo) {
