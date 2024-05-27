@@ -1,0 +1,15 @@
+[
+  {"id":38,"email":"stefan11111111@aaa.com","name":"Stefan Holmberg","group":"gul","created":"2024-05-09T11:34:28.080199","ok":false},
+  {"id":39,"email":null,"name":null,"group":"gul","created":"2024-05-09T11:36:32.518042","ok":false},
+  {"id":40,"email":"email@email.em","name":"Nyan Namnson","group":"gul","created":"2024-05-09T12:01:25.494499","ok":false},
+  {"id":87,"email":"namn@name.mn","name":"Nandor Naan","group":"gul","created":"2024-05-10T09:39:09.834029","ok":true},
+  {"id":88,"email":"emailnamn@email.em","name":"Emil Emilsson","group":"gul","created":"2024-05-10T09:54:37.919398","ok":true},
+  {"id":89,"email":"laxask@laxen.se","name":"Sauna Waarm","group":"gul","created":"2024-05-10T10:38:18.003993","ok":false},
+  {"id":91,"email":"ytterligare@etttest.se","name":"Lars Landvetter","group":"gul","created":"2024-05-10T11:26:55.44926","ok":true},
+  {"id":94,"email":"kalle@hotmail.com","name":"Karl Ottosson","group":"gul","created":"2024-05-10T12:58:59.285587","ok":true},
+  {"id":98,"email":"martin@mail.se","name":"Martin Nitram","group":"gul","created":"2024-05-11T07:37:05.049851","ok":false},
+  {"id":100,"email":"malin@hotmail.com","name":"Malin Patriksson","group":"gul","created":"2024-05-12T10:38:38.627496","ok":true},
+  {"id":114,"email":"123@mail.se","name":"Namn EttTvåTre","group":"gul","created":"2024-05-13T10:48:30.971523","ok":false},
+  {"id":227,"email":"sven@bertil.tb","name":"Sven Bertiltorp","group":"gul","created":"2024-05-22T19:26:00.56384","ok":false},
+  {"id":229,"email":"Notnice@badguy.se","name":"Trashy De Roomson","group":"gul","created":"2024-05-23T08:18:36.22228","ok":false}
+]

@@ -15,11 +15,11 @@ public class JsonStreamProvider {
 
     @Autowired
     IntegrationsProperties properties;
-    public InputStream getDataStream() throws IOException {
+    public InputStream getDataStream(String source) throws IOException {
 
-        String fetchURL = properties.shippers.fetchurl;
+        //String fetchURL = properties.shippers.fetchurl;
 
-        URL url = new URL(fetchURL);
+        URL url = new URL(source);
         return url.openStream();
     }
 }
