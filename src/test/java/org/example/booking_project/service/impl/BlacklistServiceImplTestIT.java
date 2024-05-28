@@ -9,10 +9,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class ShipperServiceImplTestIT {
+public class BlacklistServiceImplTestIT {
 
     @Autowired
     JsonStreamProvider jsonStreamProvider;
@@ -21,20 +21,16 @@ class ShipperServiceImplTestIT {
     IntegrationsProperties properties;
 
     @Test
-    void shippersToJsonWillGetData() throws IOException {
-        Scanner scanner = new Scanner(jsonStreamProvider.getDataStream(properties.shippers.fetchurl))
+    void blacklistToJsonWillGetData() throws IOException {
+        Scanner scanner = new Scanner(jsonStreamProvider.getDataStream(properties.blacklist.fetchUrl))
                 .useDelimiter("\\A");
         String result = scanner.hasNext() ? scanner.next() : "";
         assert (!result.isEmpty());
         assertTrue(result.contains("id"));
         assertTrue(result.contains("email"));
-        assertTrue(result.contains("companyName"));
-        assertTrue(result.contains("contactName"));
-        assertTrue(result.contains("streetAddress"));
-        assertTrue(result.contains("city"));
-        assertTrue(result.contains("postalCode"));
-        assertTrue(result.contains("country"));
-        assertTrue(result.contains("phone"));
-        assertTrue(result.contains("fax"));
+        assertTrue(result.contains("name"));
+        assertTrue(result.contains("group"));
+        assertTrue(result.contains("created"));
+        assertTrue(result.contains("ok"));
     }
 }

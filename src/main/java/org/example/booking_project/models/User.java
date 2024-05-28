@@ -7,10 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
 @Entity
+@Table(name = "UserAccount")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,4 +32,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private Collection<Role> roles;
+
+    private String resetPasswordToken;
+
+    private LocalDateTime resetPasswordExpiration;
 }

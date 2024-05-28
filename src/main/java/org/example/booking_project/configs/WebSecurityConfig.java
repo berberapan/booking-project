@@ -40,7 +40,8 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/index", "/css/**", "/images/**").permitAll().anyRequest().authenticated()
+                        .requestMatchers("/", "/index", "/css/**", "/images/**", "/forgotPassword", "/resetPassword")
+                        .permitAll().anyRequest().authenticated()
                 )
                 .formLogin((form) -> form.loginPage("/login").permitAll()
                 )

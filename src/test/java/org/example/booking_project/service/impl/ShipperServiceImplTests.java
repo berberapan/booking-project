@@ -1,10 +1,14 @@
 package org.example.booking_project.service.impl;
 
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.Shipper;
 import org.example.booking_project.repos.ShipperRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,21 +17,26 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class ShipperServiceImplTests {
 
-    private JsonStreamProvider jsonStreamProvider = mock(JsonStreamProvider.class);
+    @MockBean
+    private JsonStreamProvider jsonStreamProvider;
     private ShipperRepo shipperRepo = mock(ShipperRepo.class);
-
+    @Autowired
+    IntegrationsProperties properties;
+    @Autowired
     ShipperServiceImpl sut;
 
     @BeforeEach
     void setUp() {
-        sut = new ShipperServiceImpl(shipperRepo, jsonStreamProvider);
+        sut = new ShipperServiceImpl(shipperRepo, jsonStreamProvider, properties);
     }
 
     @Test
     void shippersJsonMapperShouldMapCorrectly() throws IOException {
-        when(jsonStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("testdata.json"));
+        when(jsonStreamProvider.getDataStream(properties.shippers.fetchurl))
+                .thenReturn(getClass().getClassLoader().getResourceAsStream("testdata.json"));
         Shipper[] allShippers = sut.shippersJsonMapper();
 
         assertEquals(3, allShippers.length);

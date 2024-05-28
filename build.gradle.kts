@@ -25,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.yaml:snakeyaml")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -48,8 +49,7 @@ dependencies {
     testImplementation("com.h2database:h2")
     implementation ("org.springframework.boot:spring-boot-starter-mail")
     implementation ("ognl:ognl:3.2.21")
-
-
+    testImplementation("org.wiremock:wiremock-standalone:3.6.0")
 }
 
 tasks.withType<Test> {

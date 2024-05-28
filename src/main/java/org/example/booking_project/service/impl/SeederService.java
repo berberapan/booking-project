@@ -34,6 +34,10 @@ public class SeederService {
        if (userRepo.getUserByUsername("user@user.ug") == null) {
            addUser("user@user.ug", "receptionist");
        }
+       //Test syfte
+       if (userRepo.getUserByUsername("josef@boukdir.se") == null) {
+           addUser("josef@boukdir.se", "admin");
+       }
    }
 
    public void roomSeed() {
