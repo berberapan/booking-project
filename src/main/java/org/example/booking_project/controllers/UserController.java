@@ -50,35 +50,41 @@ public class UserController {
     @GetMapping("/user")
     @PreAuthorize("hasAuthority('admin')")
     public String showSearchPage(Model model) {
-         model.addAttribute("hasSearched", false);
-        return "userAccount.html";
+        model.addAttribute("hasSearched", false);
+        return "userAccount";
     }
 
     @PostMapping("/user/search")
     @PreAuthorize("hasAuthority('admin')")
     public String searchUser(@RequestParam String search, Model model) {
-
         model.addAttribute("hasSearched", true);
-        if (userRepo.getUserByUsername(search) != null) {
-            UserDTO user = userService.userToUserDTO(userRepo.getUserByUsername(search));
-            model.addAttribute("user", user);
+        User user = userRepo.getUserByUsername(search);
+        if (user != null) {
+            UserDTO userDTO = userService.userToUserDTO(user);
+            model.addAttribute("user", userDTO);
             model.addAttribute("userExists", true);
         } else {
             model.addAttribute("userExists", false);
-            //  model.addAttribute("showMessage", true);
             model.addAttribute("message", "Ingen användare hittades");
         }
-        return "userAccount.html";
+        return "userAccount";
     }
 
     @PostMapping("/user/update")
     @PreAuthorize("hasAuthority('admin')")
-    public String updateUser(@RequestParam UUID id, @RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, Model model) {
-        UserDTO userDTO = UserDTO.builder().id(id).username(username).admin(admin).receptionist(receptionist).build();
+    public String updateUser(@RequestParam UUID id, @RequestParam(defaultValue = "false") boolean admin,
+                             @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, Model model) {
+        UserDTO userDTO = UserDTO.builder()
+                .id(id)
+                .username(username)
+                .admin(admin)
+                .receptionist(receptionist)
+                .build();
         userService.updateUser(userDTO);
         model.addAttribute("user", userDTO);
+        model.addAttribute("updated", true);
         model.addAttribute("message", "Användare har ändrats");
-        return "createUser.html";
+        return "userAccount";
     }
 
     @GetMapping("/user/create")
@@ -86,27 +92,31 @@ public class UserController {
         model.addAttribute("admin", false);
         model.addAttribute("receptionist", false);
         model.addAttribute("hasFilledForm", false);
-        return "createUser.html";
+        return "createUser";
     }
 
     @PostMapping("/user/create")
     @PreAuthorize("hasAuthority('admin')")
-    public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, @RequestParam String password, Model model) {
-       model.addAttribute("hasFilledForm", true);
-        if(userRepo.getUserByUsername(username) != null){
-           model.addAttribute("message", "Användarnamn finns redan");
-           model.addAttribute("userAlreadyExists", true);
-       }else{
-
-        UserDTO userDTO = UserDTO.builder().username(username).password(password).admin(admin).receptionist(receptionist).build();
-        userRepo.save(userService.userDTOToUser(userDTO));
-        model.addAttribute("message", "Ny användare skapad");
-        model.addAttribute("userAlreadyExists", false);
-        model.addAttribute("user", userDTO);
-       }
-        return "createUser.html";
+    public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist,
+                             @RequestParam String username, @RequestParam String password, Model model) {
+        model.addAttribute("hasFilledForm", true);
+        if (userRepo.getUserByUsername(username) != null) {
+            model.addAttribute("message", "Användarnamn finns redan");
+            model.addAttribute("userAlreadyExists", true);
+        } else {
+            UserDTO userDTO = UserDTO.builder()
+                    .username(username)
+                    .password(password)
+                    .admin(admin)
+                    .receptionist(receptionist)
+                    .build();
+            userRepo.save(userService.userDTOToUser(userDTO));
+            model.addAttribute("message", "Ny användare skapad");
+            model.addAttribute("userAlreadyExists", false);
+            model.addAttribute("user", userDTO);
+        }
+        return "createUser";
     }
-
 
     @GetMapping("/forgotPassword")
     public String forgotPassword() {
