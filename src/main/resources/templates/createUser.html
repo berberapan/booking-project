@@ -95,8 +95,8 @@
         <div class=" d-flex flex-column">
 
             <p><strong>Användarnamn:</strong> <span th:text="${user.getUsername}"></span></p>
-            <p><strong>Admin:</strong> <span th:text="*{user.isAdmin()}"></span></p>
-            <p><strong>Receptionist:</strong> <span th:text="*{user.isReceptionist()}"></span></p>
+            <p><strong>Admin:</strong> <span th:text="${user.isAdmin() == true} ? 'Ja' : 'Nej'"></span></p>
+            <p><strong>Receptionist:</strong> <span th:text="${user.isReceptionist() == true} ? 'Ja' : 'Nej'"></span></p>
 
         </div>
         <div class="alert alert-success text-center" role="alert" th:text="${message}"></div>

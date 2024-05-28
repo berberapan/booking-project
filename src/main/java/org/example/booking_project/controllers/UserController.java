@@ -1,30 +1,30 @@
 package org.example.booking_project.controllers;
 
-import lombok.AllArgsConstructor;
-import org.example.booking_project.Dtos.UserDTO;
-import org.example.booking_project.repos.UserRepo;
-import org.example.booking_project.service.impl.UserDetailsServiceImpl;
-import org.springframework.security.access.prepost.PreAuthorize;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
+import org.example.booking_project.Dtos.UserDTO;
 import org.example.booking_project.Utils;
 import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.User;
+import org.example.booking_project.repos.UserRepo;
 import org.example.booking_project.service.impl.UserDetailsServiceImpl;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.UUID;
+
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Controller
@@ -49,7 +49,8 @@ public class UserController {
 
     @GetMapping("/user")
     @PreAuthorize("hasAuthority('admin')")
-    public String showSearchPage() {
+    public String showSearchPage(Model model) {
+         model.addAttribute("hasSearched", false);
         return "userAccount.html";
     }
 
@@ -57,8 +58,16 @@ public class UserController {
     @PreAuthorize("hasAuthority('admin')")
     public String searchUser(@RequestParam String search, Model model) {
 
-        UserDTO user = userService.userToUserDTO(userRepo.getUserByUsername(search));
-        model.addAttribute("user", user);
+        model.addAttribute("hasSearched", true);
+        if (userRepo.getUserByUsername(search) != null) {
+            UserDTO user = userService.userToUserDTO(userRepo.getUserByUsername(search));
+            model.addAttribute("user", user);
+            model.addAttribute("userExists", true);
+        } else {
+            model.addAttribute("userExists", false);
+            //  model.addAttribute("showMessage", true);
+            model.addAttribute("message", "Ingen användare hittades");
+        }
         return "userAccount.html";
     }
 
@@ -68,11 +77,12 @@ public class UserController {
         UserDTO userDTO = UserDTO.builder().id(id).username(username).admin(admin).receptionist(receptionist).build();
         userService.updateUser(userDTO);
         model.addAttribute("user", userDTO);
-        model.addAttribute("message", "Ny användare skapad");
+        model.addAttribute("message", "Användare har ändrats");
         return "createUser.html";
     }
+
     @GetMapping("/user/create")
-    public String redirectToCreateUser(Model model){
+    public String redirectToCreateUser(Model model) {
         model.addAttribute("admin", false);
         model.addAttribute("receptionist", false);
         return "createUser.html";
@@ -80,7 +90,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     @PreAuthorize("hasAuthority('admin')")
-    public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist,@RequestParam String username,@RequestParam String password, Model model) {
+    public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, @RequestParam String password, Model model) {
         UserDTO userDTO = UserDTO.builder().username(username).password(password).admin(admin).receptionist(receptionist).build();
         userRepo.save(userService.userDTOToUser(userDTO));
         model.addAttribute("message", "Ny användare skapad");
