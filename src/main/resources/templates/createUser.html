@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avtalskunder</title>
+    <title>Skapa användare</title>
     <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -68,49 +67,35 @@
     </nav>
 </div>
 <div class="container mt-4">
-
-    <div th:unless="${hasFilledForm}">
-
-        <h1 class="text-center mb-5 mt-5"> Skapa användare</h1>
-
-        <form action="/user/create" method="post">
-
-            <div class="form-group">
-                <label for="username">Användarnamn:</label>
-                <input type="email" class="form-control" id="username" name="username">
-                <label for="password">Lösenord:</label>
-                <input type="text" class="form-control" id="password" name="password">
-            </div>
-            <div class="form-group ">
-                <label for="admin">Admin:</label>
-                <input type="checkbox" class="form-control" id="admin" name="admin">
-                <label for="receptionist">Receptionist:</label>
-                <input type="checkbox" class="form-control" id="receptionist" name="receptionist">
-            </div>
-            <div>
-                <button type="submit" class="btn btn-success">Skapa</button>
-                <a href="/user" class="btn btn-danger">Avbryt</a>
-            </div>
-        </form>
-    </div>
-    <div th:if="${hasFilledForm}">
-
-        <div th:unless="${userAlreadyExists}">
-            <div class=" d-flex flex-column">
-
-                <p><strong>Användarnamn:</strong> <span th:text="${user.getUsername}"></span></p>
-                <p><strong>Admin:</strong> <span th:text="${user.isAdmin() == true} ? 'Ja' : 'Nej'"></span></p>
-                <p><strong>Receptionist:</strong> <span th:text="${user.isReceptionist() == true} ? 'Ja' : 'Nej'"></span></p>
-
-            </div>
-            <div class="alert alert-success text-center" role="alert" th:text="${message}"></div>
-            <a class="btn btn-primary" href="/user" role="button">Gå tillbaka</a>
+    <h1 class="text-center mb-5 mt-5">Skapa användare</h1>
+    <form action="/user/create" method="post">
+        <div class="form-group">
+            <label for="username">Användarnamn:</label>
+            <input type="email" class="form-control" id="username" name="username">
         </div>
-        <div th:if="${userAlreadyExists}">
-            <div class="alert alert-warning text-center" role="alert" th:text="${message}"></div>
-            <a class="btn btn-primary" href="/user" role="button">Gå tillbaka</a>
+        <div class="form-group">
+            <label for="password">Lösenord:</label>
+            <input type="text" class="form-control" id="password" name="password">
         </div>
-
+        <div class="form-group">
+            <label for="admin">Admin:</label>
+            <input type="checkbox" class="form-control" id="admin" name="admin">
+        </div>
+        <div class="form-group">
+            <label for="receptionist">Receptionist:</label>
+            <input type="checkbox" class="form-control" id="receptionist" name="receptionist">
+        </div>
+        <button type="submit" class="btn btn-success">Skapa</button>
+        <a href="/user" class="btn btn-danger">Avbryt</a>
+    </form>
+    <div th:if="${hasFilledForm}" class="mt-4">
+        <div th:if="${!userAlreadyExists}" class="mt-4">
+        <div class="alert alert-success" role="alert" th:text="${message}"></div>
+        </div>
+        <div th:if="${userAlreadyExists}" class="mt-4">
+        <div class="alert alert-warning" role="alert" th:text="${message}"></div>
+        </div>
     </div>
 </div>
 </body>
+</html>
