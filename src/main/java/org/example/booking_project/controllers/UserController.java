@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.booking_project.Utils;
+import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.models.User;
 import org.example.booking_project.service.impl.UserDetailsServiceImpl;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
@@ -26,6 +27,8 @@ public class UserController {
     private JavaMailSender mailSender;
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
+    @Autowired
+    private IntegrationsProperties properties;
 
 
     @GetMapping("/login")
@@ -59,7 +62,7 @@ public class UserController {
     public void sendEmail(String email, String link) throws MessagingException, UnsupportedEncodingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setFrom("raven15@ethereal.email", "Raven");
+        helper.setFrom(properties.emails.emailAddress, properties.emails.personal);
         helper.setTo(email);
 
         String subject = "Länk för återställning av lösenord.";
