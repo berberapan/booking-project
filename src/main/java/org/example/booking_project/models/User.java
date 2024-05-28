@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
@@ -25,6 +24,7 @@ public class User {
     private UUID id;
 
     @NotNull
+    @Column(unique = true)
     private String username;
     @NotNull
     private String password;

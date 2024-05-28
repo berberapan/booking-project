@@ -85,16 +85,25 @@ public class UserController {
     public String redirectToCreateUser(Model model) {
         model.addAttribute("admin", false);
         model.addAttribute("receptionist", false);
+        model.addAttribute("hasFilledForm", false);
         return "createUser.html";
     }
 
     @PostMapping("/user/create")
     @PreAuthorize("hasAuthority('admin')")
     public String createUser(@RequestParam(defaultValue = "false") boolean admin, @RequestParam(defaultValue = "false") boolean receptionist, @RequestParam String username, @RequestParam String password, Model model) {
+       model.addAttribute("hasFilledForm", true);
+        if(userRepo.getUserByUsername(username) != null){
+           model.addAttribute("message", "Användarnamn finns redan");
+           model.addAttribute("userAlreadyExists", true);
+       }else{
+
         UserDTO userDTO = UserDTO.builder().username(username).password(password).admin(admin).receptionist(receptionist).build();
         userRepo.save(userService.userDTOToUser(userDTO));
         model.addAttribute("message", "Ny användare skapad");
+        model.addAttribute("userAlreadyExists", false);
         model.addAttribute("user", userDTO);
+       }
         return "createUser.html";
     }
 
