@@ -102,12 +102,12 @@
                 <button type="submit" class="btn btn-primary">Ändra</button>
             </form>
         </div>
-        <div th:if="${!userExists}">
+        <div th:unless="${userExists}">
             <div class="alert alert-warning" role="alert" th:text="${message}"></div>
         </div>
-        <div th:if="${updated}" class="mt-4">
-            <div class="alert alert-success" role="alert" th:text="${message}"></div>
-        </div>
+    </div>
+    <div th:if="${updated}" class="mt-4">
+        <div class="alert alert-success" role="alert" th:text="${message}"></div>
     </div>
 </div>
 </body>
