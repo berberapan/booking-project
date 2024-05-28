@@ -96,7 +96,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String encodedPassword = encoder.encode(newPassword);
         user.setPassword(encodedPassword);
         user.setResetPasswordToken(null);
+        user.setResetPasswordExpiration(null);
         userRepo.save(user);
-
     }
 }
