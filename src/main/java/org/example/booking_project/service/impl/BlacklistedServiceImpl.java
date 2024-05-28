@@ -7,8 +7,6 @@ import org.example.booking_project.Dtos.BlacklistedDTO;
 import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.service.BlacklistService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

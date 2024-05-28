@@ -1,18 +1,11 @@
 package org.example.booking_project;
 
 import lombok.AllArgsConstructor;
-import org.example.booking_project.models.Booking;
-import org.example.booking_project.models.Customer;
-import org.example.booking_project.models.Room;
-import org.example.booking_project.models.RoomType;
-import org.example.booking_project.repos.RoomRepo;
 import org.example.booking_project.service.impl.SeederService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
@@ -25,7 +18,7 @@ public class booking_project {
     SeederService seeder;
     TemplateSeeder templateSeeder;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         if (args.length == 0) {
             SpringApplication.run(booking_project.class, args);
         } else {

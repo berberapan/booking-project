@@ -54,7 +54,7 @@ class ShipperServiceImplTests {
     }
 
     @Test
-    void shippersToDatabaseShouldSaveNewShippers() throws IOException {
+    void shippersToDatabaseShouldSaveNewShippers() {
         when(shipperRepo.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         Shipper[] shippers = List.of(new Shipper(58L, "test@test.com", "test1", "test2", "test3", "test4", "test5", "12345", "test6", "00000", "11111"),
@@ -68,7 +68,7 @@ class ShipperServiceImplTests {
     }
 
     @Test
-    void shippersToDatabaseShouldUpdateExistingShipperAndAddNewOne() throws IOException {
+    void shippersToDatabaseShouldUpdateExistingShipperAndAddNewOne() {
         Shipper[] shippers = List.of(new Shipper(58L, "test@test.com", "test1", "test2", "test3", "test4", "test5", "12345", "test6", "00000", "11111"),
                 new Shipper(59L, "test@test.com", "test1", "test2", "test3", "test4", "test5", "12345", "test6", "00000", "11111")).toArray(new Shipper[0]);
         when(shipperRepo.findById(59L)).thenReturn(Optional.of(shippers[1]));
