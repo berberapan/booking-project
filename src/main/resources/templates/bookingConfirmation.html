@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<html lang="sv" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Bokningsbekräftelse</title>
@@ -35,14 +36,25 @@
                         <a class="dropdown-item" href="/customer/search">Sök kund</a>
                         <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
                     </div>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('admin')">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin" >
                         <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
                         <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                        <a class="dropdown-item" href="/user">User admin</a>
                     </div>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="/logout">Logga ut</a>
+                    </div>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/login" class="nav-link">Logga in</a>
                 </li>
             </ul>
         </div>

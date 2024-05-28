@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,14 +38,25 @@
                         <a class="dropdown-item" href="/customer/search">Sök kund</a>
                         <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
                     </div>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('admin')">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin" >
                         <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
                         <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                        <a class="dropdown-item" href="/user">User admin</a>
                     </div>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="/logout">Logga ut</a>
+                    </div>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/login" class="nav-link">Logga in</a>
                 </li>
             </ul>
         </div>
@@ -64,35 +76,6 @@
         </form>
         <table id="cc-table" class="table table-striped " style="width:100%">
             <thead>
-            <!-- Without ternary
-            <tr>
-                <th class="table-link">
-                    <div th:if="${sortOrder == 'ASC' && sortCol == 'companyName'}">
-                        <a th:href="@{/contractCustomer(sortOrder=DESC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
-                    </div>
-                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'companyName'}">
-                        <a th:href="@{/contractCustomer(sortOrder=ASC, sortCol=companyName, search=${search})}">Företag <i class="fa-sharp fa-solid fa-sort"></i></a>
-                    </div>
-                </th>
-                <th class="table-link">
-                    <div th:if="${sortOrder == 'ASC' && sortCol == 'contactName'}">
-                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
-                    </div>
-                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'contactName'}">
-                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=contactName, search=${search})}">Kontaktperson <i class="fa-sharp fa-solid fa-sort arrows"></i></a>
-                    </div>
-                </th>
-                <th class="table-link">
-                    <div th:if="${sortOrder == 'ASC' && sortCol == 'country'}">
-                        <a th:href="@{contractCustomer(sortOrder=DESC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
-                    </div>
-                    <div th:unless="${sortOrder == 'ASC' && sortCol == 'country'}">
-                        <a th:href="@{contractCustomer(sortOrder=ASC, sortCol=country, search=${search})}">Land <i class="fa-sharp fa-solid fa-sort"></i></a>
-                    </div>
-                </th>
-            </tr>
-            -->
-
             <tr>
                 <th class="table-link col-md-4">
                     <a th:href="@{/contractCustomer(sortOrder=${(sortOrder == 'ASC' && sortCol == 'companyName') ? 'DESC' : 'ASC'},
