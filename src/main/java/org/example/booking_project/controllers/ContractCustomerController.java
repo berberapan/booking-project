@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class ContractCustomerController {
     }
 
     @GetMapping("contractCustomer")
+    @PreAuthorize("isAuthenticated()")
     public String showContractCustomers(Model model,
                                         @RequestParam(defaultValue = "1") int pageNum,
                                         @RequestParam(defaultValue = "15") int pageSize,
@@ -64,6 +66,7 @@ public class ContractCustomerController {
     }
 
     @GetMapping("/contractCustomer/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String showContractCustomerInfo(Model model, @PathVariable Long id) {
         ContractCustomerDTO customerDTO = contractCustomerService.getContractCustomerById(id);
         model.addAttribute("customer", customerDTO);

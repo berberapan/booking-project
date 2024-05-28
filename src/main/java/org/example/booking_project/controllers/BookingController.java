@@ -11,6 +11,7 @@ import org.example.booking_project.service.BookingService;
 import org.example.booking_project.service.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class BookingController {
     }
 
     @GetMapping("/bookings/delete")
+    @PreAuthorize("isAuthenticated()")
     public String deleteBooking(@RequestParam Long id, Model model) {
         bs.deleteBooking(id);
         model.addAttribute("deleted", true);
@@ -46,6 +48,7 @@ public class BookingController {
     }
 
     @PostMapping("/bookings/update")
+    @PreAuthorize("isAuthenticated()")
     public String updateBooking(@ModelAttribute BookingDTO bookingDTO, Model model) {
 
         String response = bs.updateBooking(bookingDTO.getId(), bookingDTO);
@@ -71,6 +74,7 @@ public class BookingController {
     }
 
     @PostMapping("/bookings/search")
+    @PreAuthorize("isAuthenticated()")
     public String searchBooking(@RequestParam String bookingNr, Model model) {
         if (bs.existsBookingByBookingNr(bookingNr)) {
             BookingDTO bookingDTO = bs.getBookingByBookingNr(bookingNr);
@@ -85,6 +89,7 @@ public class BookingController {
     }
 
     @GetMapping("/bookings/search")
+    @PreAuthorize("isAuthenticated()")
     public String showSearchBookingPage(Model model) {
         model.addAttribute("booking", new BookingDTO());
         model.addAttribute("bookingFormToggle", false);
@@ -96,12 +101,14 @@ public class BookingController {
     }
 
     @RequestMapping("/book")
+    @PreAuthorize("isAuthenticated()")
     public String book(Model model) {
         model.addAttribute("booking", new MiniBookingDTO());
         return "searchAvailability.html";
     }
 
     @RequestMapping("bookReceival")
+    @PreAuthorize("isAuthenticated()")
     public String bookReceival(@ModelAttribute MiniBookingDTO booking, Model model) {
 
         model.addAttribute("book", booking);
@@ -113,6 +120,7 @@ public class BookingController {
     }
 
     @RequestMapping("createbooking")
+    @PreAuthorize("isAuthenticated()")
     public String createBooking(@ModelAttribute MiniBookingDTO booking,
                                 @ModelAttribute CustomerDTO customer,
                                 @RequestParam String roomNumber,
@@ -160,12 +168,14 @@ public class BookingController {
     }
 
     @DeleteMapping("/bookings/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String deleteBooking(@PathVariable Long id) {
         bs.deleteBooking(id);
         return "Removed bookings";
     }
 
     @RequestMapping("bookings")
+    @PreAuthorize("isAuthenticated()")
     List<BookingDTO> getAllBookings() {
         return bs.getAllBookings();
     }
