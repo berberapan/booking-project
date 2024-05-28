@@ -73,7 +73,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public String encodePassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
-
+    }
+    
     public void setNewResetPasswordToken(String resetPasswordToken, String username) throws UsernameNotFoundException {
         User user = userRepo.getUserByUsername(username);
 
