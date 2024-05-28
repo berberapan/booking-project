@@ -64,7 +64,7 @@
 </div>
 <div class="container mt-4">
     <h1 class="text-center mb-5 mt-5">Avtalskunder</h1>
-    <div th:if="${customers.getSize() > 0}">
+    <div th:unless="${customers.isEmpty()}">
         <form action="/contractCustomer" method="get" class="d-flex flex-row justify-content-end mb-3">
             <div class="mr-2">
                 <label for="search" class="visually-hidden" style="display: none"></label>
@@ -103,7 +103,7 @@
     </div>
 
 
-    <div class>
+    <div th:unless="${customers.isEmpty()}">
     <ul class="pagination">
         <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
             <li class="page-item" th:classappend="${pageNum == i} ? ' active' : ''">
@@ -113,7 +113,7 @@
     </ul>
     </div>
 
-    <div class="" th:unless="${customers.getSize() > 0}">
+    <div th:if="${customers.isEmpty()}">
         <div class="alert alert-danger text-center" role="alert">Inga avtalskunder hittades</div>
         <a class="btn btn-success" href="/contractCustomer" role="button">Gå tillbaka</a>
     </div>
