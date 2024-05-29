@@ -23,4 +23,5 @@ public class IntegrationsProperties {
     public ShippersProperties shippers;
     public BlacklistProperties blacklist;
     public EventProperties events;
+    public EmailProperties emails;
 }

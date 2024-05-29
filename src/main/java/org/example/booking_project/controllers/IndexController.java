@@ -1,6 +1,5 @@
 package org.example.booking_project.controllers;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -11,5 +10,4 @@ public class IndexController {
     public String showIndexPage() {
         return "index";
     }
-
-}
+ }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleEmail.css}" href="/css/styleEmail.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                    </div>
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('admin')">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin" >
+                        <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                        <a class="dropdown-item" href="/user">User admin</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="/logout">Logga ut</a>
+                    </div>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/login" class="nav-link">Logga in</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-email container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Templates</h1>
+        <a href="/admin/templates/add" class="btn btn-primary">Lägg till ny mall</a>
+    </div>
+    <table class="table table-striped mt-4 table-blue">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ämne</th>
+            <th>Åtgärder</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="template : ${templates}">
+            <td th:text="${template.name}">Template Name</td>
+            <td th:text="${template.subject}">Template Subject</td>
+            <td class="action-buttons">
+                <a th:href="@{/admin/templates/edit/{id}(id=${template.id})}" class="btn btn-warning btn-sm">Redigera</a>
+                <a th:href="@{/admin/templates/delete/{id}(id=${template.id})}" class="btn btn-danger btn-sm">Ta bort</a>
+                <a th:href="@{/admin/templates/preview/{id}(id=${template.id})}" class="btn btn-info btn-sm">Förhandsgranska</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

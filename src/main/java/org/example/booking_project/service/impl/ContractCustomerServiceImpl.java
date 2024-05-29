@@ -1,14 +1,20 @@
 package org.example.booking_project.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.Getter;
 import org.example.booking_project.Dtos.ContractCustomerDTO;
+import org.example.booking_project.Dtos.ContractCustomerView;
 import org.example.booking_project.models.AllCustomers;
 import org.example.booking_project.models.ContractCustomer;
 import org.example.booking_project.repos.ContractCustomerRepo;
 import org.example.booking_project.service.ContractCustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +28,7 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     private final ContractCustomerRepo contractCustomerRepo;
     private final XmlStreamProvider xmlStreamProvider;
+    private static final Logger log = LoggerFactory.getLogger(ContractCustomerServiceImpl.class);
 
     @Autowired
     ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo, XmlStreamProvider xmlStreamProvider){
@@ -60,11 +67,11 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
             existingCustomer.setPhone(contractCustomerDTO.getPhone());
             existingCustomer.setFax(contractCustomerDTO.getFax());
             contractCustomerRepo.save(existingCustomer);
-            System.out.println(existingCustomer.getCompanyName() +" updated");
+            log.info("{} updated", existingCustomer.getCompanyName());
         } else {
             ContractCustomer newCustomer = contractCustomerDTOToContractCustomer(contractCustomerDTO);
             contractCustomerRepo.save(newCustomer);
-            System.out.println(newCustomer.getCompanyName() +" added");
+            log.info("{} added", newCustomer.getCompanyName());
         }
     }
 
@@ -93,5 +100,28 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
                     .map(this::contractCustomerToContractCustomerDTO)
                     .collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public Page<ContractCustomerView> getFilteredContractCustomers (String companyName, String contactName, String country, Pageable pageable) {
+        Page<ContractCustomer> pages = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains(
+                companyName, contactName, country, pageable);
+        return pages.map(customer -> new ContractCustomerView(
+                customer.getId(),
+                customer.getCompanyName(),
+                customer.getContactName(),
+                customer.getCountry()
+        ));
+    }
+
+    @Override
+    public Page<ContractCustomerView> getAllContractCustomers (Pageable pageable) {
+        Page<ContractCustomer> pages = contractCustomerRepo.findAll(pageable);
+        return pages.map(customer -> new ContractCustomerView(
+                customer.getId(),
+                customer.getCompanyName(),
+                customer.getContactName(),
+                customer.getCountry()
+        ));
     }
 }

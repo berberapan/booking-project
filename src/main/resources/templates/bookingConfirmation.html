@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="sv" xmlns:th="http://www.thymeleaf.org">
+<html lang="sv" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Bokningsbekräftelse</title>
@@ -34,8 +35,26 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
                         <a class="dropdown-item" href="/customer/search">Sök kund</a>
                         <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
-                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
                     </div>
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('admin')">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin" >
+                        <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                        <a class="dropdown-item" href="/user">User admin</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="/logout">Logga ut</a>
+                    </div>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/login" class="nav-link">Logga in</a>
                 </li>
             </ul>
         </div>
@@ -79,10 +98,26 @@
             <h3>Totalt pris: <span th:text="${totalPrice}"></span>kr</h3><br><br>
         </div>
     </div>
+    <!-- Bekräftelsemeddelande för att ett mejl har skickats -->
+    <div th:if="${created}" id="createdMessage" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        Du har fått ett bekräftelsemejl!
+    </div>
 </div>
 <div class="d-flex justify-content-center">
     <img th:src="@{/images/glada-uttern-trnsp.png}" alt="logo">
     <br>
 </div>
+<script>
+    const alertElement = document.getElementById("createdMessage");
+    alertElement.addEventListener("click", function () {
+        alertElement.style.display = "none";
+    });
+    setTimeout(function () {
+        alertElement.style.display = "none";
+    }, 3000);
+</script>
 </body>
 </html>

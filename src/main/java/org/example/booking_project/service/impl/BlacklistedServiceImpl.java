@@ -1,12 +1,12 @@
 package org.example.booking_project.service.impl;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.booking_project.Dtos.BlacklistedDTO;
 import org.example.booking_project.configs.IntegrationsProperties;
 import org.example.booking_project.service.BlacklistService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,8 +19,12 @@ import java.net.http.HttpResponse;
 @Service
 public class BlacklistedServiceImpl implements BlacklistService {
 
-    @Autowired
     IntegrationsProperties properties;
+    JsonStreamProvider jsp;
+    public BlacklistedServiceImpl(JsonStreamProvider jsp, IntegrationsProperties properties) {
+        this.jsp = jsp;
+        this.properties = properties;
+    }
 
     @Override
     public void updateBlacklisted(BlacklistedDTO blacklistedDTO) throws IOException {
@@ -30,16 +34,19 @@ public class BlacklistedServiceImpl implements BlacklistService {
         blacklistedDTO.ok = !blacklistedDTO.ok;
 
         HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
 
         if (!existsByEmail(blacklistedDTO.email)) {
-            blacklistedDTO.ok = false;
+            blacklistedDTO.setOk(false);
+            ObjectNode requestJson = objectMapper.createObjectNode();
+            requestJson.put("email", blacklistedDTO.getEmail());
+            requestJson.put("name", blacklistedDTO.getName());
+            requestJson.put("ok", blacklistedDTO.isOk());
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(blacklistPostURL))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers
-                            .ofString("{\"email\":\"" + blacklistedDTO.email + "\", " +
-                                    "\"name\":\"" + blacklistedDTO.name + "\", " +
-                                    "\"ok\":\"" + blacklistedDTO.ok + "\" }"))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestJson.toString()))
                     .build();
 
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
@@ -50,12 +57,14 @@ public class BlacklistedServiceImpl implements BlacklistService {
             System.out.println(blacklistedDTO.name);
             System.out.println("Allowed to book: " + blacklistedDTO.ok);
 
+            ObjectNode requestJson = objectMapper.createObjectNode();
+            requestJson.put("name", blacklistedDTO.getName());
+            requestJson.put("ok", blacklistedDTO.isOk());
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(blacklistPutURL + blacklistedDTO.email.trim()))
                     .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers
-                            .ofString("{\"name\":\"" + blacklistedDTO.name + "\", " +
-                                    "\"ok\":\"" + blacklistedDTO.ok + "\" }"))
+                    .PUT(HttpRequest.BodyPublishers.ofString(requestJson.toString()))
                     .build();
 
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())

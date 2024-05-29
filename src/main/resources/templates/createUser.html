@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skapa användare</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/"><i>Startsida</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBookings" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Bokningshantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownBookings">
+                        <a class="dropdown-item" href="/book">Boka rum</a>
+                        <a class="dropdown-item" href="/bookings/search">Sök bokningar</a>
+                        <a class="dropdown-item" href="/rooms">Alla rum</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCustomer" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Kundhantering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCustomer">
+                        <a class="dropdown-item" href="/customer/search">Sök kund</a>
+                        <a class="dropdown-item" href="/contractCustomer">Sök avtalskund</a>
+                    </div>
+                <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('admin')">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                        <a class="dropdown-item" href="/admin/templates">Alla mallar</a>
+                        <a class="dropdown-item" href="/blacklist">Blacklist admin</a>
+                        <a class="dropdown-item" href="/user">User admin</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       th:text="${#authentication.name}">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="/logout">Logga ut</a>
+                    </div>
+                </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/login" class="nav-link">Logga in</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container mt-4">
+    <h1 class="text-center mb-5 mt-5">Skapa användare</h1>
+    <form action="/user/create" method="post">
+        <div class="form-group">
+            <label for="username">Användarnamn:</label>
+            <input type="email" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Lösenord:</label>
+            <input type="text" class="form-control" id="password" name="password">
+        </div>
+        <div class="form-group">
+            <label for="admin">Admin:</label>
+            <input type="checkbox" class="form-control" id="admin" name="admin">
+        </div>
+        <div class="form-group">
+            <label for="receptionist">Receptionist:</label>
+            <input type="checkbox" class="form-control" id="receptionist" name="receptionist">
+        </div>
+        <button type="submit" class="btn btn-success">Skapa</button>
+        <a href="/user" class="btn btn-danger">Avbryt</a>
+    </form>
+    <div th:if="${hasFilledForm}" class="mt-4">
+        <div th:if="${!userAlreadyExists}" class="mt-4">
+        <div class="alert alert-success" role="alert" th:text="${message}"></div>
+        </div>
+        <div th:if="${userAlreadyExists}" class="mt-4">
+        <div class="alert alert-warning" role="alert" th:text="${message}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

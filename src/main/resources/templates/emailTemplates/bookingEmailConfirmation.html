@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokningsbekräftelse</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .contact {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .contact a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        .cancellation-policy {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #f1c40f;
+            background-color: #fdf8e4;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Bokningsbekräftelse</h1>
+    <p>Hej <span th:text="${name}" class="highlight">name</span>,</p>
+    <p>Tack för din bokning! Du är välkommen till <span class="highlight">Glada Utterns Pensionat</span> den <span th:text="${checkInDate}" class="highlight">checkInDate</span>.</p>
+    <h2>Kundinformation:</h2>
+    <p>Namn: <span th:text="${name}" class="highlight">name</span></p>
+    <p>Email: <span th:text="${email}" class="highlight">email</span></p>
+    <p>Telefonnummer: <span th:text="${phone}" class="highlight">phone</span></p>
+    <h2>Bokningsinformation:</h2>
+    <p>Bokningsnummer: <span th:text="${bookingNumber}" class="highlight">bookingNumber</span></p>
+    <p>Rumsnummer: <span th:text="${roomNumber}" class="highlight">roomNumber</span></p>
+    <p>Incheckningsdatum: <span th:text="${checkInDate}" class="highlight">checkInDate</span></p>
+    <p>Utcheckningsdatum: <span th:text="${checkOutDate}" class="highlight">checkoutDate</span></p>
+    <p>Totalpris: <span th:text="${totalPrice}" class="highlight">totalPrice</span></p>
+    <div class="cancellation-policy">
+        <h2>Avbokningsregler:</h2>
+        <p>För att avboka din bokning, vänligen kontakta oss senast 48 timmar före incheckning för att undvika avgifter.</p>
+    </div>
+    <div class="contact">
+        <p>För frågor eller ändringar, vänligen kontakta oss på <a href="mailto:info@glada-utterns-pensionat.com">info@glada-utterns-pensionat.com</a></p>
+    </div>
+</div>
+</body>
+</html>

@@ -25,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.yaml:snakeyaml")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -35,13 +36,20 @@ dependencies {
     implementation("com.rabbitmq:amqp-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.github.javafaker:javafaker:1.0.2") { exclude("org.yaml") }
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    //  Temporary explicit version to fix Thymeleaf bug
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
     implementation("org.springframework.boot:spring-boot-configuration-processor:3.2.5")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test:6.3.0")
     testImplementation("com.h2database:h2")
+    implementation ("org.springframework.boot:spring-boot-starter-mail")
+    implementation ("ognl:ognl:3.2.21")
+    testImplementation("org.wiremock:wiremock-standalone:3.6.0")
 }
 
 tasks.withType<Test> {
